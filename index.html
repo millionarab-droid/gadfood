@@ -87,7 +87,7 @@ textarea{min-height:80px;resize:vertical}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#a92318"><link rel="apple-touch-icon" href="icon-192.png"></head><body>
 <header><img class="logoimg" src="logo.png" alt="جاد GAD"><p class="tagline">أكل لكل الناس</p></header><div class="pat"></div>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
-<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="fblogin" type="button" style="background:#1877f2">دخول بفيسبوك</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button></div>
+<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="fblogin" type="button" style="background:#1877f2">دخول بفيسبوك</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="display:none;background:#1fa855">📲 ثبّت التطبيق</button></div>
 <div class="tabs" id="tabs"></div>
 <input class="srch" id="q" type="search" placeholder="ابحث عن صنف…">
 <div class="wrap" id="menu"></div>
@@ -289,5 +289,9 @@ function applySettings(rows){var cfg=null,pr=null,ly=null,ord=null;(rows||[]).fo
  save();render();refresh()}
 function loadSettings(){if(!DB_ON)return;try{fetch(SUPABASE_URL+'/rest/v1/settings?select=key,value',{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}}).then(function(r){return r.ok?r.json():[]}).then(applySettings).catch(function(){})}catch(e){}}
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=document.getElementById('installBtn');if(b)b.style.display=''});
+document.getElementById('installBtn').onclick=function(){if(!deferredPrompt)return;var dp=deferredPrompt;deferredPrompt=null;dp.prompt();dp.userChoice.then(function(){document.getElementById('installBtn').style.display='none'})};
+if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){var ib=document.getElementById('installBtn');if(ib)ib.style.display='none'}
 render();loadSettings();initAuth();
 </script></body></html>
