@@ -5,13 +5,11 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
 body{margin:0;font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif;color:var(--ink);padding-bottom:90px}
-header{background:var(--red);color:#fff;padding:18px 14px 14px;text-align:center;border-bottom:6px solid var(--blue)}
-.badge{display:inline-block;border:3px solid #fff;border-radius:22px;padding:8px 26px 6px;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
-.badge .lg{font-family:"Rakkas","Tajawal",serif;font-size:46px;line-height:1}
-.badge .en{font-weight:800;letter-spacing:6px;font-size:18px}
-.badge .est{font-size:11px;letter-spacing:2px;opacity:.9}
-.pat{height:14px;background:repeating-linear-gradient(45deg,#0053aa 0 8px,#fff 8px 12px,#e8112d 12px 20px,#fff 20px 24px)}
-.tagline{font-size:14px;margin-top:8px}
+header{background:#c8102e;text-align:center;padding:0}
+.logoimg{width:100%;max-width:760px;display:block;margin:0 auto}
+.tagline{background:#fff;color:#c8102e;font-weight:800;font-size:20px;padding:8px 0;margin:0}
+.pat{height:46px;background:url(pattern.png) repeat-x;background-size:auto 46px}
+.secimg{width:100%;max-width:420px;display:block;margin:6px auto 2px}
 .sec h2{background:var(--blue);color:#fff;border-radius:12px;padding:8px 14px;font-size:22px}
 header h1{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:38px;margin:0;line-height:1.1}
 header p{margin:4px 0 0;font-size:14px}
@@ -77,7 +75,7 @@ textarea{min-height:80px;resize:vertical}
 #fb{display:none;margin-top:12px}
 #fb .w{color:#7a4b00;background:#fff3cd;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.7}
 </style></head><body>
-<header><div class="badge"><div class="lg">جاد</div><div class="en">GAD</div><div class="est">EST. 1960</div></div><p class="tagline">أهلاً في حضرتك • أكل لكل الناس • للطلب والتوصيل <b dir="ltr">16475</b></p></header><div class="pat"></div>
+<header><img class="logoimg" src="logo.png" alt="جاد GAD"><p class="tagline">أكل لكل الناس</p></header><div class="pat"></div>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
 <div id="acct"><span class="who" id="acctWho">اطلب من غير تسجيل، أو سجّل بجوجل عشان بياناتك وأوردراتك ونقاطك تتحفظ</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="fblogin" type="button" style="background:#1877f2">دخول بفيسبوك</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button></div>
 <div class="tabs" id="tabs"></div>
@@ -160,7 +158,8 @@ function render(){
  [].forEach.call(tabs.children,function(b,i){b.classList.toggle('on',i===cur&&!document.getElementById('q').value.trim())});
  menu.innerHTML='';var q=document.getElementById('q').value.trim();var any=false;
  MENU.forEach(function(g,gi){ if(!q&&gi!==cur)return;
-  g.s.forEach(function(s,si){var box=document.createElement('div');box.className='sec';var h=document.createElement('h2');h.textContent=s.t;box.appendChild(h);var n=0;
+  var GIMG=['s-grill.png','s-dishes.png','s-shawarma.png','s-sandwich.png','s-oriental.png','s-boxes.png','s-pizza.png','s-salads.png'];
+  g.s.forEach(function(s,si){var box=document.createElement('div');box.className='sec';if(si===0&&GIMG[gi]){var im=document.createElement('img');im.className='secimg';im.src=GIMG[gi];im.alt=g.g;box.appendChild(im)}var h=document.createElement('h2');h.textContent=s.t;box.appendChild(h);var n=0;
    s.i.forEach(function(it,ii){ if(q&&it.n.indexOf(q)<0&&s.t.indexOf(q)<0)return;if(!it.o.some(function(o){return !o.off}))return;n++;
     var c=document.createElement('div');c.className='item';var nm=document.createElement('div');nm.className='nm';nm.textContent=it.n;c.appendChild(nm);
     it.o.forEach(function(o,oi){if(o.off)return;var r=document.createElement('div');r.className='opt';var l=document.createElement('span');l.className='ol';l.textContent=o.l;var p=document.createElement('span');p.className='op';p.textContent=o.p+' ج';r.appendChild(l);r.appendChild(p);r.appendChild(stepper(gi+'.'+si+'.'+ii+'.'+oi));c.appendChild(r)});
