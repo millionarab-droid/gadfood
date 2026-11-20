@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>اطلب من جاد</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--red:#e8112d;--blue:#0053aa;--ink:#1d2433;--bg:#f6f3ee}
+:root{--red:#a92318;--blue:#0053aa;--ink:#1d2433;--bg:#f6f3ee}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
 body{margin:0;font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif;color:var(--ink);padding-bottom:90px}
@@ -9,7 +9,7 @@ header{background:#c8102e;text-align:center;padding:0}
 .logoimg{width:100%;max-width:190px;display:block;margin:0 auto}
 .tagline{background:#fff;color:#c8102e;font-weight:800;font-size:20px;padding:8px 0;margin:0}
 .pat{height:46px;background:url(pattern.png) repeat-x;background-size:auto 46px}
-.secimg{width:100%;max-width:420px;display:block;margin:6px auto 2px}
+.secimg{width:100%;max-width:320px;display:block;margin:6px auto 2px}
 .sec h2{background:var(--blue);color:#fff;border-radius:12px;padding:8px 14px;font-size:22px}
 header h1{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:38px;margin:0;line-height:1.1}
 header p{margin:4px 0 0;font-size:14px}
@@ -54,7 +54,7 @@ textarea{min-height:80px;resize:vertical}
 .promo{display:flex;gap:8px}
 .promo button,.loc button,.alt{border:0;border-radius:12px;padding:10px 14px;font-family:inherit;font-weight:700;font-size:14px;background:var(--blue);color:#fff;cursor:pointer;white-space:nowrap}
 .pm{font-size:13px;min-height:18px;margin-top:4px}
-.err{color:#c4161c;font-size:13.5px;margin-top:6px;min-height:18px;font-weight:700}
+.err{color:#a92318;font-size:13.5px;margin-top:6px;min-height:18px;font-weight:700}
 .send{display:block;width:100%;text-align:center;text-decoration:none;border:0;border-radius:16px;padding:15px;margin-top:14px;font-family:inherit;font-weight:800;font-size:18px;background:#1fa855;color:#fff;cursor:pointer}
 .alt{background:#6b7280;margin-top:8px;width:100%;display:block;text-align:center;text-decoration:none}
 .alt.g{background:#1fa855}
@@ -189,20 +189,20 @@ document.getElementById('back').onclick=function(){sheet.style.display='none';re
 document.getElementById('pa').onclick=function(){var v=document.getElementById('pc').value.trim().toLowerCase();var m=document.getElementById('pm');
  if(!v){promo=null;m.textContent='';drawTot();refresh();return}
  function ok(p){promo={code:v,type:p.type,value:+p.value||0};m.style.color='#0a7a3b';m.textContent='✓ تم تطبيق الكود: '+(p.type==='free_delivery'?'توصيل مجاني':p.type==='percent'?'خصم '+num(+p.value)+'%':'خصم '+num(+p.value)+' جنيه');drawTot();refresh()}
- function bad(){promo=null;m.style.color='#c4161c';m.textContent='الكود غير صحيح';drawTot();refresh()}
+ function bad(){promo=null;m.style.color='#a92318';m.textContent='الكود غير صحيح';drawTot();refresh()}
  if(DB_ON){m.style.color='#555';m.textContent='جاري التحقق…';
   fetch(SUPABASE_URL+'/rest/v1/rpc/check_promo',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({p:v})})
    .then(function(r){return r.ok?r.json():[]}).then(function(a){var x=Array.isArray(a)?a[0]:a;if(x&&x.type)ok(x);else bad()}).catch(function(){bad()})}
  else{if(v===String(CFG.promo).toLowerCase())ok({type:'free_delivery',value:0});else bad()}};
 document.getElementById('gps').onclick=function(){var m=document.getElementById('gpsm');
- function bad(t){m.style.color='#c4161c';m.textContent=t}
+ function bad(t){m.style.color='#a92318';m.textContent=t}
  try{
   if(!navigator.geolocation){bad('تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)');return}
   m.style.color='#555';m.textContent='جاري التحديد… (اسمح للمتصفح بالوصول للموقع)';
   navigator.geolocation.getCurrentPosition(function(p){document.getElementById('lk').value='https://www.google.com/maps?q='+p.coords.latitude.toFixed(6)+','+p.coords.longitude.toFixed(6);m.style.color='#0a7a3b';m.textContent='✓ تم تحديد موقعك';refresh()},
    function(er){bad(er&&er.code===1?'الموقع مش مسموح. فعّله من إعدادات المتصفح، أو ابعت موقعك من واتساب (📎 ← الموقع)':'مقدرناش نحدد الموقع. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)')},{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
  }catch(e){bad('تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)')}};
-document.getElementById('redeemBtn').onclick=function(){var m=document.getElementById('loym');var v=+document.getElementById('redeemIn').value||0;if(!custUser){m.style.color='#c4161c';m.textContent='سجّل دخول بجوجل الأول';return}if(!profile){m.style.color='#c4161c';m.textContent='لسه بنحمّل نقاطك، حاول تاني';return}if(v<LOYAL.min){m.style.color='#c4161c';m.textContent='أقل استبدال '+LOYAL.min+' نقطة';return}if(v>profile.points){m.style.color='#c4161c';m.textContent='معاك '+(profile?profile.points:0)+' نقطة بس';return}var d=Math.floor(v/LOYAL.rate);if(d<=0){m.style.color='#c4161c';m.textContent='النقاط دي مش كافية لخصم جنيه';return}redeemUsed=v;redeemDisc=d;redeemedForNo=null;m.style.color='#0a7a3b';m.textContent='✓ هيتخصم '+d+' جنيه من الأوردر ده ('+v+' نقطة)، وهيتخصموا من رصيدك لما تبعت الطلب';drawTot();refresh()};
+document.getElementById('redeemBtn').onclick=function(){var m=document.getElementById('loym');var v=+document.getElementById('redeemIn').value||0;if(!custUser){m.style.color='#a92318';m.textContent='سجّل دخول بجوجل الأول';return}if(!profile){m.style.color='#a92318';m.textContent='لسه بنحمّل نقاطك، حاول تاني';return}if(v<LOYAL.min){m.style.color='#a92318';m.textContent='أقل استبدال '+LOYAL.min+' نقطة';return}if(v>profile.points){m.style.color='#a92318';m.textContent='معاك '+(profile?profile.points:0)+' نقطة بس';return}var d=Math.floor(v/LOYAL.rate);if(d<=0){m.style.color='#a92318';m.textContent='النقاط دي مش كافية لخصم جنيه';return}redeemUsed=v;redeemDisc=d;redeemedForNo=null;m.style.color='#0a7a3b';m.textContent='✓ هيتخصم '+d+' جنيه من الأوردر ده ('+v+' نقطة)، وهيتخصموا من رصيدك لما تبعت الطلب';drawTot();refresh()};
 var curNo=null,lastSig=null;
 function orderNo(){if(!curNo)curNo='G'+Date.now().toString(36).toUpperCase().slice(-5)+Math.random().toString(36).toUpperCase().slice(2,4);return curNo}
 function itemsArr(){var a=[],done={};Object.keys(cart).forEach(function(k){var q=cart[k];if(!(q>0)||!flat[k])return;var f=flat[k];var o={n:f.name,l:f.label||'',q:q,p:f.price};if(!done[f.item]&&notes[f.item]){done[f.item]=1;o.note=notes[f.item]}a.push(o)});return a}
@@ -242,10 +242,10 @@ function record(){
  setRec('جاري تسجيل الطلب عند المطعم…','#555');
  if(custUser)saveProfile();
  return redeemNow().then(function(ok){
-  if(redeemUsed&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh();setRec('⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني','#c4161c');return 'redeem-fail'}
+  if(redeemUsed&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh();setRec('⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني','#a92318');return 'redeem-fail'}
   return fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:authHdr({'Prefer':'return=minimal'}),body:JSON.stringify(row),keepalive:true})
-   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);return true}else{setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#c4161c');return false}})
-   .catch(function(){setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#c4161c');return false});
+   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);return true}else{setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#a92318');return false}})
+   .catch(function(){setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#a92318');return false});
  })}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
 snd.addEventListener('click',function(ev){ev.preventDefault();if(!valid())return;var sg=sig();if(lastSig&&lastSig!==sg){curNo=null;redeemedForNo=null}refresh();record().then(function(ok){lastSig=sg;showFb();if(ok!=='redeem-fail')window.open(snd.href,'_blank')})});

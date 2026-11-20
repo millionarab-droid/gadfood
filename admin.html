@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>لوحة طلبات جاد</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--red:#e8112d;--blue:#0053aa;--ink:#1d2433;--bg:#f2efe9}
+:root{--red:#a92318;--blue:#0053aa;--ink:#1d2433;--bg:#f2efe9}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
 .top{background:var(--red);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20;border-bottom:5px solid var(--blue)}
@@ -14,7 +14,7 @@ body{margin:0;font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif;back
 label{display:block;font-weight:700;font-size:14px;margin:12px 0 4px}
 input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;border:1px solid #d4d0c6;border-radius:12px;background:#fff;color:var(--ink)}
 .btn{border:0;border-radius:12px;padding:12px 16px;font-family:inherit;font-weight:800;font-size:16px;background:var(--blue);color:#fff;cursor:pointer;width:100%;margin-top:14px}
-.err{color:#c4161c;font-size:13.5px;font-weight:700;min-height:18px;margin-top:8px}
+.err{color:#a92318;font-size:13.5px;font-weight:700;min-height:18px;margin-top:8px}
 #app{display:none;max-width:900px;margin:0 auto;padding:10px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 10px}
 .st{background:#fff;border-radius:14px;padding:9px 6px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -45,11 +45,11 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 .empty{text-align:center;color:#888;padding:40px 10px}
 .tabs{display:flex;gap:6px;margin:6px 0 10px;overflow-x:auto}.tabs button{flex:1;border:0;border-radius:12px;padding:10px 8px;font-family:inherit;font-weight:800;font-size:14.5px;background:#e3dfd5;color:#444;cursor:pointer;white-space:nowrap}.tabs button.on{background:var(--blue);color:#fff}
 .box{background:#fff;border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}.box h3{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:24px;color:var(--red);margin:0 0 4px}
-.msg{font-size:13.5px;font-weight:700;margin-top:8px;min-height:18px;color:#0a7a3b}.msg.bad{color:#c4161c}
+.msg{font-size:13.5px;font-weight:700;margin-top:8px;min-height:18px;color:#0a7a3b}.msg.bad{color:#a92318}
 .srchp{margin:6px 0}.psec{margin:14px 0 4px;font-family:"Rakkas","Tajawal",serif;font-size:22px;color:var(--red)}.pg2{font-weight:800;color:var(--blue);margin:16px 0 0}
 .pri{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:7px 10px;margin:4px 0}.pri .pn{flex:1;font-size:14px}.pri input[type=number]{width:84px;text-align:center;padding:7px;font-size:15px;font-weight:700}.pri label{display:flex;align-items:center;gap:4px;font-size:12.5px;margin:0;white-space:nowrap;font-weight:600}.pri label input{width:18px;height:18px}.pri.chg{background:#fff6b8}.pri.offr{opacity:.55}
 .savebar{position:sticky;bottom:8px;margin-bottom:10px}
-.pmr{display:flex;align-items:center;gap:8px;background:#faf8f4;border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14px}.pmr b{direction:ltr}.pmr span{flex:1}.pmr button{border:0;border-radius:8px;padding:6px 10px;font-family:inherit;font-weight:700;cursor:pointer;background:#e3dfd5}.pmr .del{background:#c4161c;color:#fff}
+.pmr{display:flex;align-items:center;gap:8px;background:#faf8f4;border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14px}.pmr b{direction:ltr}.pmr span{flex:1}.pmr button{border:0;border-radius:8px;padding:6px 10px;font-family:inherit;font-weight:700;cursor:pointer;background:#e3dfd5}.pmr .del{background:#a92318;color:#fff}
 #setup{display:none;background:#fff3cd;color:#6b4e00;border-radius:12px;padding:12px;margin:14px;font-size:14px;line-height:1.8}
 </style></head><body>
 <div class="top"><span class="lg">جاد • GAD</span><h1>لوحة طلبات جاد</h1><button id="snd">🔔 الصوت: شغال</button><button id="out" style="display:none">خروج</button></div>
