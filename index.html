@@ -67,6 +67,16 @@ textarea{min-height:80px;resize:vertical}
 #acct button.g{background:#fff;color:#333;border:1px solid #ccc}
 #osheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
 #osheet .in{max-width:720px;margin:0 auto;padding:12px 12px 60px}
+#csheet{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;display:none}
+#csheet .in{max-width:720px;margin:0 auto;padding:12px 12px 90px}
+#cmsgs{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.cmsg{max-width:82%;padding:9px 12px;border-radius:14px;line-height:1.6;font-size:15px;white-space:pre-wrap;word-break:break-word}
+.cmsg.me{align-self:flex-start;background:var(--red);color:#fff;border-bottom-right-radius:4px}
+.cmsg.them{align-self:flex-end;background:#fff;border:1px solid #e5e1d8;border-bottom-left-radius:4px}
+.cmsg .tm{display:block;font-size:11px;opacity:.75;margin-top:3px}
+.cbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e5e1d8;padding:10px;display:flex;gap:8px;max-width:720px;margin:0 auto}
+.cbar input{flex:1;border:1px solid #d8d5cd;border-radius:12px;padding:11px;font-family:inherit;font-size:15px}
+.cbar button{border:0;border-radius:12px;padding:11px 18px;background:var(--red);color:#fff;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
 .ocard{background:#fff;border-radius:14px;padding:11px 12px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .ocard .oh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .ocard button{border:0;border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:700;font-size:13.5px;background:var(--blue);color:#fff;cursor:pointer;margin-top:8px}
@@ -100,13 +110,13 @@ textarea{min-height:80px;resize:vertical}
 <label>ملاحظات عامة على الطلب (اختياري)</label><textarea id="nt" placeholder="مثال: رن عليا لما توصل…"></textarea>
 <div class="err" id="err"></div>
 <a class="send" id="send" href="#" target="_blank" rel="noopener">إرسال الطلب على واتساب</a>
-<div id="rec" class="pm" style="font-weight:700;margin-top:10px"></div><input id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><div id="fb"><div class="w"><b>لو واتساب ما فتحش لوحده:</b><br>1) اضغط «انسخ الطلب» 2) افتح واتساب وابعته على الرقم <b dir="ltr" id="wanum"></b></div>
+<div id="rec" class="pm" style="font-weight:700;margin-top:10px"></div><button class="alt" id="chatbtn" type="button" style="display:none;background:#0053aa;margin-top:10px">💬 تواصل مع المطعم بخصوص الطلب ده</button><input id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><div id="fb"><div class="w"><b>لو واتساب ما فتحش لوحده:</b><br>1) اضغط «انسخ الطلب» 2) افتح واتساب وابعته على الرقم <b dir="ltr" id="wanum"></b></div>
 <a class="alt g" id="app" href="#">افتح تطبيق واتساب</a><button class="alt" id="newo" type="button" style="background:#0053aa">ابدأ طلب جديد</button></div>
 <button class="alt" id="copy" type="button">انسخ الطلب</button>
 <textarea id="prev" readonly></textarea>
 <p class="note">بعد الضغط هيفتح واتساب برسالة جاهزة فيها طلبك وعنوانك، اضغط إرسال هناك علشان الطلب يوصل للمطعم.</p>
 </div></div>
-<div id="osheet"><div class="in"><button class="back" id="oback">→ رجوع للمنيو</button><h3>أوردراتي</h3><div id="olist"></div></div></div>
+<div id="osheet"><div class="in"><button class="back" id="oback">→ رجوع للمنيو</button><h3>أوردراتي</h3><div id="olist"></div></div></div><div id="csheet"><div class="in"><button class="back" id="cback">→ رجوع</button><h3 id="ctitle">💬 تواصل مع المطعم</h3><div id="cmsgs"></div></div><div class="cbar"><input id="cin" type="text" placeholder="اكتب رسالتك هنا…" maxlength="1000"><button id="csend" type="button">إرسال</button></div></div>
 <script>
 var SUPABASE_URL='https://apcvurppgwscpktdurdt.supabase.co';var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwY3Z1cnBwZ3dzY3BrdGR1cmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MzE0NzgsImV4cCI6MjExMDQwNzQ3OH0.mm4Mqs7u9QaXMxq6sShrEU2oRUgxc3tVR40w6X2xgTk';
 var DB_ON=SUPABASE_URL.indexOf('http')===0&&SUPABASE_ANON_KEY.indexOf('PUT_')!==0;
@@ -136,7 +146,23 @@ function updateAcct(){var w=document.getElementById('acctWho'),pt=document.getEl
 function initAuth(){if(location.hash&&location.hash.indexOf('access_token=')>-1){var h={};location.hash.slice(1).split('&').forEach(function(p){var kv=p.split('=');h[kv[0]]=decodeURIComponent(kv[1]||'')});if(h.access_token){saveCustSess({access:h.access_token,refresh:h.refresh_token||'',exp:Date.now()+((+h.expires_in||3600)-60)*1000});history.replaceState(null,'',location.pathname+location.search)}}getCustUser().then(function(){if(custUser)loadProfile();else updateAcct()})}
 document.getElementById('glogin').onclick=loginGoogle;document.getElementById('fblogin').onclick=loginFacebook;document.getElementById('glogout').onclick=logoutGoogle;
 document.getElementById('myord').onclick=function(){openMyOrders()};document.getElementById('oback').onclick=function(){document.getElementById('osheet').style.display='none'};
-function openMyOrders(){var L=document.getElementById('olist');document.getElementById('osheet').style.display='block';L.innerHTML='<div class="empty">جاري التحميل…</div>';if(!custUser){L.innerHTML='<div class="empty">سجّل دخول بجوجل الأول</div>';return}fetch(SUPABASE_URL+'/rest/v1/orders?user_id=eq.'+custUser.id+'&order=created_at.desc&limit=20',{headers:authHdr()}).then(function(r){return r.ok?r.json():[]}).then(function(rows){if(!rows.length){L.innerHTML='<div class="empty">لسه معملتش أوردرات</div>';return}L.innerHTML='';rows.forEach(function(o){var d=document.createElement('div');d.className='ocard';var its=(o.items||[]).map(function(i){return i.q+' × '+i.n+(i.l?' ('+i.l+')':'')}).join('، ');d.innerHTML='<div class="oh"><b dir="ltr">'+o.order_no+'</b><span>'+new Date(o.created_at).toLocaleDateString('ar-EG')+'</span><span>'+o.total+' ج</span><span>'+(o.status==='done'?'اتسلّم':o.status==='cancelled'?'ملغي':o.status==='new'?'جديد':o.status)+'</span>'+(o.points_earned?'<span>⭐ +'+o.points_earned+'</span>':'')+'</div><div style="font-size:14px;color:#555;margin-top:4px">'+its+'</div><button type="button">اطلب زيه تاني</button>';d.querySelector('button').onclick=function(){reorder(o)};L.appendChild(d)})}).catch(function(){L.innerHTML='<div class="empty">تعذر تحميل الأوردرات</div>'})}
+function escH(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var chatNo=null,chatPhone=null,chatTimer=null,chatLastId=0,chatActx=null,lastChatNo=null,lastChatPhone=null;
+function chatBeep(){try{chatActx=chatActx||new (window.AudioContext||window.webkitAudioContext)();var t=chatActx.currentTime;var o=chatActx.createOscillator(),g=chatActx.createGain();o.frequency.value=660;o.connect(g);g.connect(chatActx.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.18);o.start(t);o.stop(t+.2)}catch(e){}}
+function chatHeaders(){return custUser?authHdr():{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'}}
+function loadChat(){if(!chatNo)return;var url=custUser?SUPABASE_URL+'/rest/v1/order_messages?order_no=eq.'+encodeURIComponent(chatNo)+'&order=created_at.asc':SUPABASE_URL+'/rest/v1/rpc/get_order_messages';
+ var opt=custUser?{headers:chatHeaders()}:{method:'POST',headers:chatHeaders(),body:JSON.stringify({p_order_no:chatNo,p_phone:chatPhone})};
+ fetch(url,opt).then(function(r){return r.ok?r.json():[]}).then(function(rows){var L=document.getElementById('cmsgs');var had=rows.length;rows.forEach(function(m){if(m.id>chatLastId){if(m.sender==='staff'&&chatLastId>0)chatBeep();chatLastId=m.id}});
+  L.innerHTML=rows.length?rows.map(function(m){return '<div class="cmsg '+(m.sender==='customer'?'me':'them')+'">'+escH(m.message)+'<span class="tm">'+(m.sender==='customer'?'أنت':(m.sender_name||'المطعم'))+' • '+new Date(m.created_at).toLocaleString('ar-EG')+'</span></div>'}).join(''):'<div class="empty">لسه مفيش رسايل — اكتب رسالتك والمطعم هيرد عليك هنا.</div>';
+  L.scrollTop=L.scrollHeight;
+  fetch(SUPABASE_URL+'/rest/v1/rpc/mark_messages_read',{method:'POST',headers:chatHeaders(),body:JSON.stringify({p_order_no:chatNo,p_role:'customer',p_phone:chatPhone})}).catch(function(){})}).catch(function(){})}
+function openChat(orderNo,phone){chatNo=orderNo;chatPhone=phone||null;chatLastId=0;document.getElementById('ctitle').textContent='💬 تواصل مع المطعم — طلب '+orderNo;document.getElementById('csheet').style.display='block';loadChat();clearInterval(chatTimer);chatTimer=setInterval(loadChat,3000)}
+function sendChat(){var inp=document.getElementById('cin');var v=inp.value.trim();if(!v||!chatNo)return;inp.value='';fetch(SUPABASE_URL+'/rest/v1/rpc/send_order_message',{method:'POST',headers:chatHeaders(),body:JSON.stringify({p_order_no:chatNo,p_text:v,p_sender:'customer',p_phone:chatPhone})}).then(function(r){if(r.ok)loadChat();else inp.value=v}).catch(function(){inp.value=v})}
+document.getElementById('csend').onclick=sendChat;
+document.getElementById('cin').addEventListener('keydown',function(e){if(e.key==='Enter')sendChat()});
+document.getElementById('cback').onclick=function(){document.getElementById('csheet').style.display='none';clearInterval(chatTimer);chatTimer=null};
+document.getElementById('chatbtn').onclick=function(){if(lastChatNo)openChat(lastChatNo,lastChatPhone)};
+function openMyOrders(){var L=document.getElementById('olist');document.getElementById('osheet').style.display='block';L.innerHTML='<div class="empty">جاري التحميل…</div>';if(!custUser){L.innerHTML='<div class="empty">سجّل دخول بجوجل الأول</div>';return}fetch(SUPABASE_URL+'/rest/v1/orders?user_id=eq.'+custUser.id+'&order=created_at.desc&limit=20',{headers:authHdr()}).then(function(r){return r.ok?r.json():[]}).then(function(rows){if(!rows.length){L.innerHTML='<div class="empty">لسه معملتش أوردرات</div>';return}L.innerHTML='';rows.forEach(function(o){var d=document.createElement('div');d.className='ocard';var its=(o.items||[]).map(function(i){return i.q+' × '+i.n+(i.l?' ('+i.l+')':'')}).join('، ');d.innerHTML='<div class="oh"><b dir="ltr">'+o.order_no+'</b><span>'+new Date(o.created_at).toLocaleDateString('ar-EG')+'</span><span>'+o.total+' ج</span><span>'+(o.status==='done'?'اتسلّم':o.status==='cancelled'?'ملغي':o.status==='new'?'جديد':o.status)+'</span>'+(o.points_earned?'<span>⭐ +'+o.points_earned+'</span>':'')+'</div><div style="font-size:14px;color:#555;margin-top:4px">'+its+'</div><button type="button">اطلب زيه تاني</button> <button type="button" style="background:#0053aa">💬 تواصل</button>';var bb=d.querySelectorAll('button');bb[0].onclick=function(){reorder(o)};bb[1].onclick=function(){openChat(o.order_no,o.phone)};L.appendChild(d)})}).catch(function(){L.innerHTML='<div class="empty">تعذر تحميل الأوردرات</div>'})}
 function reorder(o){cart={};notes={};(o.items||[]).forEach(function(it){var k=null;Object.keys(flat).forEach(function(fk){var f=flat[fk];if(f.name===it.n&&f.label===(it.l||'')&&f.price===it.p)k=fk});if(k)cart[k]=it.q});save();document.getElementById('osheet').style.display='none';if(o.address)document.getElementById('ad').value=o.address;if(o.branch)document.getElementById('br').value=o.branch;drawSheet();sheet.style.display='block';refresh()}
 
 var tabs=document.getElementById('tabs'),menu=document.getElementById('menu'),cur=0;
@@ -244,7 +270,7 @@ function record(){
  return redeemNow().then(function(ok){
   if(redeemUsed&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh();setRec('⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني','#a92318');return 'redeem-fail'}
   return fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:authHdr({'Prefer':'return=minimal'}),body:JSON.stringify(row),keepalive:true})
-   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);return true}else{setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#a92318');return false}})
+   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');lastChatNo=row.order_no;lastChatPhone=row.phone;document.getElementById('chatbtn').style.display='';if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);return true}else{setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#a92318');return false}})
    .catch(function(){setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#a92318');return false});
  })}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
