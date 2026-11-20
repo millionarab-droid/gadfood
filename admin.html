@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>لوحة طلبات جاد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#e8112d;--blue:#0053aa;--ink:#1d2433;--bg:#f2efe9}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.top{background:var(--red);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20}
+.top h1{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:26px;margin:0;flex:1}
+.top button{border:0;border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:700;background:rgba(255,255,255,.22);color:#fff;cursor:pointer;font-size:13.5px}
+#login{max-width:380px;margin:60px auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 2px 14px rgba(0,0,0,.12)}
+#login h2{font-family:"Rakkas","Tajawal",serif;font-weight:400;color:var(--red);font-size:30px;margin:0 0 12px;text-align:center}
+label{display:block;font-weight:700;font-size:14px;margin:12px 0 4px}
+input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;border:1px solid #d4d0c6;border-radius:12px;background:#fff;color:var(--ink)}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-family:inherit;font-weight:800;font-size:16px;background:var(--blue);color:#fff;cursor:pointer;width:100%;margin-top:14px}
+.err{color:#c4161c;font-size:13.5px;font-weight:700;min-height:18px;margin-top:8px}
+#app{display:none;max-width:900px;margin:0 auto;padding:10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 10px}
+.st{background:#fff;border-radius:14px;padding:9px 6px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.st b{display:block;font-size:22px;color:var(--blue)}.st span{font-size:12px;color:#666}
+.flt{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#fff;border-radius:14px;padding:10px;margin-bottom:10px}
+.flt .full{grid-column:1/-1}
+.flt input,.flt select{font-size:14.5px;padding:9px 10px}
+.banner{display:none;background:#1fa855;color:#fff;font-weight:800;text-align:center;padding:10px;border-radius:12px;margin:8px 0;cursor:pointer}
+.card{background:#fff;border-radius:16px;padding:12px;margin:10px 0;box-shadow:0 1px 4px rgba(0,0,0,.1);border-right:6px solid #bbb}
+.card.new{border-right-color:var(--red)}.card.preparing{border-right-color:#e0a100}.card.delivering{border-right-color:var(--blue)}.card.done{border-right-color:#1fa855}.card.cancelled{border-right-color:#999;opacity:.7}
+.card.fresh{animation:fl 1.2s ease-in-out 4;box-shadow:0 0 0 3px rgba(232,17,45,.45)}
+@keyframes fl{50%{background:#fff0f2}}
+.hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.no{font-weight:800;font-size:17px;direction:ltr}
+.tm{font-size:12.5px;color:#666;flex:1}
+.chip{border-radius:20px;padding:3px 10px;font-size:12.5px;font-weight:800;color:#fff;background:#999}
+.chip.new{background:var(--red)}.chip.preparing{background:#e0a100}.chip.delivering{background:var(--blue)}.chip.done{background:#1fa855}
+.row{display:flex;gap:6px;margin:5px 0;font-size:14.5px;line-height:1.6}.row b{min-width:62px;color:#555}
+.row a{color:var(--blue);font-weight:700;text-decoration:none}
+.items{background:#faf8f4;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:14px;line-height:1.8}
+.items .nt{color:#a35b00;font-size:13px;padding-right:12px}
+.tt{display:flex;justify-content:space-between;font-size:13.5px;color:#555}
+.tt.g{font-weight:800;font-size:17px;color:var(--red);border-top:1px dashed #ddd;margin-top:4px;padding-top:6px}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.acts button,.acts a{border:0;border-radius:10px;padding:8px 11px;font-family:inherit;font-weight:700;font-size:13.5px;background:#e9e5dc;color:#333;cursor:pointer;text-decoration:none}
+.acts .on{background:var(--blue);color:#fff}
+.acts .pr{background:#6b7280;color:#fff}.acts .wa{background:#1fa855;color:#fff}
+.empty{text-align:center;color:#888;padding:40px 10px}
+.tabs{display:flex;gap:6px;margin:6px 0 10px;overflow-x:auto}.tabs button{flex:1;border:0;border-radius:12px;padding:10px 8px;font-family:inherit;font-weight:800;font-size:14.5px;background:#e3dfd5;color:#444;cursor:pointer;white-space:nowrap}.tabs button.on{background:var(--blue);color:#fff}
+.box{background:#fff;border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}.box h3{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:24px;color:var(--red);margin:0 0 4px}
+.msg{font-size:13.5px;font-weight:700;margin-top:8px;min-height:18px;color:#0a7a3b}.msg.bad{color:#c4161c}
+.srchp{margin:6px 0}.psec{margin:14px 0 4px;font-family:"Rakkas","Tajawal",serif;font-size:22px;color:var(--red)}.pg2{font-weight:800;color:var(--blue);margin:16px 0 0}
+.pri{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:7px 10px;margin:4px 0}.pri .pn{flex:1;font-size:14px}.pri input[type=number]{width:84px;text-align:center;padding:7px;font-size:15px;font-weight:700}.pri label{display:flex;align-items:center;gap:4px;font-size:12.5px;margin:0;white-space:nowrap;font-weight:600}.pri label input{width:18px;height:18px}.pri.chg{background:#fff6b8}.pri.offr{opacity:.55}
+.savebar{position:sticky;bottom:8px;margin-bottom:10px}
+.pmr{display:flex;align-items:center;gap:8px;background:#faf8f4;border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14px}.pmr b{direction:ltr}.pmr span{flex:1}.pmr button{border:0;border-radius:8px;padding:6px 10px;font-family:inherit;font-weight:700;cursor:pointer;background:#e3dfd5}.pmr .del{background:#c4161c;color:#fff}
+#setup{display:none;background:#fff3cd;color:#6b4e00;border-radius:12px;padding:12px;margin:14px;font-size:14px;line-height:1.8}
+</style></head><body>
+<div class="top"><h1>لوحة طلبات جاد</h1><button id="snd">🔔 الصوت: شغال</button><button id="out" style="display:none">خروج</button></div>
+<div id="setup">⚠️ لسه ما اتضبطش الربط. افتح الملف وغيّر <b>SUPABASE_URL</b> و <b>SUPABASE_ANON_KEY</b> في أول الكود (الخطوات في ملف README).</div>
+<div id="login"><h2>تسجيل الدخول</h2>
+<label>الإيميل</label><input id="em" type="email" autocomplete="username" inputmode="email">
+<label>الباسورد</label><input id="pw" type="password" autocomplete="current-password">
+<button class="btn" id="go">دخول</button><div class="err" id="le"></div></div>
+<div id="app">
+<div class="tabs" id="tabs"><button data-t="orders" class="on">الطلبات</button><button data-t="prices">الأسعار</button><button data-t="settings">الإعدادات والبرومو</button></div>
+<div id="t-orders">
+<div class="banner" id="ban"></div>
+<div class="stats"><div class="st"><b id="s1">0</b><span>طلبات النهاردة</span></div><div class="st"><b id="s2">0</b><span>مبيعات النهاردة (ج)</span></div><div class="st"><b id="s3">0</b><span>جديد</span></div><div class="st"><b id="s4">0</b><span>بيتحضّر / توصيل</span></div></div>
+<div class="flt">
+<select id="fs"><option value="">كل الحالات</option><option value="new">جديد</option><option value="preparing">بيتحضّر</option><option value="delivering">خرج للتوصيل</option><option value="done">اتسلّم</option><option value="cancelled">ملغي</option></select>
+<select id="fb"><option value="">كل الفروع</option></select>
+<input id="fd1" type="date" title="من تاريخ"><input id="fd2" type="date" title="إلى تاريخ">
+<input id="fq" class="full" type="search" placeholder="ابحث بالاسم أو الموبايل أو رقم الطلب…"></div>
+<div id="list"></div><div class="empty" id="emp" style="display:none">مفيش طلبات</div></div>
+<div id="t-prices" style="display:none">
+<div class="box"><b>غيّر السعر أو شيل علامة «متاح» لو الصنف مش موجود، وبعدين اضغط حفظ.</b><div class="msg" id="pmsg"></div></div>
+<input id="pq" class="srchp" type="search" placeholder="ابحث عن صنف…">
+<div id="plist"></div>
+<button class="btn savebar" id="psave">حفظ الأسعار</button>
+</div>
+<div id="t-settings" style="display:none">
+<div class="box"><h3>إعدادات الطلب</h3>
+<label>رسوم التوصيل (جنيه)</label><input id="cf_fee" type="number" inputmode="decimal">
+<label>ضريبة القيمة المضافة (%)</label><input id="cf_vat" type="number" inputmode="decimal">
+<label>الحد الأدنى للطلب (جنيه، 0 = بدون)</label><input id="cf_min" type="number" inputmode="decimal">
+<label>رقم واتساب استقبال الطلبات (بصيغة 201xxxxxxxxx)</label><input id="cf_wa" inputmode="tel">
+<button class="btn" id="cfsave">حفظ الإعدادات</button><div class="msg" id="cfmsg"></div></div>
+<div class="box"><h3>أكواد الخصم (برومو كود)</h3>
+<div id="pmlist"></div>
+<label>كود جديد (حروف إنجليزي وأرقام)</label><input id="pm_code" autocapitalize="off" placeholder="مثال: ramadan10">
+<label>نوع الكود</label><select id="pm_type"><option value="free_delivery">توصيل مجاني</option><option value="percent">خصم نسبة % من الأصناف</option><option value="amount">خصم مبلغ ثابت (جنيه)</option></select>
+<div id="pm_vw"><label>القيمة (نسبة أو جنيه)</label><input id="pm_val" type="number" inputmode="decimal"></div>
+<label>ملاحظة (اختياري)</label><input id="pm_note" placeholder="مثال: عرض رمضان">
+<button class="btn" id="pmadd">إضافة الكود</button><div class="msg" id="pmmsg"></div></div>
+</div>
+</div>
+<script>
+/* ====== اضبط الإعدادات دي مرة واحدة (من Supabase > Project Settings > API) ====== */
+var SUPABASE_URL='https://apcvurppgwscpktdurdt.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwY3Z1cnBwZ3dzY3BrdGR1cmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MzE0NzgsImV4cCI6MjExMDQwNzQ3OH0.mm4Mqs7u9QaXMxq6sShrEU2oRUgxc3tVR40w6X2xgTk';
+/* ================================================================================ */
+var POLL_MS=6000;
+var SK='gad_admin_session_v1';
+var ST={new:'جديد',preparing:'بيتحضّر',delivering:'خرج للتوصيل',done:'اتسلّم',cancelled:'ملغي'};
+var $=function(i){return document.getElementById(i)};
+var sess=null,orders=[],known=null,fresh={},unseen=0,soundOn=true,timer=null,actx=null;
+if(SUPABASE_URL.indexOf('http')!==0||SUPABASE_ANON_KEY.indexOf('PUT_')===0){$('setup').style.display='block';$('login').style.display='none'}
+function loadS(){try{sess=JSON.parse(localStorage.getItem(SK)||'null')}catch(e){sess=null}}
+function saveS(s){sess=s;try{if(s)localStorage.setItem(SK,JSON.stringify(s));else localStorage.removeItem(SK)}catch(e){}}
+function mkSess(j){return {access:j.access_token,refresh:j.refresh_token,exp:Date.now()+((j.expires_in||3600)-60)*1000}}
+function hdr(extra){var h={'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+(sess?sess.access:SUPABASE_ANON_KEY)};for(var k in (extra||{}))h[k]=extra[k];return h}
+function refreshTok(){if(!sess||!sess.refresh)return Promise.resolve(false);
+ return fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:sess.refresh})})
+ .then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.access_token){saveS(mkSess(j));return true}return false}).catch(function(){return false})}
+function api(path,opt,retry){opt=opt||{};opt.headers=hdr(opt.headers);
+ return fetch(SUPABASE_URL+path,opt).then(function(r){
+  if(r.status===401&&!retry){return refreshTok().then(function(ok){if(!ok){logout();throw new Error('auth')}opt.headers=hdr(opt.headers);return api(path,opt,true)})}
+  return r})}
+function login(){var e=$('le');e.textContent='';var em=$('em').value.trim(),pw=$('pw').value;if(!em||!pw){e.textContent='اكتب الإيميل والباسورد';return}
+ $('go').disabled=true;
+ fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:em,password:pw})})
+ .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})}).then(function(x){$('go').disabled=false;
+  if(x.ok&&x.j.access_token){saveS(mkSess(x.j));try{if('Notification' in window&&Notification.permission==='default')Notification.requestPermission()}catch(e){}beep(true);start()}
+  else{e.textContent='الإيميل أو الباسورد غلط'}}).catch(function(){$('go').disabled=false;e.textContent='مفيش اتصال، حاول تاني'})}
+function logout(){saveS(null);clearInterval(timer);known=null;orders=[];$('app').style.display='none';$('out').style.display='none';$('login').style.display='block';document.title='لوحة طلبات جاد'}
+$('go').onclick=login;$('pw').addEventListener('keydown',function(e){if(e.key==='Enter')login()});$('out').onclick=logout;
+$('snd').onclick=function(){soundOn=!soundOn;$('snd').textContent='🔔 الصوت: '+(soundOn?'شغال':'مقفول');if(soundOn)beep(true)};
+function beep(force){if(!soundOn&&!force)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();var t=actx.currentTime;[0,.25,.5].forEach(function(d){var o=actx.createOscillator(),g=actx.createGain();o.frequency.value=d===.5?1100:880;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.35,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.2);o.start(t+d);o.stop(t+d+.22)})}catch(e){}}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function n2(x){x=Math.round(Number(x||0)*100)/100;return x%1===0?String(x):x.toFixed(2)}
+function tm(s){try{return new Date(s).toLocaleString('ar-EG',{dateStyle:'medium',timeStyle:'short'})}catch(e){return s}}
+function waPhone(p){p=String(p||'').replace(/[^0-9]/g,'');if(p.indexOf('0020')===0)p=p.slice(2);if(p.charAt(0)==='0')p='2'+p;else if(p.indexOf('20')!==0)p='20'+p;return p}
+function fetchOrders(){return api('/rest/v1/orders?select=*&order=created_at.desc&limit=500').then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json()})}
+function poll(first){return fetchOrders().then(function(rows){
+  var added=[];if(known===null){known={};rows.forEach(function(o){known[o.id]=1})}else{rows.forEach(function(o){if(!known[o.id]){known[o.id]=1;added.push(o);fresh[o.id]=1}})}
+  orders=rows;if(added.length){onNew(added)}render()}).catch(function(e){if(e&&e.message==='auth')return;$('emp').style.display='block';$('emp').textContent='تعذر تحميل الطلبات، بحاول تاني…'})}
+function onNew(a){unseen+=a.length;beep();var b=$('ban');b.style.display='block';b.textContent='🔔 وصل '+unseen+' طلب جديد — اضغط للعرض';document.title='🔔 ('+unseen+') طلب جديد';
+ try{if('Notification' in window&&Notification.permission==='granted')new Notification('طلب جديد من جاد',{body:(a[0].name||'')+' — '+n2(a[0].total)+' ج'})}catch(e){}}
+$('ban').onclick=function(){unseen=0;$('ban').style.display='none';document.title='لوحة طلبات جاد';window.scrollTo(0,0);setTimeout(function(){fresh={};render()},4000)};
+function dayStart(){var d=new Date();d.setHours(0,0,0,0);return d.getTime()}
+function filtered(){var s=$('fs').value,b=$('fb').value,q=$('fq').value.trim().toLowerCase(),d1=$('fd1').value,d2=$('fd2').value;
+ var t1=d1?new Date(d1+'T00:00:00').getTime():0,t2=d2?new Date(d2+'T23:59:59').getTime():Infinity;
+ return orders.filter(function(o){var t=new Date(o.created_at).getTime();if(s&&o.status!==s)return false;if(b&&o.branch!==b)return false;if(t<t1||t>t2)return false;
+  if(q){var hay=((o.name||'')+' '+(o.phone||'')+' '+(o.order_no||'')).toLowerCase();if(hay.indexOf(q)<0)return false}return true})}
+function render(){
+ var sel=$('fb');var cur=sel.value;var bs={};orders.forEach(function(o){if(o.branch)bs[o.branch]=1});var want=Object.keys(bs).sort();
+ if(sel.options.length-1!==want.length){sel.innerHTML='<option value="">كل الفروع</option>'+want.map(function(x){return '<option>'+esc(x)+'</option>'}).join('');sel.value=cur}
+ var ds=dayStart();var today=orders.filter(function(o){return new Date(o.created_at).getTime()>=ds});
+ $('s1').textContent=today.length;$('s2').textContent=n2(today.filter(function(o){return o.status!=='cancelled'}).reduce(function(a,o){return a+Number(o.total||0)},0));
+ $('s3').textContent=orders.filter(function(o){return o.status==='new'}).length;$('s4').textContent=orders.filter(function(o){return o.status==='preparing'||o.status==='delivering'}).length;
+ var f=filtered();var L=$('list');L.innerHTML='';$('emp').style.display=f.length?'none':'block';$('emp').textContent='مفيش طلبات';
+ f.forEach(function(o){var c=document.createElement('div');c.className='card '+o.status+(fresh[o.id]?' fresh':'');
+  var items=(o.items&&o.items.length?o.items:[]).map(function(i){return '<div>• '+esc(i.q)+' × '+esc(i.n)+(i.l?' ('+esc(i.l)+')':'')+' — '+n2(i.q*i.p)+' ج</div>'+(i.note?'<div class="nt">↳ '+esc(i.note)+'</div>':'')}).join('')||esc(o.items_text||'');
+  var loc=o.location?'<div class="row"><b>الموقع</b><a href="'+esc(o.location)+'" target="_blank" rel="noopener">فتح على الخريطة 📍</a></div>':'';
+  c.innerHTML='<div class="hd"><span class="no">'+esc(o.order_no)+'</span><span class="tm">'+tm(o.created_at)+'</span><span class="chip '+o.status+'">'+ST[o.status]+'</span></div>'+
+  '<div class="row"><b>الاسم</b><span>'+esc(o.name)+'</span></div><div class="row"><b>الموبايل</b><a href="tel:'+esc(o.phone)+'" dir="ltr">'+esc(o.phone)+'</a></div>'+
+  '<div class="row"><b>العنوان</b><span>'+esc(o.address)+'</span></div>'+loc+'<div class="row"><b>الفرع</b><span>'+esc(o.branch||'-')+'</span></div>'+
+  '<div class="items">'+items+'</div>'+(o.notes?'<div class="row"><b>ملاحظات</b><span>'+esc(o.notes)+'</span></div>':'')+
+  '<div class="tt"><span>الأصناف</span><span>'+n2(o.subtotal)+' ج</span></div>'+(Number(o.discount)>0?'<div class="tt"><span>الخصم</span><span>- '+n2(o.discount)+' ج</span></div>':'')+'<div class="tt"><span>التوصيل'+(o.promo?' ('+esc(o.promo)+')':'')+'</span><span>'+(Number(o.delivery)?n2(o.delivery)+' ج':'مجاني')+'</span></div><div class="tt"><span>الضريبة</span><span>'+n2(o.vat)+' ج</span></div><div class="tt g"><span>الإجمالي ('+esc(o.payment||'')+')</span><span>'+n2(o.total)+' ج</span></div>'+
+  '<div class="acts">'+['new','preparing','delivering','done','cancelled'].map(function(k){return '<button data-id="'+o.id+'" data-st="'+k+'" class="'+(o.status===k?'on':'')+'">'+ST[k]+'</button>'}).join('')+
+  '<button class="pr" data-print="'+o.id+'">🖨️ طباعة</button><a class="wa" target="_blank" rel="noopener" href="https://wa.me/'+waPhone(o.phone)+'?text='+encodeURIComponent('أهلاً '+(o.name||'')+'، تم استلام طلبك رقم '+o.order_no+' من جاد وجاري تجهيزه. الإجمالي '+n2(o.total)+' ج. شكراً لاختيارك جاد 🍽️')+'">واتساب للعميل</a></div>';
+  L.appendChild(c)})}
+$('list').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+ if(b.dataset.st){var id=b.dataset.id,st=b.dataset.st;b.disabled=true;
+  api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({status:st})}).then(function(r){if(r.ok){orders.forEach(function(o){if(String(o.id)===id)o.status=st});delete fresh[id];render()}else{b.disabled=false;alert('تعذر تغيير الحالة')}}).catch(function(){b.disabled=false})}
+ else if(b.dataset.print){printOrder(b.dataset.print)}});
+function printOrder(id){var o=orders.filter(function(x){return String(x.id)===String(id)})[0];if(!o)return;
+ var items=(o.items||[]).map(function(i){return '<tr><td>'+esc(i.q)+' × '+esc(i.n)+(i.l?' ('+esc(i.l)+')':'')+(i.note?'<div class="n">↳ '+esc(i.note)+'</div>':'')+'</td><td>'+n2(i.q*i.p)+'</td></tr>'}).join('');
+ var h='<html dir="rtl"><head><meta charset="utf-8"><style>@page{size:80mm auto;margin:3mm}body{font-family:Tahoma,Arial,sans-serif;font-size:13px;width:74mm;margin:0}h2{text-align:center;margin:4px 0}table{width:100%;border-collapse:collapse}td{padding:3px 0;border-bottom:1px dotted #999;vertical-align:top}td:last-child{text-align:left;white-space:nowrap}.n{font-size:11px}.t td{border:0}.b{font-weight:bold;font-size:15px}hr{border:0;border-top:1px dashed #000}</style></head><body><h2>جاد — 16475</h2><div>طلب: <b>'+esc(o.order_no)+'</b></div><div>'+tm(o.created_at)+'</div><hr><div>الاسم: '+esc(o.name)+'</div><div>الموبايل: '+esc(o.phone)+'</div><div>العنوان: '+esc(o.address)+'</div><div>الفرع: '+esc(o.branch||'-')+'</div><hr><table>'+items+'</table><hr><table class="t"><tr><td>الأصناف</td><td>'+n2(o.subtotal)+'</td></tr><tr><td>التوصيل</td><td>'+(Number(o.delivery)?n2(o.delivery):'مجاني')+'</td></tr><tr><td>الضريبة</td><td>'+n2(o.vat)+'</td></tr><tr class="b"><td>الإجمالي</td><td>'+n2(o.total)+'</td></tr></table>'+(o.notes?'<hr><div>ملاحظات: '+esc(o.notes)+'</div>':'')+'<hr><div style="text-align:center">'+esc(o.payment||'')+'</div></body></html>';
+ var f=document.createElement('iframe');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';document.body.appendChild(f);var d=f.contentWindow.document;d.open();d.write(h);d.close();
+ setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print()}catch(e){}setTimeout(function(){document.body.removeChild(f)},2000)},300)}
+['fs','fb','fd1','fd2'].forEach(function(i){$(i).addEventListener('change',render)});$('fq').addEventListener('input',render);
+function start(){$('login').style.display='none';$('app').style.display='block';$('out').style.display='inline-block';poll(true);clearInterval(timer);timer=setInterval(function(){if(!document.hidden||true)poll()},POLL_MS)}
+var MENU=[{"g": "المشويات والوجبات", "s": [{"t": "المشويات على الفحم", "k": "grill", "i": [{"n": "نصف فرخة مشوية", "o": [{"l": "", "p": 170}]}, {"n": "طبق شيش طاووق", "o": [{"l": "", "p": 170}]}, {"n": "طبق ميكس جريل", "o": [{"l": "", "p": 360}]}, {"n": "طبق كفتة مشوية", "o": [{"l": "", "p": 170}]}, {"n": "طبق كباب وكفتة", "o": [{"l": "", "p": 285}]}, {"n": "طبق كباب بتلو", "o": [{"l": "", "p": 390}]}, {"n": "طبق دجاج بانيه", "o": [{"l": "", "p": 170}]}]}, {"t": "الوجبات", "k": "meals", "i": [{"n": "وجبة ربع دجاجة ورك", "o": [{"l": "", "p": 110}]}, {"n": "وجبة ربع دجاجة صدر", "o": [{"l": "", "p": 130}]}, {"n": "وجبة نصف دجاجة مشوية", "o": [{"l": "", "p": 190}]}, {"n": "وجبة شيش طاووق", "o": [{"l": "", "p": 175}]}, {"n": "وجبة دجاج بانيه", "o": [{"l": "", "p": 175}]}, {"n": "وجبة فتة شاورما لحم", "o": [{"l": "", "p": 180}]}, {"n": "وجبة فتة شاورما دجاج", "o": [{"l": "", "p": 180}]}, {"n": "وجبة كفتة", "o": [{"l": "", "p": 175}]}, {"n": "وجبة كباب وكفتة", "o": [{"l": "", "p": 310}]}, {"n": "وجبة ميكس مشاوي", "o": [{"l": "", "p": 180}]}]}, {"t": "وجبات التربو", "k": "turbo", "i": [{"n": "تربو كبدة", "o": [{"l": "", "p": 95}]}, {"n": "تربو سجق", "o": [{"l": "", "p": 120}]}, {"n": "تربو شيش", "o": [{"l": "", "p": 120}]}, {"n": "تربو بانيه", "o": [{"l": "", "p": 120}]}, {"n": "تربو كفتة", "o": [{"l": "", "p": 120}]}, {"n": "تربو ميكس", "o": [{"l": "", "p": 120}]}, {"n": "تربو شاورما", "o": [{"l": "", "p": 150}]}, {"n": "تربو جمبري", "o": [{"l": "", "p": 140}]}]}, {"t": "حواوشي", "k": "haw", "i": [{"n": "حواوشي", "o": [{"l": "", "p": 85}]}, {"n": "حواوشي جبنة موتزريلا", "o": [{"l": "", "p": 100}]}, {"n": "حواوشي جبنة شيدر", "o": [{"l": "", "p": 100}]}]}]}, {"g": "أطباق جاد", "s": [{"t": "أطباق جاد", "k": "gadd", "i": [{"n": "طاجن بامية", "o": [{"l": "", "p": 75}]}, {"n": "ملوخية", "o": [{"l": "", "p": 65}]}, {"n": "كبدة إسكندراني", "o": [{"l": "", "p": 115}]}, {"n": "دجاج بانيه", "o": [{"l": "", "p": 170}]}, {"n": "سمبوسك جبن (3 قطعة)", "o": [{"l": "", "p": 95}]}, {"n": "ورق عنب", "o": [{"l": "", "p": 95}]}, {"n": "شوربة لسان عصفور", "o": [{"l": "", "p": 42}]}, {"n": "شوربة عدس", "o": [{"l": "", "p": 50}]}]}, {"t": "الأرز والمكرونة", "k": "rice", "i": [{"n": "أرز أبيض", "o": [{"l": "", "p": 39}]}, {"n": "أرز كبدة", "o": [{"l": "", "p": 95}]}, {"n": "أرز جمبري", "o": [{"l": "", "p": 140}]}, {"n": "أرز صيادية", "o": [{"l": "", "p": 60}]}, {"n": "دولمة مشكل", "o": [{"l": "", "p": 95}]}, {"n": "مكرونة فرن", "o": [{"l": "", "p": 105}]}, {"n": "مكرونة بولونيز", "o": [{"l": "", "p": 105}]}, {"n": "مكرونة نجرسكو", "o": [{"l": "", "p": 140}]}, {"n": "أرز برياني سادة", "o": [{"l": "", "p": 55}]}, {"n": "إسباجتي صلصة", "o": [{"l": "", "p": 55}]}]}]}, {"g": "شاورما", "s": [{"t": "ساندوتشات الشاورما", "k": "shw", "i": [{"n": "ساندوتش شاورما لحم", "o": [{"l": "كيزر جامبو", "p": 95}, {"l": "وسط", "p": 95}, {"l": "فرنساوي", "p": 105}, {"l": "سوري", "p": 115}]}, {"n": "ساندوتش شاورما فراخ", "o": [{"l": "كيزر جامبو", "p": 95}, {"l": "وسط", "p": 95}, {"l": "فرنساوي", "p": 105}, {"l": "سوري", "p": 115}]}]}, {"t": "فتة الشاورما", "k": "fatta", "i": [{"n": "فتة شاورما لحم / ميكس", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 155}]}, {"n": "فتة شاورما فراخ", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 155}]}]}]}, {"g": "ساندوتشات", "s": [{"t": "ساندوتشات اللحوم", "k": "beef", "i": [{"n": "كفتة", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "كبدة", "o": [{"l": "شامي", "p": 62}, {"l": "وسط", "p": 58}, {"l": "فرنساوي", "p": 65}]}, {"n": "هوت دوج", "o": [{"l": "فرنساوي", "p": 72}]}, {"n": "بيف برجر", "o": [{"l": "كيزر جامبو", "p": 68}]}, {"n": "بيف برجر جبنة", "o": [{"l": "كيزر جامبو", "p": 80}]}, {"n": "بيف برجر بيض", "o": [{"l": "كيزر جامبو", "p": 80}]}, {"n": "بيف برجر ميكس", "o": [{"l": "كيزر جامبو", "p": 86}]}]}, {"t": "ساندوتشات الدجاج", "k": "chick", "i": [{"n": "فراخ بانيه بالجبنة الشيدر", "o": [{"l": "وسط", "p": 77}, {"l": "فرنساوي", "p": 95}]}, {"n": "شيش طاووق", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "فاهيتا فراخ", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "فراخ كرسبي بالجبنة الشيدر", "o": [{"l": "وسط", "p": 77}, {"l": "فرنساوي", "p": 95}]}, {"n": "فاهيتا اسبنش", "o": [{"l": "فرنساوي", "p": 100}]}]}, {"t": "ساندوتشات الأسماك", "k": "sea", "i": [{"n": "جمبري بانيه", "o": [{"l": "فرنساوي", "p": 145}]}, {"n": "جمبري فاهيتا", "o": [{"l": "فرنساوي", "p": 145}]}]}, {"t": "ساندوتشات رول", "k": "roll", "i": [{"n": "فلافل", "o": [{"l": "", "p": 36}]}, {"n": "أومليت", "o": [{"l": "", "p": 46}]}, {"n": "أومليت هوت دوج", "o": [{"l": "", "p": 78}]}, {"n": "بطاطس", "o": [{"l": "", "p": 54}]}, {"n": "بطاطس موتزريلا", "o": [{"l": "", "p": 75}]}, {"n": "بطاطس رومي", "o": [{"l": "", "p": 75}]}, {"n": "بطاطس شيدر", "o": [{"l": "", "p": 66}]}, {"n": "كفتة", "o": [{"l": "", "p": 100}]}, {"n": "طاووق", "o": [{"l": "", "p": 100}]}, {"n": "بانيه", "o": [{"l": "", "p": 100}]}, {"n": "كرسبي", "o": [{"l": "", "p": 100}]}, {"n": "كبدة", "o": [{"l": "", "p": 85}]}, {"n": "فاهيتا إسبانيش", "o": [{"l": "", "p": 110}]}]}]}, {"g": "شرقي", "s": [{"t": "ساندوتشات الفول", "k": "ful", "i": [{"n": "فول بالخلطة", "o": [{"l": "", "p": 15}]}, {"n": "فول ليمون معصفر / فول إسكندراني", "o": [{"l": "", "p": 22}]}, {"n": "فول زيت زيتون", "o": [{"l": "", "p": 23}]}, {"n": "فول زيت حار", "o": [{"l": "", "p": 21}]}, {"n": "فول صلصة", "o": [{"l": "", "p": 21}]}, {"n": "فول حمص", "o": [{"l": "", "p": 25}]}, {"n": "فول بيض أومليت", "o": [{"l": "", "p": 26}]}, {"n": "فول بيض مسلوق", "o": [{"l": "", "p": 25}]}, {"n": "فول سجق", "o": [{"l": "", "p": 46}]}, {"n": "فول ديناميت خبز فرنساوي", "o": [{"l": "", "p": 37}]}]}, {"t": "ساندوتشات الفلافل", "k": "fal", "i": [{"n": "فلافل", "o": [{"l": "", "p": 15}]}, {"n": "فلافل محشية", "o": [{"l": "", "p": 19}]}, {"n": "فلافل كيري", "o": [{"l": "", "p": 28}]}, {"n": "فلافل ليمون معصفر", "o": [{"l": "", "p": 22}]}, {"n": "فلافل حمص", "o": [{"l": "", "p": 25}]}, {"n": "فلافل بيض أومليت", "o": [{"l": "", "p": 26}]}, {"n": "فلافل بيض مسلوق", "o": [{"l": "", "p": 25}]}, {"n": "فلافل ديناميت خبز فرنساوي", "o": [{"l": "", "p": 37}]}]}, {"t": "ساندوتشات البيض", "k": "egg", "i": [{"n": "بيض مسلوق", "o": [{"l": "شامي", "p": 21}]}, {"n": "بيض أومليت", "o": [{"l": "شامي", "p": 23}]}, {"n": "بيض بسطرمة", "o": [{"l": "شامي", "p": 36}]}, {"n": "عجة", "o": [{"l": "شامي", "p": 31}]}, {"n": "شكشوكة", "o": [{"l": "شامي", "p": 29}]}, {"n": "أومليت بيتزا", "o": [{"l": "شامي", "p": 36}]}, {"n": "أومليت شيدر", "o": [{"l": "فرنساوي", "p": 39}, {"l": "شامي", "p": 35}]}, {"n": "أومليت رومي", "o": [{"l": "فرنساوي", "p": 50}, {"l": "شامي", "p": 43}]}]}, {"t": "ساندوتشات متنوعة", "k": "misc", "i": [{"n": "جبنة بيضاء بالطماطم", "o": [{"l": "شامي", "p": 24}]}, {"n": "مسقعة /باذنجان مقلي", "o": [{"l": "شامي", "p": 24}]}, {"n": "سجق", "o": [{"l": "فرنساوي", "p": 66}]}, {"n": "بابا غنوج", "o": [{"l": "شامي", "p": 26}]}, {"n": "حمص", "o": [{"l": "شامي", "p": 27}]}, {"n": "جبنة رومي مقلية", "o": [{"l": "فرنساوي", "p": 45}, {"l": "شامي", "p": 39}]}, {"n": "بطاطس جبنة رومي", "o": [{"l": "فرنساوي", "p": 50}, {"l": "شامي", "p": 44}]}, {"n": "بطاطس شيدر", "o": [{"l": "فرنساوي", "p": 44}, {"l": "شامي", "p": 40}]}]}, {"t": "ساندوتشات البطاطس", "k": "pot", "i": [{"n": "بطاطس بوم فريت", "o": [{"l": "فرنساوي", "p": 29}, {"l": "شامي", "p": 25}]}, {"n": "بطاطس شيبسي", "o": [{"l": "شامي", "p": 22}]}, {"n": "بوم فريت بالبيض المسلوق", "o": [{"l": "شامي", "p": 35}]}, {"n": "بوم فريت بالبيض الأومليت", "o": [{"l": "شامي", "p": 36}]}, {"n": "بطاطس كاتشب ومايونيز", "o": [{"l": "شامي", "p": 30}]}, {"n": "بطاطس / باباغنوج / فلافل / باذنجان", "o": [{"l": "شامي", "p": 31}]}, {"n": "بيوريه سمن بلدي", "o": [{"l": "شامي", "p": 22}]}, {"n": "بيوريه بيض مسلوق", "o": [{"l": "شامي", "p": 32}]}, {"n": "بيوريه بيض أومليت", "o": [{"l": "شامي", "p": 33}]}, {"n": "بطاطس كول سلو", "o": [{"l": "شامي", "p": 39}]}, {"n": "بطاطس شيبسي/بوم فريت بالجبنة الرومي المبشورة", "o": [{"l": "شامي", "p": 42}]}]}]}, {"g": "علب شرقية", "s": [{"t": "علب شرقية", "k": "box", "i": [{"n": "علبة باذنجان مقلي", "o": [{"l": "", "p": 28}]}, {"n": "قرص فلافل بالسمسم", "o": [{"l": "", "p": 9}]}, {"n": "قرص فلافل محشية", "o": [{"l": "", "p": 10}]}, {"n": "طبق أومليت", "o": [{"l": "", "p": 40}]}, {"n": "بيض مسلوق", "o": [{"l": "", "p": 14}]}, {"n": "باكت بطاطس", "o": [{"l": "", "p": 35}]}, {"n": "جبنة بالطماطم", "o": [{"l": "", "p": 48}]}, {"n": "طبق بيض بالبسطرمة", "o": [{"l": "", "p": 70}]}, {"n": "علبة فول قدرة / سادة", "o": [{"l": "", "p": 40}]}, {"n": "علبة فول خلطة", "o": [{"l": "", "p": 44}]}, {"n": "علبة فول بالصلصة / بالزيت الحار", "o": [{"l": "", "p": 47}]}, {"n": "علبة فول سجق", "o": [{"l": "", "p": 82}]}, {"n": "علبة فول زيت زيتون", "o": [{"l": "", "p": 51}]}, {"n": "فول إسكندراني", "o": [{"l": "", "p": 50}]}, {"n": "علبة مسقعة", "o": [{"l": "", "p": 50}]}, {"n": "علبة بطاطس بيوريه", "o": [{"l": "", "p": 49}]}, {"n": "علبة عجينة طعمية", "o": [{"l": "", "p": 35}]}]}]}, {"g": "بيتزا وفطائر وكريب", "s": [{"t": "البيتزا", "k": "pizza", "i": [{"n": "بيتزا مارجريتا", "o": [{"l": "كبير", "p": 120}, {"l": "وسط", "p": 100}]}, {"n": "سجق", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "هوت دوج", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "تونة", "o": [{"l": "كبير", "p": 185}]}, {"n": "مشروم", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "شاورما لحم", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "شاورما فراخ", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "ميكس جبن", "o": [{"l": "كبير", "p": 180}, {"l": "وسط", "p": 145}]}, {"n": "مشكل لحوم", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 150}]}, {"n": "بسطرمة", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "بسطرمة كيري", "o": [{"l": "كبير", "p": 200}, {"l": "وسط", "p": 165}]}, {"n": "جمبري", "o": [{"l": "كبير", "p": 210}, {"l": "وسط", "p": 165}]}]}, {"t": "الفطائر الشرقية والصواريخ", "k": "fat", "i": [{"n": "فطيرة سكر", "o": [{"l": "فطائر", "p": 90}]}, {"n": "فطيرة كاستر", "o": [{"l": "فطائر", "p": 110}]}, {"n": "فطيرة نوتيلا", "o": [{"l": "فطائر", "p": 180}]}, {"n": "فطيرة نوتيلا مكسرات", "o": [{"l": "فطائر", "p": 240}]}, {"n": "فطيرة مكسرات", "o": [{"l": "فطائر", "p": 210}]}, {"n": "فطيرة عسل وقشطة", "o": [{"l": "فطائر", "p": 185}]}, {"n": "فطيرة مكسرات عسل وقشطة", "o": [{"l": "فطائر", "p": 245}]}, {"n": "فطيرة مشلتت بالسمن البلدي", "o": [{"l": "فطائر", "p": 210}]}, {"n": "فطيرة زيتون وخضروات", "o": [{"l": "صواريخ", "p": 135}, {"l": "فطائر", "p": 135}]}, {"n": "فطيرة مشروم / مفروم", "o": [{"l": "صواريخ", "p": 185}, {"l": "فطائر", "p": 185}]}, {"n": "فطيرة هوت دوج / جبنة رومي / سجق", "o": [{"l": "صواريخ", "p": 190}, {"l": "فطائر", "p": 190}]}, {"n": "فطيرة شاورما لحم / بسطرمة / شاورما فراخ", "o": [{"l": "صواريخ", "p": 205}, {"l": "فطائر", "p": 205}]}, {"n": "فطيرة مشكل لحوم", "o": [{"l": "صواريخ", "p": 200}, {"l": "فطائر", "p": 200}]}, {"n": "فطيرة تونة", "o": [{"l": "صواريخ", "p": 195}, {"l": "فطائر", "p": 195}]}, {"n": "فطيرة مشكل جبن", "o": [{"l": "صواريخ", "p": 190}, {"l": "فطائر", "p": 190}]}, {"n": "فطيرة سوبر جاد", "o": [{"l": "صواريخ", "p": 195}, {"l": "فطائر", "p": 195}]}, {"n": "فطيرة بسطرمة كيري", "o": [{"l": "صواريخ", "p": 215}, {"l": "فطائر", "p": 215}]}]}, {"t": "الكريب", "k": "crepe", "i": [{"n": "كريب برجر", "o": [{"l": "", "p": 110}]}, {"n": "كريب هوت دوج مكسيكان", "o": [{"l": "", "p": 110}]}, {"n": "كريب كفتة مشوية", "o": [{"l": "", "p": 135}]}, {"n": "كريب سجق", "o": [{"l": "", "p": 135}]}, {"n": "كريب بسطرمة كيري", "o": [{"l": "", "p": 150}]}, {"n": "كريب شاورما لحمة", "o": [{"l": "", "p": 155}]}, {"n": "كريب شاورما فراخ", "o": [{"l": "", "p": 155}]}, {"n": "كريب فراخ بانيه", "o": [{"l": "", "p": 135}]}, {"n": "كريب سوبر كرانشي", "o": [{"l": "", "p": 140}]}, {"n": "كريب طاووق", "o": [{"l": "", "p": 135}]}, {"n": "كريب فاهيتا فراخ", "o": [{"l": "", "p": 135}]}, {"n": "كريب تشيكن باربيكيو", "o": [{"l": "", "p": 135}]}, {"n": "كريب بطاطس", "o": [{"l": "", "p": 85}]}, {"n": "كريب ميكس تشيز", "o": [{"l": "", "p": 130}]}, {"n": "كريب نوتيلا نيو كريم", "o": [{"l": "", "p": 130}]}]}]}, {"g": "سلطات ومشروبات", "s": [{"t": "السلطات", "k": "salad", "i": [{"n": "حمص", "o": [{"l": "", "p": 42}]}, {"n": "بابا غنوج", "o": [{"l": "", "p": 40}]}, {"n": "باذنجان مخلل", "o": [{"l": "", "p": 28}]}, {"n": "فلفل مقلي", "o": [{"l": "", "p": 27}]}, {"n": "مخلل لوكس", "o": [{"l": "", "p": 20}]}, {"n": "طحينة", "o": [{"l": "", "p": 35}]}, {"n": "سلطة خضرة", "o": [{"l": "", "p": 27}]}, {"n": "كول سلو", "o": [{"l": "", "p": 40}]}, {"n": "ثومية", "o": [{"l": "", "p": 40}]}, {"n": "طماطم متبلة", "o": [{"l": "", "p": 33}]}]}, {"t": "المشروبات", "k": "drinks", "i": [{"n": "مانجو", "o": [{"l": "", "p": 65}]}, {"n": "ليمون", "o": [{"l": "", "p": 45}]}, {"n": "ليمون بالنعناع", "o": [{"l": "", "p": 45}]}, {"n": "مياه صغيرة", "o": [{"l": "", "p": 10}]}, {"n": "كانز", "o": [{"l": "", "p": 20}]}]}]}];
+var tabsEl=$('tabs');tabsEl.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call(tabsEl.children,function(x){x.classList.toggle('on',x===b)});['orders','prices','settings'].forEach(function(t){$('t-'+t).style.display=(t===b.dataset.t)?'block':'none'});if(b.dataset.t==='prices')openPrices();if(b.dataset.t==='settings')openSettings()});
+function msg(id,t,bad){var e=$(id);e.className='msg'+(bad?' bad':'');e.textContent=t}
+function getSettings(){return api('/rest/v1/settings?select=key,value').then(function(r){if(!r.ok)throw new Error('http');return r.json()}).then(function(rows){var o={};rows.forEach(function(x){o[x.key]=x.value});return o})}
+function putSetting(key,value){return api('/rest/v1/settings?on_conflict=key',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify([{key:key,value:value,updated_at:new Date().toISOString()}])})}
+var pDefaults={};
+function openPrices(){msg('pmsg','');getSettings().then(function(st){buildPrices(st.prices||{})}).catch(function(){buildPrices({});msg('pmsg','تعذر تحميل الأسعار الحالية — ظاهرة الأسعار الأصلية',true)})}
+function buildPrices(pr){var L=$('plist');L.innerHTML='';var ov=pr.overrides||{},off=pr.off||[];
+ MENU.forEach(function(g){var gh=document.createElement('div');gh.className='pg2';gh.textContent=g.g;L.appendChild(gh);
+  g.s.forEach(function(s){var sh=document.createElement('div');sh.className='psec';sh.textContent=s.t;L.appendChild(sh);
+   s.i.forEach(function(it){it.o.forEach(function(o){var key=it.n+'|'+(o.l||'');pDefaults[key]=o.p;var r=document.createElement('div');r.className='pri';r.dataset.k=key;r.dataset.n=it.n+' '+s.t;
+    var cur=ov[key]!==undefined?ov[key]:o.p;var avail=off.indexOf(key)<0;
+    r.innerHTML='<span class="pn">'+esc(it.n)+(o.l?' <small style="color:#777">('+esc(o.l)+')</small>':'')+'</span><input type="number" inputmode="decimal" step="0.5" value="'+cur+'"><label><input type="checkbox" '+(avail?'checked':'')+'> متاح</label>';
+    L.appendChild(r);mk(r)})})})})}
+function mk(r){var inp=r.querySelector('input[type=number]'),cb=r.querySelector('input[type=checkbox]');var k=r.dataset.k;
+ var ch=(+inp.value!==pDefaults[k])||!cb.checked;r.classList.toggle('chg',ch);r.classList.toggle('offr',!cb.checked)}
+$('plist').addEventListener('input',function(e){var r=e.target.closest('.pri');if(r)mk(r)});$('plist').addEventListener('change',function(e){var r=e.target.closest('.pri');if(r)mk(r)});
+$('pq').addEventListener('input',function(){var q=$('pq').value.trim();[].forEach.call($('plist').querySelectorAll('.pri'),function(r){r.style.display=(!q||r.dataset.n.indexOf(q)>-1)?'':'none'})});
+$('psave').onclick=function(){var ov={},off=[];[].forEach.call($('plist').querySelectorAll('.pri'),function(r){var k=r.dataset.k,v=+r.querySelector('input[type=number]').value,cb=r.querySelector('input[type=checkbox]').checked;
+  if(!isNaN(v)&&v!==pDefaults[k]&&v>=0)ov[k]=v;if(!cb)off.push(k)});
+ msg('pmsg','جاري الحفظ…');putSetting('prices',{overrides:ov,off:off}).then(function(r){if(r.ok)msg('pmsg','✓ تم حفظ الأسعار ('+Object.keys(ov).length+' سعر معدّل، '+off.length+' صنف غير متاح). بتظهر للعملاء فورًا.');else msg('pmsg','تعذر الحفظ (كود '+r.status+')',true)}).catch(function(){msg('pmsg','تعذر الحفظ',true)})};
+function openSettings(){msg('cfmsg','');msg('pmmsg','');getSettings().then(function(st){var c=st.config||{};$('cf_fee').value=(c.fee!==undefined?c.fee:30);$('cf_vat').value=(c.vat!==undefined?c.vat:14);$('cf_min').value=(c.min!==undefined?c.min:0);$('cf_wa').value=c.wa||'201022336696'}).catch(function(){});loadPromos()}
+$('cfsave').onclick=function(){var v={fee:+$('cf_fee').value||0,vat:+$('cf_vat').value||0,min:+$('cf_min').value||0,wa:($('cf_wa').value||'').replace(/[^0-9]/g,'')};
+ if(!v.wa){msg('cfmsg','اكتب رقم الواتساب',true);return}
+ putSetting('config',v).then(function(r){if(r.ok)msg('cfmsg','✓ تم حفظ الإعدادات، بتظهر للعملاء فورًا.');else msg('cfmsg','تعذر الحفظ (كود '+r.status+')',true)}).catch(function(){msg('cfmsg','تعذر الحفظ',true)})};
+var PT={free_delivery:'توصيل مجاني',percent:'خصم %',amount:'خصم مبلغ'};
+function loadPromos(){api('/rest/v1/promos?select=*&order=code').then(function(r){return r.ok?r.json():[]}).then(function(rows){var L=$('pmlist');L.innerHTML='';if(!rows.length)L.innerHTML='<div class="empty" style="padding:10px">مفيش أكواد</div>';
+ rows.forEach(function(p){var d=document.createElement('div');d.className='pmr';d.innerHTML='<b>'+esc(p.code)+'</b><span>'+PT[p.type]+(p.type==='free_delivery'?'':' '+n2(p.value))+(p.note?' — '+esc(p.note):'')+'</span><button data-act="tg" data-code="'+esc(p.code)+'" data-on="'+(p.active?1:0)+'">'+(p.active?'إيقاف':'تفعيل')+'</button><button class="del" data-act="del" data-code="'+esc(p.code)+'">حذف</button>';if(!p.active)d.style.opacity='.55';L.appendChild(d)})}).catch(function(){})}
+$('pmlist').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var code=b.dataset.code;
+ if(b.dataset.act==='del'){if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='تأكيد الحذف؟';setTimeout(function(){b.dataset.arm='';b.textContent='حذف'},3000);return}
+  api('/rest/v1/promos?code=eq.'+encodeURIComponent(code),{method:'DELETE',headers:{'Prefer':'return=minimal'}}).then(function(r){if(r.ok){msg('pmmsg','تم حذف الكود');loadPromos()}else msg('pmmsg','تعذر الحذف',true)})}
+ else if(b.dataset.act==='tg'){api('/rest/v1/promos?code=eq.'+encodeURIComponent(code),{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({active:b.dataset.on!=='1'})}).then(function(r){if(r.ok)loadPromos();else msg('pmmsg','تعذر التعديل',true)})}});
+$('pm_type').onchange=function(){$('pm_vw').style.display=$('pm_type').value==='free_delivery'?'none':'block'};$('pm_vw').style.display='none';
+$('pmadd').onclick=function(){var code=$('pm_code').value.trim().toLowerCase();if(!/^[a-z0-9_-]{2,40}$/.test(code)){msg('pmmsg','الكود حروف إنجليزي وأرقام بس (من 2 لـ 40)',true);return}
+ var t=$('pm_type').value,val=+$('pm_val').value||0;if(t!=='free_delivery'&&!(val>0)){msg('pmmsg','اكتب قيمة الخصم',true);return}if(t==='percent'&&val>100){msg('pmmsg','النسبة لازم تكون أقل من 100',true);return}
+ api('/rest/v1/promos',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({code:code,type:t,value:t==='free_delivery'?0:val,active:true,note:$('pm_note').value.trim()||null})}).then(function(r){if(r.ok){msg('pmmsg','✓ تم إضافة الكود '+code);$('pm_code').value='';$('pm_val').value='';$('pm_note').value='';loadPromos()}else if(r.status===409)msg('pmmsg','الكود موجود قبل كده',true);else msg('pmmsg','تعذر الإضافة (كود '+r.status+')',true)}).catch(function(){msg('pmmsg','تعذر الإضافة',true)})};
+
+loadS();
+if($('setup').style.display!=='block'){
+ if(sess&&sess.access){ if(sess.exp>Date.now()){start()}else{refreshTok().then(function(ok){if(ok)start()})} }
+}
+</script></body></html>
