@@ -270,8 +270,8 @@ function record(){
  return redeemNow().then(function(ok){
   if(redeemUsed&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh();setRec('⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني','#a92318');return 'redeem-fail'}
   return fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:authHdr({'Prefer':'return=minimal'}),body:JSON.stringify(row),keepalive:true})
-   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');lastChatNo=row.order_no;lastChatPhone=row.phone;document.getElementById('chatbtn').style.display='';if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);return true}else{setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#a92318');return false}})
-   .catch(function(){setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#a92318');return false});
+   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');lastChatNo=row.order_no;lastChatPhone=row.phone;document.getElementById('chatbtn').style.display='';if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);return true}return r.text().then(function(t){setRec('⚠️ تعذر تسجيل الطلب عندنا ('+r.status+'): '+t.slice(0,200),'#a92318');return false})})
+   .catch(function(e){setRec('⚠️ تعذر تسجيل الطلب عندنا — خطأ شبكة: '+(e&&e.message?e.message:e),'#a92318');return false});
  })}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
 snd.addEventListener('click',function(ev){ev.preventDefault();if(!valid())return;var sg=sig();if(lastSig&&lastSig!==sg){curNo=null;redeemedForNo=null}refresh();record().then(function(ok){lastSig=sg;showFb();if(ok!=='redeem-fail')window.open(snd.href,'_blank')})});
