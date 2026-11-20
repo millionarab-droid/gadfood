@@ -5,7 +5,8 @@
 :root{--red:#e8112d;--blue:#0053aa;--ink:#1d2433;--bg:#f2efe9}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-.top{background:var(--red);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20}
+.top{background:var(--red);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20;border-bottom:5px solid var(--blue)}
+.top .lg{font-family:"Rakkas","Tajawal",serif;font-size:24px;border:2px solid #fff;border-radius:12px;padding:2px 12px}
 .top h1{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:26px;margin:0;flex:1}
 .top button{border:0;border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:700;background:rgba(255,255,255,.22);color:#fff;cursor:pointer;font-size:13.5px}
 #login{max-width:380px;margin:60px auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 2px 14px rgba(0,0,0,.12)}
@@ -51,7 +52,7 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 .pmr{display:flex;align-items:center;gap:8px;background:#faf8f4;border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14px}.pmr b{direction:ltr}.pmr span{flex:1}.pmr button{border:0;border-radius:8px;padding:6px 10px;font-family:inherit;font-weight:700;cursor:pointer;background:#e3dfd5}.pmr .del{background:#c4161c;color:#fff}
 #setup{display:none;background:#fff3cd;color:#6b4e00;border-radius:12px;padding:12px;margin:14px;font-size:14px;line-height:1.8}
 </style></head><body>
-<div class="top"><h1>لوحة طلبات جاد</h1><button id="snd">🔔 الصوت: شغال</button><button id="out" style="display:none">خروج</button></div>
+<div class="top"><span class="lg">جاد • GAD</span><h1>لوحة طلبات جاد</h1><button id="snd">🔔 الصوت: شغال</button><button id="out" style="display:none">خروج</button></div>
 <div id="setup">⚠️ لسه ما اتضبطش الربط. افتح الملف وغيّر <b>SUPABASE_URL</b> و <b>SUPABASE_ANON_KEY</b> في أول الكود (الخطوات في ملف README).</div>
 <div id="login"><h2>تسجيل الدخول</h2>
 <label>الإيميل</label><input id="em" type="email" autocomplete="username" inputmode="email">
