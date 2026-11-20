@@ -55,12 +55,24 @@ textarea{min-height:80px;resize:vertical}
 .alt.g{background:#1fa855}
 #prev{width:100%;height:170px;font-size:14px;margin-top:8px;display:none}
 .note{font-size:13px;color:#666;margin-top:8px;line-height:1.7}
+#acct{background:#fff;border-bottom:1px solid #e5e1d8;padding:8px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+#acct .who{flex:1;font-weight:700}
+#acct .pts{background:#fff3cd;border-radius:12px;padding:3px 10px;font-weight:800;color:#7a4b00}
+#acct button{border:0;border-radius:12px;padding:8px 12px;font-family:inherit;font-weight:700;font-size:13.5px;background:var(--blue);color:#fff;cursor:pointer}
+#acct button.g{background:#fff;color:#333;border:1px solid #ccc}
+#osheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
+#osheet .in{max-width:720px;margin:0 auto;padding:12px 12px 60px}
+.ocard{background:#fff;border-radius:14px;padding:11px 12px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.ocard .oh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ocard button{border:0;border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:700;font-size:13.5px;background:var(--blue);color:#fff;cursor:pointer;margin-top:8px}
+.loy{background:#fff8e1;border:1px dashed #e0a100;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.8}
 .empty{text-align:center;color:#888;padding:40px 10px}
 #fb{display:none;margin-top:12px}
 #fb .w{color:#7a4b00;background:#fff3cd;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.7}
 </style></head><body>
 <header><h1>اطلب من جاد</h1><p>أكل لكل الناس • للطلب والتوصيل <b dir="ltr">16475</b></p></header>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
+<div id="acct"><span class="who" id="acctWho">اطلب من غير تسجيل، أو سجّل بجوجل عشان بياناتك وأوردراتك ونقاطك تتحفظ</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button></div>
 <div class="tabs" id="tabs"></div>
 <input class="srch" id="q" type="search" placeholder="ابحث عن صنف…">
 <div class="wrap" id="menu"></div>
@@ -70,6 +82,7 @@ textarea{min-height:80px;resize:vertical}
 <h3>طلبك</h3><div id="lines"></div>
 <label>برومو كود (لو عندك)</label>
 <div class="promo"><input id="pc" placeholder="اكتب الكود" autocapitalize="off" autocomplete="off"><button id="pa" type="button">تطبيق</button></div><div class="pm" id="pm"></div>
+<div class="loy" id="loyBox" style="display:none"><b>⭐ نقاط الولاء</b><div id="loyInfo"></div><div class="promo" style="margin-top:6px"><input id="redeemIn" type="number" inputmode="numeric" placeholder="عدد النقاط اللي عايز تستبدلها"><button id="redeemBtn" type="button">استخدام النقاط</button></div><div class="pm" id="loym"></div></div>
 <div class="tot" id="tot"></div>
 <label>الاسم</label><input id="nm" autocomplete="name" placeholder="اسمك">
 <label>رقم الموبايل</label><input id="ph" type="tel" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx">
@@ -88,6 +101,7 @@ textarea{min-height:80px;resize:vertical}
 <textarea id="prev" readonly></textarea>
 <p class="note">بعد الضغط هيفتح واتساب برسالة جاهزة فيها طلبك وعنوانك، اضغط إرسال هناك علشان الطلب يوصل للمطعم.</p>
 </div></div>
+<div id="osheet"><div class="in"><button class="back" id="oback">→ رجوع للمنيو</button><h3>أوردراتي</h3><div id="olist"></div></div></div>
 <script>
 var SUPABASE_URL='https://apcvurppgwscpktdurdt.supabase.co';var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwY3Z1cnBwZ3dzY3BrdGR1cmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MzE0NzgsImV4cCI6MjExMDQwNzQ3OH0.mm4Mqs7u9QaXMxq6sShrEU2oRUgxc3tVR40w6X2xgTk';
 var DB_ON=SUPABASE_URL.indexOf('http')===0&&SUPABASE_ANON_KEY.indexOf('PUT_')!==0;
@@ -101,12 +115,30 @@ var flat={};
 MENU.forEach(function(g,gi){g.s.forEach(function(s,si){s.i.forEach(function(it,ii){it.o.forEach(function(o,oi){flat[gi+'.'+si+'.'+ii+'.'+oi]={name:it.n,label:o.l,price:o.p,sec:s.t,item:gi+'.'+si+'.'+ii}})})})});
 Object.keys(cart).forEach(function(k){if(!flat[k])delete cart[k]});
 var promo=null;
+var LOYAL={earn:1,rate:10,min:100};
+var custSess=null,custUser=null,profile=null,redeemUsed=0,redeemDisc=0,redeemedForNo=null;
+var CKEY='gad_cust_session_v1';
+try{custSess=JSON.parse(localStorage.getItem(CKEY)||'null')}catch(e){custSess=null}
+function authHdr(extra){var h={'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'};if(custSess&&custSess.access)h['Authorization']='Bearer '+custSess.access;else h['Authorization']='Bearer '+SUPABASE_ANON_KEY;for(var k in (extra||{}))h[k]=extra[k];return h}
+function saveCustSess(s){custSess=s;try{if(s)localStorage.setItem(CKEY,JSON.stringify(s));else localStorage.removeItem(CKEY)}catch(e){}}
+function loginGoogle(){var r=location.href.split('#')[0];location.href=SUPABASE_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(r)}
+function logoutGoogle(){saveCustSess(null);custUser=null;profile=null;redeemUsed=0;redeemDisc=0;redeemedForNo=null;updateAcct();location.hash=''}
+function getCustUser(){if(!custSess||!custSess.access)return Promise.resolve(null);return fetch(SUPABASE_URL+'/auth/v1/user',{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+custSess.access}}).then(function(r){return r.ok?r.json():null}).then(function(u){custUser=u&&u.id?u:null;return custUser}).catch(function(){return null})}
+function loadProfile(){if(!custUser)return Promise.resolve(null);return fetch(SUPABASE_URL+'/rest/v1/profiles?id=eq.'+custUser.id,{headers:authHdr()}).then(function(r){return r.ok?r.json():[]}).then(function(a){profile=(a&&a[0])||null;if(!profile){var nm=(custUser.user_metadata&&custUser.user_metadata.full_name)||'';profile={id:custUser.id,email:custUser.email,name:nm,points:0};fetch(SUPABASE_URL+'/rest/v1/profiles',{method:'POST',headers:authHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify([profile])}).catch(function(){})}if(profile){if(profile.name&&!document.getElementById('nm').value)document.getElementById('nm').value=profile.name;if(profile.phone)document.getElementById('ph').value=profile.phone;if(profile.address)document.getElementById('ad').value=profile.address;if(profile.branch)document.getElementById('br').value=profile.branch}updateAcct();return profile}).catch(function(){return null})}
+function saveProfile(){if(!custUser||!profile)return;var p={id:custUser.id,email:custUser.email,name:document.getElementById('nm').value.trim(),phone:document.getElementById('ph').value.trim(),address:document.getElementById('ad').value.trim(),branch:document.getElementById('br').value};fetch(SUPABASE_URL+'/rest/v1/profiles?on_conflict=id',{method:'POST',headers:authHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify([p])}).catch(function(){})}
+function updateAcct(){var w=document.getElementById('acctWho'),pt=document.getElementById('acctPts'),lb=document.getElementById('loyBox');if(custUser){var nm=(profile&&profile.name)||(custUser.user_metadata&&custUser.user_metadata.full_name)||custUser.email;w.textContent='أهلاً '+nm;pt.style.display='';pt.textContent='⭐ نقاطك: '+(profile?profile.points:0);document.getElementById('glogin').style.display='none';document.getElementById('myord').style.display='';document.getElementById('glogout').style.display='';lb.style.display='';document.getElementById('loyInfo').textContent='معاك '+(profile?profile.points:0)+' نقطة. كل جنيه بتدفعه = نقطة، وكل '+LOYAL.rate+' نقاط = 1 جنيه خصم (أقل استبدال '+LOYAL.min+' نقطة).'}else{w.textContent='اطلب من غير تسجيل، أو سجّل بجوجل عشان بياناتك وأوردراتك ونقاطك تتحفظ';pt.style.display='none';document.getElementById('glogin').style.display='';document.getElementById('myord').style.display='none';document.getElementById('glogout').style.display='none';lb.style.display='none'}}
+function initAuth(){if(location.hash&&location.hash.indexOf('access_token=')>-1){var h={};location.hash.slice(1).split('&').forEach(function(p){var kv=p.split('=');h[kv[0]]=decodeURIComponent(kv[1]||'')});if(h.access_token){saveCustSess({access:h.access_token,refresh:h.refresh_token||'',exp:Date.now()+((+h.expires_in||3600)-60)*1000});history.replaceState(null,'',location.pathname+location.search)}}getCustUser().then(function(){if(custUser)loadProfile();else updateAcct()})}
+document.getElementById('glogin').onclick=loginGoogle;document.getElementById('glogout').onclick=logoutGoogle;
+document.getElementById('myord').onclick=function(){openMyOrders()};document.getElementById('oback').onclick=function(){document.getElementById('osheet').style.display='none'};
+function openMyOrders(){var L=document.getElementById('olist');document.getElementById('osheet').style.display='block';L.innerHTML='<div class="empty">جاري التحميل…</div>';if(!custUser){L.innerHTML='<div class="empty">سجّل دخول بجوجل الأول</div>';return}fetch(SUPABASE_URL+'/rest/v1/orders?user_id=eq.'+custUser.id+'&order=created_at.desc&limit=20',{headers:authHdr()}).then(function(r){return r.ok?r.json():[]}).then(function(rows){if(!rows.length){L.innerHTML='<div class="empty">لسه معملتش أوردرات</div>';return}L.innerHTML='';rows.forEach(function(o){var d=document.createElement('div');d.className='ocard';var its=(o.items||[]).map(function(i){return i.q+' × '+i.n+(i.l?' ('+i.l+')':'')}).join('، ');d.innerHTML='<div class="oh"><b dir="ltr">'+o.order_no+'</b><span>'+new Date(o.created_at).toLocaleDateString('ar-EG')+'</span><span>'+o.total+' ج</span><span>'+(o.status==='done'?'اتسلّم':o.status==='cancelled'?'ملغي':o.status==='new'?'جديد':o.status)+'</span>'+(o.points_earned?'<span>⭐ +'+o.points_earned+'</span>':'')+'</div><div style="font-size:14px;color:#555;margin-top:4px">'+its+'</div><button type="button">اطلب زيه تاني</button>';d.querySelector('button').onclick=function(){reorder(o)};L.appendChild(d)})}).catch(function(){L.innerHTML='<div class="empty">تعذر تحميل الأوردرات</div>'})}
+function reorder(o){cart={};notes={};(o.items||[]).forEach(function(it){var k=null;Object.keys(flat).forEach(function(fk){var f=flat[fk];if(f.name===it.n&&f.label===(it.l||'')&&f.price===it.p)k=fk});if(k)cart[k]=it.q});save();document.getElementById('osheet').style.display='none';if(o.address)document.getElementById('ad').value=o.address;if(o.branch)document.getElementById('br').value=o.branch;drawSheet();sheet.style.display='block';refresh()}
+
 var tabs=document.getElementById('tabs'),menu=document.getElementById('menu'),cur=0;
 MENU.forEach(function(g,gi){var b=document.createElement('button');b.className='tab';b.textContent=g.g;b.onclick=function(){cur=gi;document.getElementById('q').value='';render()};tabs.appendChild(b)});
 function totals(){var c=0,s=0;Object.keys(cart).forEach(function(k){var q=cart[k];if(q>0&&flat[k]){c+=q;s+=q*flat[k].price}});
  var disc=0,fee=(c>0)?CFG.fee:0;
  if(promo&&c>0){if(promo.type==='free_delivery')fee=0;else if(promo.type==='percent')disc=Math.round(s*promo.value)/100;else if(promo.type==='amount')disc=Math.min(s,promo.value)}
- var base=s-disc+fee;var vat=Math.round(base*CFG.vat*100)/100;return {c:c,s:s,disc:disc,fee:fee,vat:vat,total:Math.round((base+vat)*100)/100}}
+ var base=Math.max(0,s-disc-redeemDisc+fee);var vat=Math.round(base*CFG.vat*100)/100;return {c:c,s:s,disc:disc,fee:fee,vat:vat,total:Math.round((base+vat)*100)/100,ptsDisc:redeemDisc,earn:Math.floor(Math.max(0,s-disc-redeemDisc+fee+vat)*LOYAL.earn)}}
 function updBar(){var t=totals();document.getElementById('cnt').textContent=t.c;document.getElementById('sub').textContent=fmt(t.s);document.getElementById('open').disabled=t.c===0}
 function stepper(k,after){var d=document.createElement('div');d.className='step';
  var plus=document.createElement('button');plus.type='button';plus.textContent='+';var q=document.createElement('span');q.className='q';var mi=document.createElement('button');mi.type='button';mi.textContent='−';mi.className='mi';
@@ -141,9 +173,9 @@ function drawSheet(){var L=document.getElementById('lines');L.innerHTML='';var g
  drawTot();if(!order.length)sheet.style.display='none'}
 function drawTot(){var t=totals();var tt=document.getElementById('tot');
  tt.innerHTML='<div><span>إجمالي الأصناف</span><span>'+fmt(t.s)+'</span></div>'+
-  (t.disc>0?'<div><span>خصم ('+promo.code+')</span><span class="free">- '+fmt(t.disc)+'</span></div>':'')+'<div><span>التوصيل</span>'+(t.fee===0?'<span class="free">مجاني 🎉</span>':'<span>'+fmt(t.fee)+'</span>')+'</div>'+
+  (t.disc>0?'<div><span>خصم ('+promo.code+')</span><span class="free">- '+fmt(t.disc)+'</span></div>':'')+(t.ptsDisc>0?'<div><span>خصم نقاط ('+redeemUsed+' نقطة)</span><span class="free">- '+fmt(t.ptsDisc)+'</span></div>':'')+'<div><span>التوصيل</span>'+(t.fee===0?'<span class="free">مجاني 🎉</span>':'<span>'+fmt(t.fee)+'</span>')+'</div>'+
   '<div><span>ضريبة القيمة المضافة ('+Math.round(CFG.vat*100)+'%)</span><span>'+fmt(t.vat)+'</span></div>'+
-  '<div class="g"><span>الإجمالي</span><span>'+fmt(t.total)+'</span></div>'}
+  '<div class="g"><span>الإجمالي</span><span>'+fmt(t.total)+'</span></div>'+(custUser?'<div><span>هتكسب من الأوردر ده</span><span>⭐ '+t.earn+' نقطة</span></div>':'')}
 document.getElementById('open').onclick=function(){drawSheet();sheet.style.display='block';sheet.scrollTop=0;refresh()};
 document.getElementById('back').onclick=function(){sheet.style.display='none';render()};
 document.getElementById('pa').onclick=function(){var v=document.getElementById('pc').value.trim().toLowerCase();var m=document.getElementById('pm');
@@ -162,6 +194,7 @@ document.getElementById('gps').onclick=function(){var m=document.getElementById(
   navigator.geolocation.getCurrentPosition(function(p){document.getElementById('lk').value='https://www.google.com/maps?q='+p.coords.latitude.toFixed(6)+','+p.coords.longitude.toFixed(6);m.style.color='#0a7a3b';m.textContent='✓ تم تحديد موقعك';refresh()},
    function(er){bad(er&&er.code===1?'الموقع مش مسموح. فعّله من إعدادات المتصفح، أو ابعت موقعك من واتساب (📎 ← الموقع)':'مقدرناش نحدد الموقع. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)')},{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
  }catch(e){bad('تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)')}};
+document.getElementById('redeemBtn').onclick=function(){var m=document.getElementById('loym');var v=+document.getElementById('redeemIn').value||0;if(!custUser){m.style.color='#c4161c';m.textContent='سجّل دخول بجوجل الأول';return}if(!profile){m.style.color='#c4161c';m.textContent='لسه بنحمّل نقاطك، حاول تاني';return}if(v<LOYAL.min){m.style.color='#c4161c';m.textContent='أقل استبدال '+LOYAL.min+' نقطة';return}if(v>profile.points){m.style.color='#c4161c';m.textContent='معاك '+(profile?profile.points:0)+' نقطة بس';return}var d=Math.floor(v/LOYAL.rate);if(d<=0){m.style.color='#c4161c';m.textContent='النقاط دي مش كافية لخصم جنيه';return}redeemUsed=v;redeemDisc=d;redeemedForNo=null;m.style.color='#0a7a3b';m.textContent='✓ هيتخصم '+d+' جنيه من الأوردر ده ('+v+' نقطة)، وهيتخصموا من رصيدك لما تبعت الطلب';drawTot();refresh()};
 var curNo=null,lastSig=null;
 function orderNo(){if(!curNo)curNo='G'+Date.now().toString(36).toUpperCase().slice(-5)+Math.random().toString(36).toUpperCase().slice(2,4);return curNo}
 function itemsArr(){var a=[],done={};Object.keys(cart).forEach(function(k){var q=cart[k];if(!(q>0)||!flat[k])return;var f=flat[k];var o={n:f.name,l:f.label||'',q:q,p:f.price};if(!done[f.item]&&notes[f.item]){done[f.item]=1;o.note=notes[f.item]}a.push(o)});return a}
@@ -173,7 +206,7 @@ function buildMsg(){var t=totals();var lines=[];var done={};
  m+='👤 الاسم: '+document.getElementById('nm').value.trim()+'\n📞 الموبايل: '+document.getElementById('ph').value.trim()+'\n📍 العنوان: '+document.getElementById('ad').value.trim()+'\n';
  if(loc)m+='🗺️ الموقع: '+loc+'\n';
  m+='🏪 الفرع: '+document.getElementById('br').value+'\n\n*الطلب:*\n'+lines.join('\n')+'\n\n';
- m+='الأصناف: '+num(t.s)+' ج\n'+(t.disc>0?'الخصم ('+promo.code+'): -'+num(t.disc)+' ج\n':'')+'التوصيل: '+(t.fee===0?'مجاني'+(promo&&promo.type==='free_delivery'?' (برومو '+promo.code+')':''):num(t.fee)+' ج')+'\n'+'ضريبة القيمة المضافة '+Math.round(CFG.vat*100)+'%: '+num(t.vat)+' ج\n'+'*الإجمالي: '+num(t.total)+' ج*\n';
+ m+='الأصناف: '+num(t.s)+' ج\n'+(t.disc>0?'الخصم ('+promo.code+'): -'+num(t.disc)+' ج\n':'')+(t.ptsDisc>0?'خصم نقاط ('+redeemUsed+' نقطة): -'+num(t.ptsDisc)+' ج\n':'')+'التوصيل: '+(t.fee===0?'مجاني'+(promo&&promo.type==='free_delivery'?' (برومو '+promo.code+')':''):num(t.fee)+' ج')+'\n'+'ضريبة القيمة المضافة '+Math.round(CFG.vat*100)+'%: '+num(t.vat)+' ج\n'+'*الإجمالي: '+num(t.total)+' ج*\n';
  m+='💵 الدفع: '+document.getElementById('pay').value;
  var n=document.getElementById('nt').value.trim();if(n)m+='\n📝 ملاحظات عامة: '+n;return m}
 function valid(){var e=document.getElementById('err');e.textContent='';var t=totals();
@@ -188,30 +221,35 @@ function refresh(){var m=encodeURIComponent(buildMsg());snd.href='https://wa.me/
 ['nm','ph','ad','lk','br','pay','nt'].forEach(function(id){var el=document.getElementById(id);el.addEventListener('input',refresh);el.addEventListener('change',refresh)});
 function sig(){return JSON.stringify([itemsArr(),document.getElementById('nm').value.trim(),document.getElementById('ph').value.trim(),document.getElementById('ad').value.trim(),document.getElementById('lk').value.trim(),document.getElementById('br').value,document.getElementById('nt').value.trim(),(promo&&promo.code)])}
 function setRec(t,c){var e=document.getElementById('rec');e.textContent=t;e.style.color=c||'#555'}
+function redeemNow(){if(!redeemUsed||redeemedForNo===orderNo())return Promise.resolve(true);if(!custUser)return Promise.resolve(false);return fetch(SUPABASE_URL+'/rest/v1/rpc/redeem_loyalty_points',{method:'POST',headers:authHdr(),body:JSON.stringify({p_order_no:orderNo(),p_points:redeemUsed})}).then(function(r){if(r.ok){redeemedForNo=orderNo();return true}return false}).catch(function(){return false})}
 function record(){
- if(!DB_ON){setRec('','');return}
- if(document.getElementById('hp').value){return}
+ if(!DB_ON){setRec('','');return Promise.resolve()}
+ if(document.getElementById('hp').value){return Promise.resolve()}
  var t=totals();var lines=[];var arr=itemsArr();
  arr.forEach(function(o){lines.push('• '+o.q+' × '+o.n+(o.l?' ('+o.l+')':'')+' = '+num(o.q*o.p)+' ج'+(o.note?'  [ملاحظة: '+o.note+']':''))});
  var row={order_no:orderNo(),name:document.getElementById('nm').value.trim(),phone:document.getElementById('ph').value.trim(),address:document.getElementById('ad').value.trim(),
   location:document.getElementById('lk').value.trim()||null,branch:document.getElementById('br').value,items:arr,items_text:lines.join('\n'),notes:document.getElementById('nt').value.trim()||null,
-  subtotal:t.s,delivery:t.fee,vat:t.vat,total:t.total,promo:promo?promo.code:null,discount:t.disc,payment:document.getElementById('pay').value};
+  subtotal:t.s,delivery:t.fee,vat:t.vat,total:t.total,promo:promo?promo.code:null,discount:t.disc,payment:document.getElementById('pay').value,
+  user_id:custUser?custUser.id:null,points_redeemed:redeemUsed,points_discount:redeemDisc};
  setRec('جاري تسجيل الطلب عند المطعم…','#555');
- try{
-  fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(row),keepalive:true})
-   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b')}else{setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#c4161c')}})
-   .catch(function(){setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#c4161c')})
- }catch(e){setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#c4161c')}}
+ if(custUser)saveProfile();
+ return redeemNow().then(function(ok){
+  if(redeemUsed&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh();setRec('⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني','#c4161c');return 'redeem-fail'}
+  return fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:authHdr({'Prefer':'return=minimal'}),body:JSON.stringify(row),keepalive:true})
+   .then(function(r){if(r.ok||r.status===409){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);return true}else{setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#c4161c');return false}})
+   .catch(function(){setRec('⚠️ تعذر تسجيل الطلب عندنا، كمّل الإرسال على واتساب','#c4161c');return false});
+ })}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
-snd.addEventListener('click',function(ev){if(!valid()){ev.preventDefault();return}var sg=sig();if(lastSig&&lastSig!==sg){curNo=null}refresh();record();lastSig=sg;showFb()});
-document.getElementById('newo').onclick=function(){cart={};notes={};save();curNo=null;lastSig=null;promo=null;document.getElementById('pc').value='';document.getElementById('pm').textContent='';document.getElementById('fb').style.display='none';document.getElementById('prev').style.display='none';document.getElementById('rec').textContent='';sheet.style.display='none';render()};
-document.getElementById('copy').onclick=function(){if(!valid())return;var sg=sig();if(lastSig&&lastSig!==sg){curNo=null}record();lastSig=sg;var m=buildMsg();var p=document.getElementById('prev');p.style.display='block';p.value=m;p.focus();p.select();var ok=false;try{if(navigator.clipboard){navigator.clipboard.writeText(m);ok=true}}catch(e){}try{ok=document.execCommand('copy')||ok}catch(e){}var er=document.getElementById('err');er.style.color='#0a7a3b';er.textContent=ok?'تم نسخ الطلب، الصقه في واتساب':'حدد النص تحت وانسخه';setTimeout(function(){er.style.color=''},3500)};
+snd.addEventListener('click',function(ev){ev.preventDefault();if(!valid())return;var sg=sig();if(lastSig&&lastSig!==sg){curNo=null;redeemedForNo=null}refresh();record().then(function(ok){lastSig=sg;showFb();if(ok!=='redeem-fail')window.open(snd.href,'_blank')})});
+document.getElementById('newo').onclick=function(){cart={};notes={};save();curNo=null;lastSig=null;promo=null;redeemUsed=0;redeemDisc=0;redeemedForNo=null;document.getElementById('redeemIn').value='';document.getElementById('loym').textContent='';document.getElementById('pc').value='';document.getElementById('pm').textContent='';document.getElementById('fb').style.display='none';document.getElementById('prev').style.display='none';document.getElementById('rec').textContent='';sheet.style.display='none';render()};
+document.getElementById('copy').onclick=function(){if(!valid())return;var sg=sig();if(lastSig&&lastSig!==sg){curNo=null;redeemedForNo=null}record().then(function(){lastSig=sg;var m=buildMsg();var p=document.getElementById('prev');p.style.display='block';p.value=m;p.focus();p.select();var ok=false;try{if(navigator.clipboard){navigator.clipboard.writeText(m);ok=true}}catch(e){}try{ok=document.execCommand('copy')||ok}catch(e){}var er=document.getElementById('err');er.style.color='#0a7a3b';er.textContent=ok?'تم نسخ الطلب، الصقه في واتساب':'حدد النص تحت وانسخه';setTimeout(function(){er.style.color=''},3500)})};
 if(!CFG.wa)document.getElementById('warn').style.display='block';
-function applySettings(rows){var cfg=null,pr=null;(rows||[]).forEach(function(r){if(r.key==='config')cfg=r.value;if(r.key==='prices')pr=r.value});
+function applySettings(rows){var cfg=null,pr=null,ly=null;(rows||[]).forEach(function(r){if(r.key==='config')cfg=r.value;if(r.key==='prices')pr=r.value;if(r.key==='loyalty')ly=r.value});
+ if(ly){if(typeof ly.earn_per_egp==='number')LOYAL.earn=ly.earn_per_egp;if(typeof ly.redeem_points_per_egp==='number')LOYAL.rate=ly.redeem_points_per_egp;if(typeof ly.min_redeem_points==='number')LOYAL.min=ly.min_redeem_points;updateAcct()}
  if(cfg){if(typeof cfg.fee==='number')CFG.fee=cfg.fee;if(typeof cfg.vat==='number')CFG.vat=cfg.vat/100;if(typeof cfg.min==='number')CFG.min=cfg.min;if(cfg.wa)CFG.wa=String(cfg.wa)}
  if(pr){var ov=pr.overrides||{},off=pr.off||[];MENU.forEach(function(g,gi){g.s.forEach(function(s,si){s.i.forEach(function(it,ii){it.o.forEach(function(o,oi){var key=it.n+'|'+(o.l||'');var f=flat[gi+'.'+si+'.'+ii+'.'+oi];if(ov[key]!==undefined&&!isNaN(+ov[key])){o.p=+ov[key];f.price=+ov[key]}o.off=off.indexOf(key)>-1;f.off=o.off})})})});
   Object.keys(cart).forEach(function(k){if(flat[k]&&flat[k].off)delete cart[k]})}
  save();render();refresh()}
 function loadSettings(){if(!DB_ON)return;try{fetch(SUPABASE_URL+'/rest/v1/settings?select=key,value',{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}}).then(function(r){return r.ok?r.json():[]}).then(applySettings).catch(function(){})}catch(e){}}
-render();loadSettings();
+render();loadSettings();initAuth();
 </script></body></html>

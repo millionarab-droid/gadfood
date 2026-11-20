@@ -81,6 +81,12 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <label>الحد الأدنى للطلب (جنيه، 0 = بدون)</label><input id="cf_min" type="number" inputmode="decimal">
 <label>رقم واتساب استقبال الطلبات (بصيغة 201xxxxxxxxx)</label><input id="cf_wa" inputmode="tel">
 <button class="btn" id="cfsave">حفظ الإعدادات</button><div class="msg" id="cfmsg"></div></div>
+<div class="box"><h3>نقاط الولاء ⭐</h3>
+<label>نقطة لكل كام جنيه بيدفعها الزبون (1 = نقطة لكل جنيه)</label><input id="ly_earn" type="number" inputmode="decimal" step="0.5">
+<label>كام نقطة = 1 جنيه خصم عند الاستبدال (10 = كل 10 نقاط بجنيه)</label><input id="ly_rate" type="number" inputmode="decimal">
+<label>أقل عدد نقاط للاستبدال في الأوردر الواحد</label><input id="ly_min" type="number" inputmode="numeric">
+<button class="btn" id="lysave">حفظ قواعد النقاط</button><div class="msg" id="lymsg"></div>
+<p style="font-size:13px;color:#666;line-height:1.7">النقاط بتتضاف للزبون لما الأوردر يتعلّم «اتسلّم» بس، مش لما يتبعت، ولو الأوردر اتلغى مبياخدش نقاط.</p></div>
 <div class="box"><h3>أكواد الخصم (برومو كود)</h3>
 <div id="pmlist"></div>
 <label>كود جديد (حروف إنجليزي وأرقام)</label><input id="pm_code" autocapitalize="off" placeholder="مثال: ramadan10">
@@ -158,7 +164,7 @@ function render(){
   L.appendChild(c)})}
 $('list').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
  if(b.dataset.st){var id=b.dataset.id,st=b.dataset.st;b.disabled=true;
-  api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({status:st})}).then(function(r){if(r.ok){orders.forEach(function(o){if(String(o.id)===id)o.status=st});delete fresh[id];render()}else{b.disabled=false;alert('تعذر تغيير الحالة')}}).catch(function(){b.disabled=false})}
+  api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({status:st})}).then(function(r){if(r.ok){orders.forEach(function(o){if(String(o.id)===id)o.status=st});delete fresh[id];render();if(st==='done'){api('/rest/v1/rpc/award_loyalty_points',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_order_id:+id})}).then(function(rr){return rr.ok?rr.json():0}).then(function(pts){if(pts>0){orders.forEach(function(o){if(String(o.id)===id)o.points_earned=pts});render()}}).catch(function(){})}}else{b.disabled=false;alert('تعذر تغيير الحالة')}}).catch(function(){b.disabled=false})}
  else if(b.dataset.print){printOrder(b.dataset.print)}});
 function printOrder(id){var o=orders.filter(function(x){return String(x.id)===String(id)})[0];if(!o)return;
  var items=(o.items||[]).map(function(i){return '<tr><td>'+esc(i.q)+' × '+esc(i.n)+(i.l?' ('+esc(i.l)+')':'')+(i.note?'<div class="n">↳ '+esc(i.note)+'</div>':'')+'</td><td>'+n2(i.q*i.p)+'</td></tr>'}).join('');
@@ -188,7 +194,8 @@ $('pq').addEventListener('input',function(){var q=$('pq').value.trim();[].forEac
 $('psave').onclick=function(){var ov={},off=[];[].forEach.call($('plist').querySelectorAll('.pri'),function(r){var k=r.dataset.k,v=+r.querySelector('input[type=number]').value,cb=r.querySelector('input[type=checkbox]').checked;
   if(!isNaN(v)&&v!==pDefaults[k]&&v>=0)ov[k]=v;if(!cb)off.push(k)});
  msg('pmsg','جاري الحفظ…');putSetting('prices',{overrides:ov,off:off}).then(function(r){if(r.ok)msg('pmsg','✓ تم حفظ الأسعار ('+Object.keys(ov).length+' سعر معدّل، '+off.length+' صنف غير متاح). بتظهر للعملاء فورًا.');else msg('pmsg','تعذر الحفظ (كود '+r.status+')',true)}).catch(function(){msg('pmsg','تعذر الحفظ',true)})};
-function openSettings(){msg('cfmsg','');msg('pmmsg','');getSettings().then(function(st){var c=st.config||{};$('cf_fee').value=(c.fee!==undefined?c.fee:30);$('cf_vat').value=(c.vat!==undefined?c.vat:14);$('cf_min').value=(c.min!==undefined?c.min:0);$('cf_wa').value=c.wa||'201022336696'}).catch(function(){});loadPromos()}
+function openSettings(){msg('cfmsg','');msg('pmmsg','');msg('lymsg','');getSettings().then(function(st){var c=st.config||{};$('cf_fee').value=(c.fee!==undefined?c.fee:30);$('cf_vat').value=(c.vat!==undefined?c.vat:14);$('cf_min').value=(c.min!==undefined?c.min:0);$('cf_wa').value=c.wa||'201022336696';var ly=st.loyalty||{};$('ly_earn').value=(ly.earn_per_egp!==undefined?ly.earn_per_egp:1);$('ly_rate').value=(ly.redeem_points_per_egp!==undefined?ly.redeem_points_per_egp:10);$('ly_min').value=(ly.min_redeem_points!==undefined?ly.min_redeem_points:100)}).catch(function(){});loadPromos()}
+$('lysave').onclick=function(){var v={earn_per_egp:+$('ly_earn').value||1,redeem_points_per_egp:+$('ly_rate').value||10,min_redeem_points:+$('ly_min').value||0};if(v.earn_per_egp<=0||v.redeem_points_per_egp<=0){msg('lymsg','القيم لازم تكون أكبر من صفر',true);return}putSetting('loyalty',v).then(function(r){if(r.ok)msg('lymsg','✓ تم حفظ قواعد النقاط، بتتطبق على الأوردرات الجديدة فورًا.');else msg('lymsg','تعذر الحفظ (كود '+r.status+')',true)}).catch(function(){msg('lymsg','تعذر الحفظ',true)})};
 $('cfsave').onclick=function(){var v={fee:+$('cf_fee').value||0,vat:+$('cf_vat').value||0,min:+$('cf_min').value||0,wa:($('cf_wa').value||'').replace(/[^0-9]/g,'')};
  if(!v.wa){msg('cfmsg','اكتب رقم الواتساب',true);return}
  putSetting('config',v).then(function(r){if(r.ok)msg('cfmsg','✓ تم حفظ الإعدادات، بتظهر للعملاء فورًا.');else msg('cfmsg','تعذر الحفظ (كود '+r.status+')',true)}).catch(function(){msg('cfmsg','تعذر الحفظ',true)})};
