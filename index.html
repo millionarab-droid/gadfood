@@ -87,7 +87,7 @@ textarea{min-height:80px;resize:vertical}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#a92318"><link rel="apple-touch-icon" href="icon-192.png"></head><body>
 <header><img class="logoimg" src="logo.png" alt="جاد GAD"><p class="tagline">أكل لكل الناس</p></header><div class="pat"></div>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
-<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="fblogin" type="button" style="background:#1877f2">دخول بفيسبوك</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="display:none;background:#1fa855">📲 ثبّت التطبيق</button></div>
+<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="fblogin" type="button" style="background:#1877f2">دخول بفيسبوك</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button></div>
 <div class="tabs" id="tabs"></div>
 <input class="srch" id="q" type="search" placeholder="ابحث عن صنف…">
 <div class="wrap" id="menu"></div>
@@ -117,6 +117,14 @@ textarea{min-height:80px;resize:vertical}
 <p class="note">بعد الضغط هيفتح واتساب برسالة جاهزة فيها طلبك وعنوانك، اضغط إرسال هناك علشان الطلب يوصل للمطعم.</p>
 </div></div>
 <div id="osheet"><div class="in"><button class="back" id="oback">→ رجوع للمنيو</button><h3>أوردراتي</h3><div id="olist"></div></div></div><div id="csheet"><div class="in"><button class="back" id="cback">→ رجوع</button><h3 id="ctitle">💬 تواصل مع المطعم</h3><div id="cmsgs"></div></div><div class="cbar"><input id="cin" type="text" placeholder="اكتب رسالتك هنا…" maxlength="1000"><button id="csend" type="button">إرسال</button></div></div>
+<div id="installHelp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;padding:20px" onclick="if(event.target===this)this.style.display='none'">
+<div style="background:#fff;border-radius:16px;max-width:420px;margin:60px auto;padding:18px;line-height:1.9;font-size:15px">
+<b style="font-size:18px">📲 تثبيت تطبيق جاد</b>
+<div style="margin-top:8px"><b>أوبرا (أندرويد):</b> دوس على قايمة المتصفح ⋮ فوق ← اختار «Home Screen» ← «Add».</div>
+<div><b>كروم (أندرويد):</b> قايمة ⋮ ← «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».</div>
+<div><b>آيفون (سفاري):</b> زرار المشاركة تحت ← «إضافة إلى الشاشة الرئيسية».</div>
+<button type="button" onclick="document.getElementById('installHelp').style.display='none'" style="margin-top:12px;width:100%;border:0;border-radius:12px;padding:11px;font-family:inherit;font-weight:700;font-size:15px;background:#a92318;color:#fff">تمام</button>
+</div></div>
 <script>
 var SUPABASE_URL='https://apcvurppgwscpktdurdt.supabase.co';var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwY3Z1cnBwZ3dzY3BrdGR1cmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MzE0NzgsImV4cCI6MjExMDQwNzQ3OH0.mm4Mqs7u9QaXMxq6sShrEU2oRUgxc3tVR40w6X2xgTk';
 var DB_ON=SUPABASE_URL.indexOf('http')===0&&SUPABASE_ANON_KEY.indexOf('PUT_')!==0;
@@ -290,8 +298,8 @@ function applySettings(rows){var cfg=null,pr=null,ly=null,ord=null;(rows||[]).fo
 function loadSettings(){if(!DB_ON)return;try{fetch(SUPABASE_URL+'/rest/v1/settings?select=key,value',{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}}).then(function(r){return r.ok?r.json():[]}).then(applySettings).catch(function(){})}catch(e){}}
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
 var deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var b=document.getElementById('installBtn');if(b)b.style.display=''});
-document.getElementById('installBtn').onclick=function(){if(!deferredPrompt)return;var dp=deferredPrompt;deferredPrompt=null;dp.prompt();dp.userChoice.then(function(){document.getElementById('installBtn').style.display='none'})};
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e});
+document.getElementById('installBtn').onclick=function(){if(deferredPrompt){var dp=deferredPrompt;deferredPrompt=null;dp.prompt();dp.userChoice.then(function(){document.getElementById('installBtn').style.display='none'})}else{document.getElementById('installHelp').style.display='block'}};
 if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){var ib=document.getElementById('installBtn');if(ib)ib.style.display='none'}
 render();loadSettings();initAuth();
 </script></body></html>
