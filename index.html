@@ -354,7 +354,7 @@ function checkPromoElig(){if(!promo||!DB_ON)return Promise.resolve(true);return 
   return sendOrder().then(function(res){if(res==='unauth')return refreshCustSess().then(function(ok){if(!ok){setRec('⚠️ انتهت جلستك، سجّل دخول تاني أو كمّل كضيف — ابعت الطلب تاني','#a92318');return false}return sendOrder().then(function(r2){return r2===true?doneOk():r2})});return res===true?doneOk():res});
  })})})})}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
-function showFollow(){var f=document.getElementById('follow');f.style.display='block';document.getElementById('followWa').href='https://wa.me/'+waNum()+'?text='+encodeURIComponent('عايز أتابع طلبي رقم '+orderNo()+' من جاد');startTrack()}
+function showFollow(){var f=document.getElementById('follow');f.style.display='block';var pv=document.getElementById('prev').value;document.getElementById('followWa').href='https://wa.me/'+waNum()+'?text='+encodeURIComponent('عايز أتابع طلبي رقم '+orderNo()+' من جاد'+(pv?'\n\n'+pv:''));startTrack()}
 document.getElementById('followSite').onclick=function(){document.getElementById('follow').style.display='none';openMyOrders()};
 var trackNo=null,trackPhone=null,trackTimer=null;
 function trackIcon(st){return st==='new'?'📥':st==='preparing'?'👨‍🍳':st==='delivering'?'🛵':st==='done'?'✅':'✖️'}
