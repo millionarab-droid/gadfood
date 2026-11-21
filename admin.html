@@ -210,7 +210,7 @@ function render(){
  f.forEach(function(o){var c=document.createElement('div');c.className='card '+o.status+(fresh[o.id]?' fresh':'');
   var items=(o.items&&o.items.length?o.items:[]).map(function(i){return '<div>• '+esc(i.q)+' × '+esc(i.n)+(i.l?' ('+esc(i.l)+')':'')+' — '+n2(i.q*i.p)+' ج</div>'+(i.note?'<div class="nt">↳ '+esc(i.note)+'</div>':'')}).join('')||esc(o.items_text||'');
   var loc=o.location?'<div class="row"><b>الموقع</b><a href="'+esc(o.location)+'" target="_blank" rel="noopener">فتح على الخريطة 📍</a></div>':'';
-  c.innerHTML='<div class="hd"><span class="no">'+esc(o.order_no)+'</span><span class="tm">'+tm(o.created_at)+'</span><span class="chip '+o.status+'">'+ST[o.status]+'</span></div>'+
+  c.innerHTML='<div class="hd"><span class="no">'+esc(o.order_no)+'</span><span class="tm">'+tm(o.created_at)+'</span><span class="chip '+o.status+'">'+((o.fulfillment==='pickup'&&o.status==='delivering')?'جاهز للاستلام':ST[o.status])+'</span></div>'+
   '<div class="row"><b>الاسم</b><span>'+esc(o.name)+'</span></div><div class="row"><b>الموبايل</b><a href="tel:'+esc(o.phone)+'" dir="ltr">'+esc(o.phone)+'</a></div>'+
   '<div class="row"><b>العنوان</b><span>'+esc(o.address)+'</span></div>'+loc+'<div class="row"><b>الفرع</b><span>'+esc(o.branch||'-')+'</span></div>'+(o.fulfillment?'<div class="row"><b>الاستلام</b><span>'+(o.fulfillment==='pickup'?'استلام من المطعم':'توصيل')+'</span></div>':'')+
   '<div class="items">'+items+'</div>'+(o.notes?'<div class="row"><b>ملاحظات</b><span>'+esc(o.notes)+'</span></div>':'')+
