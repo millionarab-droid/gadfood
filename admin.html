@@ -59,7 +59,7 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <label>الباسورد</label><input id="pw" type="password" autocomplete="current-password">
 <button class="btn" id="go">دخول</button><div class="err" id="le"></div></div>
 <div id="app">
-<div class="tabs" id="tabs"><button data-t="orders" class="on">الطلبات</button><button data-t="prices">الأسعار</button><button data-t="chats">المحادثات 💬 <span id="chatbadge" style="display:none;background:#fff;color:#a92318;border-radius:10px;padding:0 7px;font-size:12px;font-weight:800"></span></button><button data-t="reports">التقارير 📊</button><button data-t="settings">الإعدادات والبرومو</button></div>
+<div class="tabs" id="tabs"><button data-t="orders" class="on">الطلبات</button><button data-t="prices">الأسعار</button><button data-t="chats">المحادثات 💬 <span id="chatbadge" style="display:none;background:#fff;color:#a92318;border-radius:10px;padding:0 7px;font-size:12px;font-weight:800"></span></button><button data-t="blocklist">الحظر 🚫</button><button data-t="reports">التقارير 📊</button><button data-t="settings">الإعدادات والبرومو</button></div>
 <div id="t-orders">
 <div class="banner" id="ban"></div>
 <div class="stats"><div class="st"><b id="s1">0</b><span>طلبات النهاردة</span></div><div class="st"><b id="s2">0</b><span>مبيعات النهاردة (ج)</span></div><div class="st"><b id="s3">0</b><span>جديد</span></div><div class="st"><b id="s4">0</b><span>بيتحضّر / توصيل</span></div></div>
@@ -82,6 +82,18 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <div class="box"><button class="back" id="chatback" type="button">→ رجوع للمحادثات</button><h3 id="chathead" style="margin:6px 0"></h3><div id="chatmsgs" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto"></div>
 <div style="display:flex;gap:8px;margin-top:10px"><input id="chatIn" type="text" placeholder="اكتب الرد…" maxlength="1000" style="flex:1;border:1px solid #d8d5cd;border-radius:12px;padding:11px;font-family:inherit;font-size:15px"><button class="btn" id="chatSend" type="button">إرسال</button></div></div>
 </div></div>
+<div id="t-blocklist" style="display:none">
+<div class="box"><h3>قائمة الحظر 🚫</h3>
+<p style="font-size:13px;color:#666;line-height:1.7">أي زبون هنا محظور من الطلب: أوردراته مش بتتسجل وواتساب مش بيتفتح. ضيف التليفون أو الإيميل (أو الاتنين) مع السبب. الحظر من هنا متاح للأدمن والإيجنت.</p>
+<div class="flt">
+<input id="bl_phone" placeholder="التليفون — مثال 01000000000">
+<input id="bl_email" placeholder="الإيميل (اختياري)">
+<input id="bl_reason" placeholder="السبب (مثال: أوردر فيك)">
+<button class="btn" id="blAdd" type="button" style="background:#a92318">🚫 حظر</button>
+</div>
+<div class="msg" id="blMsg"></div>
+<div id="blList"></div>
+</div></div>
 <div id="t-reports" style="display:none">
 <div class="box"><h3>تقارير المبيعات 📊</h3>
 <p style="font-size:13px;color:#666;line-height:1.7">اختار الفترة والفرع والحالة، وبعدين نزّل أي تقرير كملف إكسل. التواريخ بتتحسب بتوقيت القاهرة، والأرقام في الملف أرقام حقيقية تقدر تجمعها في الإكسل.</p>
@@ -99,7 +111,12 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <button class="btn" id="rp_branch" type="button" style="flex:1;min-width:200px">📥 ملخص الفروع</button>
 <button class="btn" id="rp_points" type="button" style="flex:1;min-width:200px">📥 تقرير النقاط</button>
 <button class="btn" id="rp_all" type="button" style="flex:1;min-width:200px;background:#0053aa">📥 كل التقارير في ملف واحد</button>
-</div></div></div>
+</div></div>
+<div class="box"><h3>نسخة احتياطية كاملة 💾</h3>
+<p style="font-size:13px;color:#666;line-height:1.7">ملف JSON واحد فيه كل بيانات الموقع: الأوردرات، الملفات الشخصية، النقاط، البرومو، الإعدادات (ومنها المنيو والفروع والبانر)، الأدمن، ورسايل شات الأوردرات. نزّله مرة في الأسبوع واحتفظ بيه — صور الأصناف نفسها بتفضل في التخزين وروابطها موجودة في النسخة.</p>
+<button class="btn" id="bkpBtn" type="button" style="background:#0053aa">⬇️ تنزيل نسخة احتياطية كاملة (JSON)</button>
+<div class="msg" id="bkpMsg"></div>
+</div></div>
 <div id="t-settings" style="display:none">
 <div class="box"><h3>إعدادات الطلب</h3>
 <label>رسوم التوصيل (جنيه)</label><input id="cf_fee" type="number" inputmode="decimal">
@@ -216,9 +233,10 @@ function render(){
   '<div class="items">'+items+'</div>'+(o.notes?'<div class="row"><b>ملاحظات</b><span>'+esc(o.notes)+'</span></div>':'')+
   '<div class="tt"><span>الأصناف</span><span>'+n2(o.subtotal)+' ج</span></div>'+(Number(o.discount)>0?'<div class="tt"><span>الخصم</span><span>- '+n2(o.discount)+' ج</span></div>':'')+'<div class="tt"><span>التوصيل'+(o.promo?' ('+esc(o.promo)+')':'')+'</span><span>'+(Number(o.delivery)?n2(o.delivery)+' ج':'مجاني')+'</span></div><div class="tt"><span>الضريبة</span><span>'+n2(o.vat)+' ج</span></div><div class="tt g"><span>الإجمالي ('+esc(o.payment||'')+')</span><span>'+n2(o.total)+' ج</span></div>'+
   '<div class="acts">'+['new','preparing','delivering','done','cancelled'].map(function(k){return '<button data-id="'+o.id+'" data-st="'+k+'" class="'+(o.status===k?'on':'')+'">'+ST[k]+'</button>'}).join('')+
-  '<button class="pr" data-print="'+o.id+'">🖨️ طباعة</button><a class="wa" target="_blank" rel="noopener" href="https://wa.me/'+waPhone(o.phone)+'?text='+encodeURIComponent('أهلاً '+(o.name||'')+'، تم استلام طلبك رقم '+o.order_no+' من جاد وجاري تجهيزه. الإجمالي '+n2(o.total)+' ج. شكراً لاختيارك جاد 🍽️')+'">واتساب للعميل</a></div>';
+  '<button class="pr" data-print="'+o.id+'">🖨️ طباعة</button><button class="pr" data-bl="'+o.id+'" style="background:#a92318;color:#fff">🚫 حظر الزبون</button><a class="wa" target="_blank" rel="noopener" href="https://wa.me/'+waPhone(o.phone)+'?text='+encodeURIComponent('أهلاً '+(o.name||'')+'، تم استلام طلبك رقم '+o.order_no+' من جاد وجاري تجهيزه. الإجمالي '+n2(o.total)+' ج. شكراً لاختيارك جاد 🍽️')+'">واتساب للعميل</a></div>';
   L.appendChild(c)})}
 $('list').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+ if(b.dataset.bl){if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='تأكيد الحظر؟';setTimeout(function(){b.dataset.arm='';b.textContent='🚫 حظر الزبون'},3000);return}api('/rest/v1/rpc/block_customer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_order_id:+b.dataset.bl})}).then(function(r){if(r.ok){b.textContent='✓ اتحظر';b.disabled=true}else{b.textContent='تعذّر الحظر';setTimeout(function(){b.textContent='🚫 حظر الزبون'},2500)}}).catch(function(){b.textContent='تعذّر الحظر'});return}
  if(b.dataset.st){var id=b.dataset.id,st=b.dataset.st;b.disabled=true;
   api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({status:st})}).then(function(r){if(r.ok){orders.forEach(function(o){if(String(o.id)===id)o.status=st});delete fresh[id];render();if(st==='done'){api('/rest/v1/rpc/award_loyalty_points',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_order_id:+id})}).then(function(rr){return rr.ok?rr.json():0}).then(function(pts){if(pts>0){orders.forEach(function(o){if(String(o.id)===id)o.points_earned=pts});render()}}).catch(function(){})}}else{b.disabled=false;alert('تعذر تغيير الحالة')}}).catch(function(){b.disabled=false})}
  else if(b.dataset.print){printOrder(b.dataset.print)}});
@@ -242,7 +260,7 @@ function applyMenuState(st){
 function isAddedItem(gn,sk,nm){var f=false;(MENUADD||[]).forEach(function(g){if(g.g!==gn)return;(g.s||[]).forEach(function(s){if(s.k!==sk)return;(s.i||[]).forEach(function(it){if(it.n===nm)f=true})})});return f}
 function isAddedGroup(gn){var f=false;(MENUADD||[]).forEach(function(g){if(g.g===gn)f=true});return f}
 function saveMenuAdd(){return api('/rest/v1/rpc/set_menu_add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_value:MENUADD})})}
-var tabsEl=$('tabs');tabsEl.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call(tabsEl.children,function(x){x.classList.toggle('on',x===b)});['orders','prices','chats','reports','settings'].forEach(function(t){$('t-'+t).style.display=(t===b.dataset.t)?'block':'none'});if(b.dataset.t==='prices')openPrices();if(b.dataset.t==='settings')openSettings();if(b.dataset.t==='chats')openChats();if(b.dataset.t==='reports')openReports()});
+var tabsEl=$('tabs');tabsEl.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call(tabsEl.children,function(x){x.classList.toggle('on',x===b)});['orders','prices','chats','blocklist','reports','settings'].forEach(function(t){$('t-'+t).style.display=(t===b.dataset.t)?'block':'none'});if(b.dataset.t==='prices')openPrices();if(b.dataset.t==='settings')openSettings();if(b.dataset.t==='chats')openChats();if(b.dataset.t==='reports')openReports();if(b.dataset.t==='blocklist')openBlocklist()});
 function msg(id,t,bad){var e=$(id);e.className='msg'+(bad?' bad':'');e.textContent=t}
 function getSettings(){return api('/rest/v1/settings?select=key,value').then(function(r){if(!r.ok)throw new Error('http');return r.json()}).then(function(rows){var o={};rows.forEach(function(x){o[x.key]=x.value});return o})}
 function putSetting(key,value){return api('/rest/v1/settings?on_conflict=key',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify([{key:key,value:value,updated_at:new Date().toISOString()}])})}
@@ -342,6 +360,7 @@ function repSummary(){var f=repFiltered();var ok=f.filter(function(o){return o.s
 function repBranches(){var sel=$('rb');var cur=sel.value;var bs={};orders.forEach(function(o){if(o.branch)bs[o.branch]=1});var want=Object.keys(bs).sort();
  sel.innerHTML='<option value="">كل الفروع</option>'+want.map(function(x){return '<option>'+esc(x)+'</option>'}).join('');sel.value=cur}
 function repLoadAll(){return api('/rest/v1/orders?select=*&order=created_at.desc&limit=1000').then(function(r){return r.ok?r.json():orders}).then(function(rows){if(rows&&rows.length){orders=rows;render()}repBranches();repSummary()}).catch(function(){repBranches();repSummary()})}
+function openBlocklist(){var L=$('blList');L.innerHTML='<div class="empty" style="padding:10px">جاري التحميل…</div>';api('/rest/v1/blacklist?select=*&order=created_at.desc').then(function(r){return r.ok?r.json():[]}).then(function(rows){if(!rows.length){L.innerHTML='<div class="empty" style="padding:10px">مفيش حد محظور</div>';return}L.innerHTML='';rows.forEach(function(b){var d=document.createElement('div');d.className='pmr';d.innerHTML='<b>'+esc(b.phone||b.email||'')+'</b><span>'+(b.phone&&b.email?esc(b.email):'')+(b.reason?' — '+esc(b.reason):'')+(b.created_by?' ('+esc(b.created_by)+')':'')+'</span><button data-unbl="'+b.id+'">رفع الحظر</button>';L.appendChild(d)})}).catch(function(){L.innerHTML='<div class="empty" style="padding:10px">تعذّر التحميل</div>'})}
 function openReports(){repBranches();if(!$('rd1').value){var d=new Date();var t=new Date(d.getTime()-29*86400000);$('rd1').value=t.toISOString().slice(0,10);$('rd2').value=d.toISOString().slice(0,10)}repSummary();repLoadAll()}
 function repOrdersRows(f){return f.map(function(o){return {'رقم الطلب':o.order_no,'التاريخ':repDate(o.created_at),'الاسم':o.name||'','الموبايل':o.phone||'','الفرع':o.branch||'','الاستلام':(o.fulfillment==='pickup'?'استلام من المطعم':'توصيل'),'الأصناف':(o.items||[]).map(function(i){return i.q+' × '+i.n+(i.l?' ('+i.l+')':'')}).join('، '),'الأصناف (ج)':Number(o.subtotal||0),'التوصيل (ج)':Number(o.delivery||0),'الضريبة (ج)':Number(o.vat||0),'الخصم (ج)':Number(o.discount||0),'الإجمالي (ج)':Number(o.total||0),'الدفع':o.payment||'','الحالة':ST[o.status]||o.status,'برومو':o.promo||'','نقاط مكتسبة':Number(o.points_earned||0),'نقاط مستبدلة':Number(o.points_redeemed||0)}})}
 function repDailyRows(f){var by={};f.forEach(function(o){var d=repDay(o.created_at);if(!by[d])by[d]={d:d,n:0,cx:0,sub:0,fee:0,vat:0,tot:0};by[d].n++;if(o.status==='cancelled'){by[d].cx++;return}by[d].sub+=Number(o.subtotal||0);by[d].fee+=Number(o.delivery||0);by[d].vat+=Number(o.vat||0);by[d].tot+=Number(o.total||0)});
@@ -371,6 +390,9 @@ $('rp_items').onclick=function(){repDownload(repFileName('top-items'),repItemsRo
 $('rp_branch').onclick=function(){repDownload(repFileName('branches'),repBranchRows(repFiltered()),'الفروع')};
 $('rp_points').onclick=function(){repDownload(repFileName('loyalty'),repPointsRows(repFiltered()),'النقاط')};
 $('rp_all').onclick=repAll;
+$('bkpBtn').onclick=function(){msg('bkpMsg','جاري تجهيز النسخة…');api('/rest/v1/rpc/export_backup',{method:'POST'}).then(function(r){return r.ok?r.json():null}).then(function(d){if(!d){msg('bkpMsg','تعذّر تجهيز النسخة — جرّب تاني',true);return}var x=Array.isArray(d)?d[0]:d;var blob=new Blob([JSON.stringify(x,null,2)],{type:'application/json'});var aEl=document.createElement('a');aEl.href=URL.createObjectURL(blob);aEl.download='gad-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(aEl);aEl.click();aEl.remove();var n=function(k){return (x[k]&&x[k].length)||0};msg('bkpMsg','✓ تم تنزيل النسخة: '+n('orders')+' أوردر، '+n('profiles')+' ملف شخصي، '+n('promos')+' برومو، '+n('order_messages')+' رسالة شات')}).catch(function(){msg('bkpMsg','تعذّر تجهيز النسخة — جرّب تاني',true)})};
+$('blAdd').onclick=function(){var ph=$('bl_phone').value.trim(),em=$('bl_email').value.trim(),rs=$('bl_reason').value.trim()||'أوردر فيك / شكاوى متكررة';if(!ph&&!em){msg('blMsg','اكتب التليفون أو الإيميل',true);return}api('/rest/v1/blacklist',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({phone:ph||null,email:em||null,reason:rs,created_by:ROLE})}).then(function(r){if(r.ok){msg('blMsg','✓ اتحظر');$('bl_phone').value='';$('bl_email').value='';$('bl_reason').value='';openBlocklist()}else msg('blMsg','تعذّر الحظر (كود '+r.status+')',true)}).catch(function(){msg('blMsg','تعذّر الحظر',true)})};
+$('blList').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!b.dataset.unbl)return;if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='تأكيد؟';setTimeout(function(){b.dataset.arm='';b.textContent='رفع الحظر'},3000);return}api('/rest/v1/blacklist?id=eq.'+b.dataset.unbl,{method:'DELETE',headers:{'Prefer':'return=minimal'}}).then(function(r){if(r.ok){msg('blMsg','✓ اترفع الحظر');openBlocklist()}else msg('blMsg','تعذّر رفع الحظر',true)})});
 
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
 loadS();
