@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>اطلب من جاد</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800&family=Rakkas&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--red:#a92318;--blue:#0053aa;--ink:#1d2433;--bg:#f6f3ee}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -71,9 +71,10 @@ textarea{min-height:80px;resize:vertical}
 #prev{width:100%;height:170px;font-size:14px;margin-top:8px;display:none}
 .note{font-size:13px;color:#666;margin-top:8px;line-height:1.7}
 #acct{background:#fff;border-bottom:1px solid #e5e1d8;padding:8px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
-#acct .who{flex:1;font-weight:700}
+#acct .who{flex:1;min-width:0;font-family:"Cairo","Tajawal",sans-serif;font-weight:800;font-size:15px;line-height:1.8}
 #acct .pts{background:#fff3cd;border-radius:12px;padding:3px 10px;font-weight:800;color:#7a4b00}
 #acct button{border:0;border-radius:12px;padding:8px 12px;font-family:inherit;font-weight:700;font-size:13.5px;background:var(--blue);color:#fff;cursor:pointer}
+@media (max-width:640px){#acct .who{flex:1 1 100%}}
 #acct button.g{background:#fff;color:#333;border:1px solid #ccc}
 #osheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
 #esheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
