@@ -50,6 +50,7 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 .empty{text-align:center;color:#888;padding:40px 10px}
 .tabs{display:flex;gap:6px;margin:6px 0 10px;overflow-x:auto}.tabs button{flex:1;border:0;border-radius:12px;padding:10px 8px;font-family:inherit;font-weight:800;font-size:14.5px;background:#e3dfd5;color:#444;cursor:pointer;white-space:nowrap}.tabs button.on{background:var(--blue);color:#fff}
 .box{background:#fff;border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}.box h3{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:24px;color:var(--red);margin:0 0 4px}
+.stg{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:6px 0}.stc{background:#f7f3ea;border:1px solid #e3dfd5;border-radius:12px;padding:9px 11px}.stc b{display:block;font-size:20px;line-height:1.3}.stc span{color:#666;font-size:12.5px}.stl{margin:4px 0 12px}.stl b{display:block;margin:6px 0 2px}.stl div{padding:3px 0;border-top:1px dashed #e3dfd5;display:flex;justify-content:space-between;gap:8px}.stl div span:last-child{white-space:nowrap;font-weight:700}
 .msg{font-size:13.5px;font-weight:700;margin-top:8px;min-height:18px;color:#0a7a3b}.msg.bad{color:#a92318}
 .srchp{margin:6px 0}.psec{margin:14px 0 4px;font-family:"Rakkas","Tajawal",serif;font-size:22px;color:var(--red)}.pg2{font-weight:800;color:var(--blue);margin:16px 0 0}
 .pri{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:7px 10px;margin:4px 0}.pri .pn{flex:1;font-size:14px}.pri input[type=number]{width:84px;text-align:center;padding:7px;font-size:15px;font-weight:700}.pri label{display:flex;align-items:center;gap:4px;font-size:12.5px;margin:0;white-space:nowrap;font-weight:600}.pri label input{width:18px;height:18px}.pri.chg{background:#fff6b8}.pri.offr{opacity:.55}
@@ -107,6 +108,7 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <div id="blList"></div>
 </div></div>
 <div id="t-reports" style="display:none">
+<div class="box"><h3>إحصائيات سريعة 📈</h3><div id="admStats" style="font-size:14px;line-height:1.9">جاري التحميل…</div></div>
 <div class="box"><h3>تقارير المبيعات 📊</h3>
 <p style="font-size:13px;color:#666;line-height:1.7">اختار الفترة والفرع والحالة، وبعدين نزّل أي تقرير كملف إكسل. التواريخ بتتحسب بتوقيت القاهرة، والأرقام في الملف أرقام حقيقية تقدر تجمعها في الإكسل.</p>
 <div class="flt">
@@ -443,7 +445,52 @@ function repBranches(){var sel=$('rb');var cur=sel.value;var bs={};orders.forEac
  sel.innerHTML='<option value="">كل الفروع</option>'+want.map(function(x){return '<option>'+esc(x)+'</option>'}).join('');sel.value=cur}
 function repLoadAll(){return api('/rest/v1/orders?select=*&order=created_at.desc&limit=1000').then(function(r){return r.ok?r.json():orders}).then(function(rows){if(rows&&rows.length){orders=rows;render()}repBranches();repSummary()}).catch(function(){repBranches();repSummary()})}
 function openBlocklist(){var L=$('blList');L.innerHTML='<div class="empty" style="padding:10px">جاري التحميل…</div>';api('/rest/v1/blacklist?select=*&order=created_at.desc').then(function(r){return r.ok?r.json():[]}).then(function(rows){if(!rows.length){L.innerHTML='<div class="empty" style="padding:10px">مفيش حد محظور</div>';return}L.innerHTML='';rows.forEach(function(b){var d=document.createElement('div');d.className='pmr';d.innerHTML='<b>'+esc(b.phone||b.email||'')+'</b><span>'+(b.phone&&b.email?esc(b.email):'')+(b.reason?' — '+esc(b.reason):'')+(b.created_by?' ('+esc(b.created_by)+')':'')+'</span><button data-unbl="'+b.id+'">رفع الحظر</button>';L.appendChild(d)})}).catch(function(){L.innerHTML='<div class="empty" style="padding:10px">تعذّر التحميل</div>'})}
-function openReports(){repBranches();if(!$('rd1').value){var d=new Date();var t=new Date(d.getTime()-29*86400000);$('rd1').value=t.toISOString().slice(0,10);$('rd2').value=d.toISOString().slice(0,10)}repSummary();repLoadAll()}
+function openReports(){repBranches();if(!$('rd1').value){var d=new Date();var t=new Date(d.getTime()-29*86400000);$('rd1').value=t.toISOString().slice(0,10);$('rd2').value=d.toISOString().slice(0,10)}repSummary();repLoadAll().then(function(){loadAdminStats()})}
+function loadAdminStats(){var box=$('admStats');if(!box)return;var now=new Date();var d0=new Date(now.getFullYear(),now.getMonth(),now.getDate());var w0=new Date(d0.getTime()-6*86400000);var m0=new Date(now.getFullYear(),now.getMonth(),1);var iso=function(d){return d.toISOString()};
+Promise.all([
+ api('/rest/v1/profiles?select=id,points,created_at&limit=1000').then(function(r){return r.ok?r.json():[]}).catch(function(){return[]}),
+ api('/rest/v1/visits?select=id,created_at&created_at=gte.'+iso(w0)+'&limit=2000').then(function(r){return r.ok?r.json():[]}).catch(function(){return[]})
+]).then(function(res){var profs=res[0]||[],vis=res[1]||[];
+ var ok=orders.filter(function(o){return o.status!=='cancelled'});
+ var isD=function(t){return new Date(t)>=d0},isW=function(t){return new Date(t)>=w0},isM=function(t){return new Date(t)>=m0};
+ var rev=function(a){return a.reduce(function(s,o){return s+Number(o.total||0)},0)};
+ var tOk=orders.filter(function(o){return isD(o.created_at)&&o.status!=='cancelled'});
+ var mOk=ok.filter(function(o){return isM(o.created_at)});
+ var act={};ok.forEach(function(o){if(o.user_id)act[o.user_id]=1});var active=Object.keys(act).length;
+ var vt=vis.filter(function(v){return isD(v.created_at)}).length;
+ var pts=profs.reduce(function(s,p){return s+Number(p.points||0)},0);
+ var nw=profs.filter(function(p){return new Date(p.created_at)>=w0}).length;
+ var canc=orders.filter(function(o){return o.status==='cancelled'}).length;
+ var live=orders.filter(function(o){return o.status==='new'||o.status==='preparing'||o.status==='delivering'}).length;
+ var conv=vt?Math.round(tOk.length/vt*100):0;
+ var it={};ok.forEach(function(o){(o.items||[]).forEach(function(i){var k=i.n+(i.l?' ('+i.l+')':'');if(!it[k])it[k]={q:0,rev:0};it[k].q+=Number(i.q||0);it[k].rev+=Number(i.q||0)*Number(i.p||0)})});
+ var topItems=Object.keys(it).map(function(k){return {k:k,q:it[k].q,rev:it[k].rev}}).sort(function(a,b){return b.q-a.q}).slice(0,5);
+ var br={};ok.forEach(function(o){var b=o.branch||'—';if(!br[b])br[b]={c:0,rev:0};br[b].c++;br[b].rev+=Number(o.total||0)});
+ var topBr=Object.keys(br).map(function(k){return {k:k,c:br[k].c,rev:br[k].rev}}).sort(function(a,b){return b.c-a.c});
+ var cu={};ok.forEach(function(o){var k=(o.name||'')+' • '+(o.phone||'');if(!cu[k])cu[k]={c:0,rev:0};cu[k].c++;cu[k].rev+=Number(o.total||0)});
+ var topCu=Object.keys(cu).map(function(k){return {k:k,c:cu[k].c,rev:cu[k].rev}}).sort(function(a,b){return b.rev-a.rev}).slice(0,5);
+ var pr={};ok.forEach(function(o){if(o.promo)pr[o.promo]=(pr[o.promo]||0)+1});
+ var topPr=Object.keys(pr).map(function(k){return {k:k,c:pr[k]}}).sort(function(a,b){return b.c-a.c}).slice(0,5);
+ var card=function(v,l){return '<div class="stc"><b>'+v+'</b><span>'+l+'</span></div>'};
+ var list=function(t,rows,fmt){if(!rows.length)return '';return '<div class="stl"><b>'+t+'</b>'+rows.map(function(r,i){return '<div><span>'+(i+1)+'. '+esc(r.k)+'</span><span>'+fmt(r)+'</span></div>'}).join('')+'</div>'};
+ box.innerHTML='<div class="stg">'
+ +card(profs.length,'👥 الأكونتات المسجلة')
+ +card(nw,'🆕 حسابات جديدة (7 أيام)')
+ +card(vt,'👀 زيارات اليوم')+card(vis.length,'👀 زيارات (7 أيام)')
+ +card(tOk.length,'🧾 أوردرات اليوم')+card(n2(rev(tOk))+' ج','💰 إيراد اليوم')
+ +card(mOk.length,'🧾 أوردرات الشهر')+card(n2(rev(mOk))+' ج','💰 إيراد الشهر')
+ +card(n2(ok.length?rev(ok)/ok.length:0)+' ج','📊 متوسط قيمة الأوردر')
+ +card(active,'✅ أكونتات نشطة (طلبت)')+card(profs.length-active,'😴 أكونتات خاملة')
+ +card(pts,'⭐ مجموع نقاط العملاء')
+ +card(orders.length?Math.round(canc/orders.length*100)+'%':'—','❌ نسبة الإلغاء ('+canc+')')
+ +card(live,'⏳ أوردرات قيد التنفيذ')
+ +card(conv+'%','🎯 نسبة التحويل (أوردرات/زيارات اليوم)')
+ +'</div>'
+ +list('🔥 أكثر الأصناف مبيعًا',topItems,function(r){return r.q+' × • '+n2(r.rev)+' ج'})
+ +list('🏬 ترتيب الفروع (من الأكثر للأقل)',topBr,function(r){return r.c+' أوردر • '+n2(r.rev)+' ج'})
+ +list('👑 أكثر الزبائن طلبًا',topCu,function(r){return r.c+' أوردر • '+n2(r.rev)+' ج'})
+ +list('🎟️ البروموهات الأكثر استخدامًا',topPr,function(r){return r.c+' مرة'});
+}).catch(function(){box.textContent='تعذر تحميل الإحصائيات'})}
 function repOrdersRows(f){return f.map(function(o){return {'رقم الطلب':o.order_no,'التاريخ':repDate(o.created_at),'الاسم':o.name||'','الموبايل':o.phone||'','الفرع':o.branch||'','الاستلام':(o.fulfillment==='pickup'?'استلام من المطعم':'توصيل'),'الأصناف':(o.items||[]).map(function(i){return i.q+' × '+i.n+(i.l?' ('+i.l+')':'')}).join('، '),'الأصناف (ج)':Number(o.subtotal||0),'التوصيل (ج)':Number(o.delivery||0),'الضريبة (ج)':Number(o.vat||0),'الخصم (ج)':Number(o.discount||0),'الإجمالي (ج)':Number(o.total||0),'الدفع':o.payment||'','الحالة':ST[o.status]||o.status,'برومو':o.promo||'','نقاط مكتسبة':Number(o.points_earned||0),'نقاط مستبدلة':Number(o.points_redeemed||0)}})}
 function repDailyRows(f){var by={};f.forEach(function(o){var d=repDay(o.created_at);if(!by[d])by[d]={d:d,n:0,cx:0,sub:0,fee:0,vat:0,tot:0};by[d].n++;if(o.status==='cancelled'){by[d].cx++;return}by[d].sub+=Number(o.subtotal||0);by[d].fee+=Number(o.delivery||0);by[d].vat+=Number(o.vat||0);by[d].tot+=Number(o.total||0)});
  return Object.keys(by).sort().map(function(d){var x=by[d];return {'التاريخ':d,'عدد الطلبات':x.n,'ملغي':x.cx,'الأصناف (ج)':x.sub,'التوصيل (ج)':x.fee,'الضريبة (ج)':x.vat,'الإجمالي (ج)':x.tot,'متوسط الطلب (ج)':x.n-x.cx>0?Math.round(x.tot/(x.n-x.cx)*100)/100:0}})}
