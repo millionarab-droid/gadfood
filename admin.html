@@ -92,7 +92,7 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <div id="chatlist"></div>
 <div id="chatview" style="display:none">
 <div class="box"><button class="back" id="chatback" type="button">→ رجوع للمحادثات</button><h3 id="chathead" style="margin:6px 0"></h3><div id="chatmsgs" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto"></div>
-<div style="display:flex;gap:8px;margin-top:10px"><input id="chatIn" type="text" dir="rtl" placeholder="اكتب الرد…" maxlength="1000" style="flex:1;border:1px solid #d8d5cd;border-radius:12px;padding:11px;font-family:inherit;font-size:15px;text-align:right;unicode-bidi:plaintext"><button class="btn" id="chatSend" type="button">إرسال</button></div></div>
+<div style="display:flex;gap:8px;margin-top:10px"><textarea id="chatIn" rows="1" dir="rtl" placeholder="اكتب الرد…" maxlength="1000" style="flex:1;min-width:0;border:1px solid #d8d5cd;border-radius:12px;padding:11px;font-family:inherit;font-size:15px;text-align:right;resize:none;overflow:hidden"></textarea><button class="btn" id="chatSend" type="button" style="width:auto;margin-top:0;flex:none">إرسال</button></div></div>
 </div></div>
 <div id="t-blocklist" style="display:none">
 <div class="box"><h3>قائمة الحظر 🚫</h3>
@@ -226,7 +226,7 @@ function openChatAdmin(no,name){chatOpenNo=no;chatOpenName=name||'';$('chatview'
 function loadChatMsgs(){if(!chatOpenNo)return;api('/rest/v1/order_messages?order_no=eq.'+encodeURIComponent(chatOpenNo)+'&select=*&order=created_at.asc').then(function(r){return r.ok?r.json():[]}).then(function(rows){var L=$('chatmsgs');L.innerHTML=rows.length?rows.map(function(m){return '<div style="max-width:85%;padding:9px 12px;border-radius:14px;line-height:1.6;font-size:15px;direction:rtl;unicode-bidi:plaintext;text-align:start;'+(m.sender==='customer'?'align-self:flex-start;background:#fff;border:1px solid #e5e1d8':'align-self:flex-end;background:#0053aa;color:#fff')+'">'+esc(m.message)+'<div style="font-size:11px;opacity:.75;margin-top:3px">'+(m.sender==='customer'?'الزبون':(m.sender_name||'المطعم'))+' • '+tm(m.created_at)+'</div></div>'}).join(''):'<div class="empty">مفيش رسايل</div>';L.scrollTop=L.scrollHeight}).catch(function(){})}
 function sendChatAdmin(){var inp=$('chatIn');var v=inp.value.trim();if(!v||!chatOpenNo)return;inp.value='';api('/rest/v1/rpc/send_order_message',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_order_no:chatOpenNo,p_text:v,p_sender:'staff',p_name:ROLE==='agent'?'إيجنت':'الإدارة'})}).then(function(r){if(r.ok)loadChatMsgs();else inp.value=v}).catch(function(){inp.value=v})}
 $('chatSend').onclick=sendChatAdmin;
-$('chatIn').addEventListener('keydown',function(e){if(e.key==='Enter')sendChatAdmin()});
+$('chatIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendChatAdmin()}});
 $('chatback').onclick=function(){$('chatview').style.display='none';chatOpenNo=null;openChats()};
 var lastAutoAdv=0;
 function autoAdvance(){var now=Date.now();if(now-lastAutoAdv<60000)return;var need=orders.some(function(o){var t=new Date(o.status_changed_at||o.created_at).getTime();return (o.status==='new'&&now-t>5*60000)||(o.status==='preparing'&&now-t>25*60000)});if(!need)return;lastAutoAdv=now;api('/rest/v1/rpc/auto_advance_orders',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).then(function(r){if(r.ok)poll()}).catch(function(){})}
