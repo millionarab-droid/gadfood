@@ -58,7 +58,10 @@ header p{margin:4px 0 0;font-size:14px}
 .ad-row input{width:18px;height:18px}
 .ad-row .ad-nm{flex:1}
 .ad-row .ad-pr{font-weight:800;color:var(--blue);font-size:14px}
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.15)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.15);display:flex;gap:8px}
+.bar #open{flex:1;width:auto}
+.bar button.grp{flex:none;width:auto;background:var(--blue);font-size:15px;padding:14px 16px}
+.bar button.grp.on{background:#a92318}
 .bar button{width:100%;border:0;border-radius:16px;padding:14px;font-family:inherit;font-weight:800;font-size:17px;background:var(--red);color:#fff;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .bar button[disabled]{background:#b9b4a9}
 .cnt{background:#fff;color:var(--red);border-radius:12px;padding:2px 10px;font-size:15px}
@@ -187,7 +190,7 @@ textarea{min-height:80px;resize:vertical}
 <div id="grpBar" class="grpbar" style="display:none"></div>
 <div class="wrap" id="menu"></div>
 <div class="story"><h3>حكاية جاد — من 1960</h3><p>من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div>
-<div class="bar"><button id="open" disabled><span>عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button></div>
+<div class="bar"><button id="open" disabled><span>عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button><button id="grpTglBar" type="button" class="grp">👥 جماعي</button></div>
 <div id="sheet"><div class="in">
 <button class="back" id="back">→ رجوع للمنيو</button>
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="grp-tgl" id="grpTgl" type="button">👥 طلب جماعي</button><span id="grpHint" style="font-size:13px;color:#777">اطلب ليك ولصحابك من موبايلك</span></div>
@@ -353,7 +356,7 @@ function grpSplitCalc(persons,fee,vat,disc,total){var S=0;persons.forEach(functi
  return out}
 function grpSplit(){var ps=grpPersons();if(ps.length<2)return null;var t=totals();return grpSplitCalc(ps.map(function(p){return {name:p.name,items:p.items}}),t.fee,t.vat,t.disc+t.ptsDisc,t.total)}
 function grpSplitHtml(sp,final){var h='<div class="g"><span>💰 '+(final?'تقسيمة الأوردر — كل واحد عليه كام':'كل واحد عليه كام')+'</span><span></span></div>';sp.forEach(function(p){h+='<div><span>'+escH(p.name)+'</span><span><b>'+fmt(p.total)+'</b></span></div><div style="font-size:12.5px;color:#888"><span>أصناف '+fmt(p.items)+(p.discount>0?' − خصم '+fmt(p.discount):'')+' + توصيل '+fmt(p.delivery)+' + ضريبة '+fmt(p.vat)+'</span><span></span></div>'});return h}
-function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=on?'👥 طلب جماعي: مفعّل':'👥 طلب جماعي'}var hint=document.getElementById('grpHint');if(hint)hint.textContent=on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك';
+function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=on?'👥 طلب جماعي: مفعّل':'👥 طلب جماعي'}var tb=document.getElementById('grpTglBar');if(tb)tb.classList.toggle('on',on);var hint=document.getElementById('grpHint');if(hint)hint.textContent=on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك';
  ['grpBar','grpBarSheet'].forEach(function(id){var b=document.getElementById(id);if(!b)return;b.style.display=on?'':'none';if(!on){b.innerHTML='';return}
   var h='<button type="button" class="grp-chip'+(grpPerson===''?' on':'')+'" data-person="">أنا</button>';
   grpFriends.forEach(function(fn){h+='<button type="button" class="grp-chip'+(grpPerson===fn?' on':'')+'" data-person="'+escH(fn)+'">'+escH(fn)+' <span class="x" data-del="'+escH(fn)+'">'+(grpDelArm===fn?'تأكيد؟':'✕')+'</span></button>'});
@@ -369,6 +372,7 @@ function grpBarClick(ev){var del=ev.target.closest?ev.target.closest('[data-del]
 function grpBarKeys(ev){if(ev.key==='Enter'&&ev.target.classList&&ev.target.classList.contains('grp-new')){grpAddFriend(ev.target.value)}}
 ['grpBar','grpBarSheet'].forEach(function(id){var b=document.getElementById(id);if(b){b.addEventListener('click',grpBarClick);b.addEventListener('keydown',grpBarKeys)}});
 document.getElementById('grpTgl').onclick=function(){grpToggle(!grpOn)};
+document.getElementById('grpTglBar').onclick=function(){grpToggle(!grpOn)};
 function stepper(k,after,itemKey,person){var d=document.createElement('div');d.className='step';
  var plus=document.createElement('button');plus.type='button';plus.textContent='+';var q=document.createElement('span');q.className='q';var mi=document.createElement('button');mi.type='button';mi.textContent='−';mi.className='mi';
  function effKey(){if(!itemKey)return k;var sel=selAddons[itemKey]||[];return sel.length?k+'|'+sel.slice().sort().join(','):k}
@@ -510,7 +514,7 @@ function checkPromoElig(){if(!promo||!DB_ON)return Promise.resolve(true);return 
   function doneOk(){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');loadCustStats();lastChatNo=row.order_no;lastChatPhone=row.phone;try{localStorage.setItem('gad_last_order_v1',JSON.stringify({no:row.order_no,ph:row.phone}))}catch(e){}document.getElementById('chatbtn').style.display='';if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);
   if(grpOn&&grpFriends.length&&custUser&&profile){var merged=(profile.friends||[]).slice();grpFriends.forEach(function(fn){if(merged.indexOf(fn)<0)merged.push(fn)});profile.friends=merged;saveProfile()}
   var finSplit=grpOn?grpSplit():null;if(finSplit&&finSplit.length>1){lastSplit=finSplit;var gs=document.getElementById('grpSplit');if(gs){gs.innerHTML=grpSplitHtml(finSplit,true);gs.style.display=''}}
-  grpCarts={};grpOn=false;grpPerson='';grpAddOpen=false;save();renderGrpBar();return true}
+  return true}
   return sendOrder().then(function(res){if(res==='unauth')return refreshCustSess().then(function(ok){if(!ok){setRec('⚠️ انتهت جلستك، سجّل دخول تاني أو كمّل كضيف — ابعت الطلب تاني','#a92318');return false}return sendOrder().then(function(r2){return r2===true?doneOk():r2})});return res===true?doneOk():res});
  })})})})}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
@@ -524,7 +528,7 @@ function startTrack(){if(!lastChatNo)return;trackNo=lastChatNo;trackPhone=lastCh
 function stopTrack(){if(trackTimer){clearInterval(trackTimer);trackTimer=null}document.getElementById('trackBar').style.display='none'}
 function restoreTrack(){var sv=null;try{sv=JSON.parse(localStorage.getItem('gad_last_order_v1')||'null')}catch(e){}if(!sv||!sv.no)return;trackNo=sv.no;trackPhone=sv.ph;document.getElementById('tkNo').textContent=trackNo;fetch(SUPABASE_URL+'/rest/v1/rpc/get_order_status',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_order_no:trackNo,p_phone:trackPhone})}).then(function(r){return r.ok?r.json():[]}).then(function(a){var x=Array.isArray(a)?a[0]:a;if(!x||!x.status)return;if(x.status==='done'||x.status==='cancelled'){try{localStorage.removeItem('gad_last_order_v1')}catch(e){}return}document.getElementById('trackBar').style.display='block';renderTrack(x.status,x.fulfillment);if(trackTimer)clearInterval(trackTimer);trackTimer=setInterval(fetchTrack,5000)}).catch(function(){})}
 document.getElementById('tkX').onclick=function(){try{localStorage.removeItem('gad_last_order_v1')}catch(e){}stopTrack()};
-snd.addEventListener('click',function(ev){ev.preventDefault();if(!custUser){document.getElementById('lsheet').style.display='block';return}if(!valid())return;var sg=sig();if(lastSig&&lastSig!==sg){curNo=null;redeemedForNo=null}refresh();record().then(function(ok){if(ok==='rate-limit'||ok==='blocked'||ok==='promo-ineligible')return;lastSig=sg;showFb();if(ok===true){cart={};notes={};save();promo=null;redeemUsed=0;redeemDisc=0;redeemedForNo=null;document.getElementById('redeemIn').value='';document.getElementById('loym').textContent='';document.getElementById('pc').value='';document.getElementById('pm').textContent='';render();drawTot()}if(ok!=='redeem-fail'){showFollow()}})});
+snd.addEventListener('click',function(ev){ev.preventDefault();if(!custUser){document.getElementById('lsheet').style.display='block';return}if(!valid())return;var sg=sig();if(lastSig&&lastSig!==sg){curNo=null;redeemedForNo=null}refresh();record().then(function(ok){if(ok==='rate-limit'||ok==='blocked'||ok==='promo-ineligible')return;lastSig=sg;showFb();if(ok===true){cart={};notes={};grpCarts={};grpOn=false;grpPerson='';grpAddOpen=false;save();renderGrpBar();promo=null;redeemUsed=0;redeemDisc=0;redeemedForNo=null;document.getElementById('redeemIn').value='';document.getElementById('loym').textContent='';document.getElementById('pc').value='';document.getElementById('pm').textContent='';render();drawTot()}if(ok!=='redeem-fail'){showFollow()}})});
 document.getElementById('newo').onclick=function(){cart={};notes={};grpCarts={};grpOn=false;grpPerson='';grpAddOpen=false;lastSplit=null;save();curNo=null;lastSig=null;promo=null;redeemUsed=0;redeemDisc=0;redeemedForNo=null;document.getElementById('redeemIn').value='';document.getElementById('loym').textContent='';document.getElementById('pc').value='';document.getElementById('pm').textContent='';document.getElementById('fb').style.display='none';document.getElementById('follow').style.display='none';document.getElementById('prev').style.display='none';document.getElementById('rec').textContent='';var gs2=document.getElementById('grpSplit');if(gs2){gs2.style.display='none';gs2.innerHTML=''}renderGrpBar();sheet.style.display='none';render()};
 
 if(!CFG.wa)document.getElementById('warn').style.display='block';
