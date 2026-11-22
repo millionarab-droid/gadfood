@@ -24,6 +24,16 @@ header p{margin:4px 0 0;font-size:14px}
 .item{background:#fff;border-radius:16px;padding:11px 12px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 #offerBar{display:none;background:#fff3cd;border:2px dashed #e0a100;border-radius:14px;padding:10px 14px;margin:10px 12px 0;text-align:center;font-weight:800;font-size:16px;color:#7a4b00;line-height:1.7}
 #offerBar img{max-width:100%;border-radius:10px;display:block;margin:0 auto 6px}
+#gfBanner{position:relative;overflow:hidden;background:linear-gradient(120deg,#a92318,#d8232a 35%,#184898 65%,#a92318);background-size:300% 100%;animation:gfGrad 9s ease infinite;color:#fff;border-radius:16px;padding:12px 14px;margin:10px 12px 0;text-align:center;cursor:pointer;box-shadow:0 2px 10px rgba(169,35,24,.35);line-height:1.8}
+#gfBanner::before{content:"";position:absolute;top:0;bottom:0;width:70px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:gfShine 3.2s ease-in-out infinite}
+@keyframes gfGrad{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+@keyframes gfShine{0%{right:110%}60%,100%{right:-20%}}
+@keyframes gfFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes gfPulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}70%{box-shadow:0 0 0 9px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+#gfBanner .gf-ic{display:inline-block;font-size:26px;animation:gfFloat 2s ease-in-out infinite;vertical-align:middle}
+#gfBanner .gf-tx{font-size:18px;font-weight:900;vertical-align:middle}
+#gfBanner .gf-code{display:inline-block;background:#fff;color:#a92318;border-radius:999px;padding:2px 14px;margin:0 6px;font-weight:900;font-size:18px;letter-spacing:1px;direction:ltr;animation:gfPulse 2s infinite;vertical-align:middle}
+#gfBanner .gf-hint{display:block;font-size:12.5px;opacity:.92}
 #follow{display:none;margin-top:12px;border:2px dashed #e0a100;border-radius:14px;padding:12px;background:#fffbe8;line-height:1.9}
 #follow .alt{display:inline-block;margin:4px 4px 0 0}
 .itop{display:flex;gap:10px;align-items:flex-start}
@@ -130,6 +140,7 @@ textarea{min-height:80px;resize:vertical}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#a92318"><link rel="apple-touch-icon" href="icon-192.png"></head><body>
 <header><img class="logoimg" src="logo-v2.png" alt="جاد GAD"><p class="tagline">أكل لكل الناس</p></header><div class="pat"></div>
 <div id="offerBar"></div>
+<div id="gfBanner" onclick="copyGfCode()" role="button" title="دوس عشان تنسخ الكود"><span class="gf-ic">🛵</span> <span class="gf-tx">توصيل مجاني</span> <span class="gf-code">gadfree</span><span class="gf-hint" id="gfHint">للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه</span></div>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
 <div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button></div>
 <div id="trackBar" style="display:none"><div class="tk-head"><b>🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم الاستلام</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div></div>
@@ -373,6 +384,7 @@ var ITEMPH={};
 function applySettings(rows){var cfg=null,pr=null,ly=null,ord=null,bn=null,ma=null,brc=null;(rows||[]).forEach(function(r){if(r.key==='config')cfg=r.value;if(r.key==='prices')pr=r.value;if(r.key==='loyalty')ly=r.value;if(r.key==='order')ord=r.value;if(r.key==='item_photos')ITEMPH=r.value||{};if(r.key==='banner')bn=r.value;if(r.key==='menu_add')ma=r.value;if(r.key==='branches')brc=r.value});
  MENU.length=0;BASE_MENU.forEach(function(g){MENU.push(JSON.parse(JSON.stringify(g)))});
  var ob=document.getElementById('offerBar');if(bn&&bn.on&&(bn.text||bn.img)){ob.style.display='block';ob.innerHTML='';if(bn.img){var bi=document.createElement('img');bi.src=bn.img;bi.alt='عرض';ob.appendChild(bi)}if(bn.text){var bt=document.createElement('div');bt.textContent=bn.text;ob.appendChild(bt)}}else{ob.style.display='none'}
+function copyGfCode(){var c='gadfree';var h=document.getElementById('gfHint');var orig='للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه';function done(){if(h){h.textContent='✅ اتنسخ! اكتبه في خانة البرومو عند الطلب';setTimeout(function(){h.textContent=orig},3000)}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(c).then(done,function(){fb()})}else{fb()}function fb(){var t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(t)}}
  if(ord&&ord.length){var by={};MENU.forEach(function(g){by[g.g]=g});var nm=ord.map(function(n){return by[n]}).filter(Boolean);MENU.forEach(function(g){if(nm.indexOf(g)<0)nm.push(g)});MENU.length=0;nm.forEach(function(g){MENU.push(g)});if(cur>=MENU.length)cur=0;buildTabs()}
  applyMenuAdd(ma);buildFlat();BRANCHCFG=brc||{};buildBranchOptions();buildTabs();
  if(ly){if(typeof ly.earn_per_egp==='number')LOYAL.earn=ly.earn_per_egp;if(typeof ly.redeem_points_per_egp==='number')LOYAL.rate=ly.redeem_points_per_egp;if(typeof ly.min_redeem_points==='number')LOYAL.min=ly.min_redeem_points;updateAcct()}
