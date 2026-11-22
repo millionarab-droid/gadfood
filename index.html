@@ -825,6 +825,7 @@ function setEl(id,ar){var el=document.getElementById(id);if(el)el.textContent=T(
 function setPh(id,ar){var el=document.getElementById(id);if(el)el.placeholder=T(ar)}
 function applyLang(){
  document.documentElement.lang=lang;document.documentElement.dir=lang==='en'?'ltr':'rtl';document.title=T('اطلب من جاد');
+ var q=document.getElementById('q');if(q)q.value='';
  var lb=document.getElementById('langBtn');if(lb)lb.textContent=lang==='en'?'عربي':'EN';
  setEl('tagline','أكل لكل الناس');setEl('gfTx','توصيل مجاني');setEl('gfHint','للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه');
  var gb=document.getElementById('gfBanner');if(gb)gb.title=T('دوس عشان تنسخ الكود');
