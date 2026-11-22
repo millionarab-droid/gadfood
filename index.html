@@ -5,7 +5,8 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg);overflow-x:clip}
 body{margin:0;font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif;color:var(--ink);padding-bottom:90px;overflow-x:clip}
-header{background:var(--red);text-align:center;padding:0}
+header{background:var(--red);text-align:center;padding:0;position:relative}
+.gear-h{position:absolute;top:12px;inset-inline-start:12px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:22px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:5}
 .logoimg{width:100%;max-width:190px;display:block;margin:0 auto}
 .tagline{background:#fff;color:var(--red);font-weight:800;font-size:20px;padding:8px 0;margin:0}
 .pat{height:46px;background:url(pattern.png) repeat-x;background-size:auto 46px}
@@ -178,8 +179,8 @@ textarea{min-height:80px;resize:vertical}
 #csheet .in{max-width:720px;margin:0 auto;padding:12px 12px 90px}
 #addrSheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
 #addrSheet .in{max-width:720px;margin:0 auto;padding:12px 12px 60px}
-#setSheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
-#setSheet .in{max-width:720px;margin:0 auto;padding:12px 12px 60px}
+#setSheet{position:fixed;top:70px;inset-inline-end:12px;z-index:60;width:min(320px,86vw);background:var(--bg);border:1px solid #ddd;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.3);display:none;overflow:auto;max-height:72vh}
+#setSheet .in{max-width:none;margin:0;padding:12px}
 #ptsSheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
 #ptsSheet .in{max-width:720px;margin:0 auto;padding:12px 12px 60px}
 .addr-choose{display:flex;flex-direction:column;gap:8px}
@@ -234,11 +235,11 @@ textarea{min-height:80px;resize:vertical}
 #fb{display:none;margin-top:12px}
 #fb .w{color:#7a4b00;background:#fff3cd;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.7}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#a92318"><link rel="apple-touch-icon" href="icon-192.png"></head><body>
-<header><img class="logoimg" src="logo-v2.png" alt="جاد GAD"><p class="tagline" id="tagline">أكل لكل الناس</p></header><div class="pat"></div>
+<header><img class="logoimg" src="logo-v2.png" alt="جاد GAD"><button id="gearBtn" type="button" class="gear-h" title="الإعدادات">⚙️</button><p class="tagline" id="tagline">أكل لكل الناس</p></header><div class="pat"></div>
 <div id="offerBar"></div>
 <div id="gfBanner" onclick="copyGfCode()" role="button" title="دوس عشان تنسخ الكود"><span class="gf-ic">🛵</span> <span class="gf-tx" id="gfTx">توصيل مجاني</span> <span class="gf-code">gadfree</span><span class="gf-hint" id="gfHint">للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه</span></div>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
-<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button class="grp-tgl" id="grpTglTop" type="button">👥 مع صحابك</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button><button id="langBtn" type="button" style="background:#6b7280">EN</button><button id="gearBtn" type="button" style="background:#374151">⚙️</button></div>
+<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button class="grp-tgl" id="grpTglTop" type="button">👥 مع صحابك</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button><button id="langBtn" type="button" style="background:#6b7280">EN</button></div>
 <div id="grpPanel" style="display:none"><div class="grp-panel"><b id="grpHelpTitle">👥 اطلب مع صحابك — إزاي؟</b><div class="hs"><div id="grpHelpS1">1️⃣ دوس ➕ صديق وضيف أصحابك</div><div id="grpHelpS2">2️⃣ دوس على اسم كل واحد، وبعدين اختار أصنافه من المنيو</div><div id="grpHelpS3">3️⃣ التوصيل والضريبة بيتقسموا تلقائي، وكل واحد يعرف عليه كام</div><div id="grpHelpS4">4️⃣ أصحابك بيتحفظوا في حسابك، فالمرة الجاية تلاقيهم جاهزين</div></div><div id="grpBarPanel" class="grpbar" style="display:none"></div></div></div>
 <div class="stat-banner" id="custStats" style="display:none"><div class="sb-row" id="sbRow"><span class="sb-ic" id="sbIc">⭐</span><div class="sb-tx"><div class="sb-val" id="sbVal">0</div><div class="sb-lb" id="sbLb">نقاطك تساوي</div><div class="sb-sub" id="sbSub"></div></div></div><div class="sb-dots" id="sbDots"></div></div>
 <div class="ord-banner" id="ordBanner" style="display:none"><span class="ob-char bob" id="obChar">🧑‍🍳</span><div class="ob-tx"><div class="ob-lbl" id="obLbl">تم استلام الأوردر في المطعم</div><div class="ob-no" id="obNo"></div><div class="ob-bar"><div class="ob-fill" id="obFill" style="width:25%"></div></div></div><a class="ob-wa" id="obWa" href="#" target="_blank" rel="noopener" title="متابعة واتساب">💬</a><button class="ob-x" id="obX" type="button">✕</button></div>
@@ -909,13 +910,15 @@ document.getElementById('addrAdd').onclick=addAddrFromForm;
 document.getElementById('addrCancelEdit').onclick=cancelEditAddr;
 document.getElementById('addrBack').onclick=function(){document.getElementById('addrSheet').style.display='none'};
 document.getElementById('addrNew').onclick=function(){document.getElementById('addrSheet').style.display='none';cancelEditAddr();openCheckoutSheet();setTimeout(function(){var bx=document.getElementById('addrBox');if(bx)bx.scrollIntoView({behavior:'smooth',block:'center'});var ad=document.getElementById('ad');if(ad)ad.focus()},80)};
-document.getElementById('gearBtn').onclick=function(){document.getElementById('setSheet').style.display='block'};
+document.getElementById('gearBtn').onclick=function(e){if(e)e.stopPropagation();var sh=document.getElementById('setSheet');sh.style.display=sh.style.display==='block'?'none':'block'};
+document.addEventListener('click',function(e){var sh=document.getElementById('setSheet');if(sh.style.display==='block'&&!sh.contains(e.target)){sh.style.display='none'}});
 document.getElementById('setBack').onclick=function(){document.getElementById('setSheet').style.display='none'};
 document.getElementById('setAddrs').onclick=function(){document.getElementById('setSheet').style.display='none';if(!custUser){try{localStorage.setItem('gad_login_ctx','addrs')}catch(e){}document.getElementById('lstep1').style.display='';document.getElementById('lstep2').style.display='none';document.getElementById('lsheet').style.display='block';return}openAddrSheet()};
 document.getElementById('setOrders').onclick=function(){document.getElementById('setSheet').style.display='none';openMyOrders()};
 document.getElementById('setFriends').onclick=function(){document.getElementById('setSheet').style.display='none';grpOn=true;renderGrpBar();try{document.getElementById('grpPanel').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}};
 document.getElementById('setPts').onclick=function(){document.getElementById('setSheet').style.display='none';openPtsSheet()};
 document.getElementById('ptsBack').onclick=function(){document.getElementById('ptsSheet').style.display='none'};
+setTimeout(function(){try{if(sessionStorage.getItem('gad_visit_logged'))return;sessionStorage.setItem('gad_visit_logged','1');fetch(SUPABASE_URL+'/rest/v1/visits',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({user_id:custUser?custUser.id:null,page:'home'})}).catch(function(){})}catch(e){}},2000);
 document.getElementById('ad').addEventListener('change',function(){var t=this.value;if(t.trim().length>=8){updBranchMsg();suggestBranch(document.getElementById('br'),t,document.getElementById('brmsg'))}var a=getAddrs();var found=-1;a.forEach(function(x,i){if(x.address===t.trim())found=i});var pk=document.getElementById('addrPick');if(pk)pk.value=found>-1?String(found):'new'});
 document.getElementById('ordBanner').onclick=function(){document.getElementById('trackBar').style.display='block';try{document.getElementById('trackBar').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}};
 document.getElementById('obX').onclick=function(e){if(e)e.stopPropagation();try{localStorage.removeItem('gad_last_order_v1')}catch(err){}stopTrack()};
