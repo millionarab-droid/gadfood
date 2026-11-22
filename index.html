@@ -928,7 +928,7 @@ function drawSheet(){var L=document.getElementById('lines');L.innerHTML='';var a
     var pr=document.createElement('div');pr.className='pr';pr.textContent=fmt(ps.cart[k]*linePrice(k));d.appendChild(tx);d.appendChild(pr);d.appendChild(stepper(k,drawSheet,null,ps.key));g.appendChild(d)});
    if(ps.key==='')g.appendChild(noteBox(ik));L.appendChild(g)});
  });
- drawTot();if(!any)sheet.style.display='none';document.querySelectorAll('#menu .step').forEach(function(s){if(s.refresh)s.refresh()})}
+ drawTot();if(!any)sheet.style.display='none';document.querySelectorAll('#menu .step, #bestRow .step').forEach(function(s){if(s.refresh)s.refresh()})}
 function drawTot(){var t=totals();var pmEl=document.getElementById('pm');if(pmEl&&promo&&promo.min>0&&t.s<promo.min){pmEl.style.color='#a92318';pmEl.textContent=T('⚠️ البرومو محتاج حد أدنى {n} جنيه (أصنافك حاليًا {s} جنيه)').replace('{n}',num(promo.min)).replace('{s}',num(t.s)) }var tt=document.getElementById('tot');
  tt.innerHTML='<div><span>'+T('إجمالي الأصناف')+'</span><span>'+fmt(t.s)+'</span></div>'+
   (t.disc>0?'<div><span>'+T('خصم')+' ('+promo.code+')</span><span class="free">- '+fmt(t.disc)+'</span></div>':'')+(t.ptsDisc>0?'<div><span>'+T('خصم نقاط ({n} نقطة)').replace('{n}',redeemUsed)+'</span><span class="free">- '+fmt(t.ptsDisc)+'</span></div>':'')+(promo&&promo.min>0&&t.s<promo.min?'<div><span style="color:#a92318">'+T('⚠️ البرومو محتاج حد أدنى {n} جنيه').replace('{n}',num(promo.min))+'</span><span></span></div>':'')+(fulfill()==='pickup'?'<div><span>'+T('الاستلام')+'</span><span class="free">'+T('من المطعم — بدون رسوم توصيل')+'</span></div>':'<div><span>'+T('التوصيل')+'</span>'+(t.fee===0?'<span class="free">'+T('مجاني 🎉')+'</span>':'<span>'+fmt(t.fee)+'</span>')+'</div>')+
