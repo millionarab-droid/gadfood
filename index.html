@@ -102,6 +102,13 @@ textarea{min-height:80px;resize:vertical}
 .stat .st-lb{display:block;font-size:12.5px;color:#666}
 .stat .st-sub{display:block;font-size:11.5px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+.best{margin:12px 12px 0}
+.best h2{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:24px;color:var(--red);margin:4px 2px 8px}
+.best-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.best-card{flex:0 0 170px;background:#fff;border-radius:14px;padding:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.best-card .bn{font-weight:800;font-size:14.5px;line-height:1.5;min-height:44px}
+.best-card .bp{color:var(--red);font-weight:800;margin:4px 0 6px}
+.best-card .bq{font-size:12px;color:#888}
 #osheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
 #esheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
 #lsheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
@@ -160,6 +167,7 @@ textarea{min-height:80px;resize:vertical}
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
 <div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button></div>
 <div class="stats" id="custStats" style="display:none"><div class="stat"><span class="st-ic">⭐</span><b id="stPts">0</b><span class="st-lb">نقاطك تساوي</span><span class="st-sub" id="stPtsSub"></span></div><div class="stat"><span class="st-ic">🕐</span><b id="stLast">—</b><span class="st-lb">آخر أوردر</span><span class="st-sub" id="stLastSub"></span></div><div class="stat"><span class="st-ic">🍽️</span><b id="stCnt">0</b><span class="st-lb">أوردر من جاد</span><span class="st-sub">كل طلباتك</span></div><div class="stat"><span class="st-ic">❤️</span><b id="stTop">—</b><span class="st-lb">أكتر صنف طلبته</span><span class="st-sub" id="stTopSub"></span></div></div>
+<div class="best" id="bestSec" style="display:none"><h2>🔥 الأعلى مبيعاً</h2><div class="best-row" id="bestRow"></div></div>
 <div id="trackBar" style="display:none"><div class="tk-head"><b>🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم الاستلام</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div></div>
 <div class="tabs" id="tabs"></div>
 <input class="srch" id="q" type="search" placeholder="ابحث عن صنف…">
@@ -264,6 +272,17 @@ countUp(document.getElementById('stCnt'),total,'');
 var te=document.getElementById('stTop'),ts=document.getElementById('stTopSub');
 if(topN){te.textContent=topN;ts.textContent='طلبته '+topQ+' مرة'}else{te.textContent='—';ts.textContent='لسه مفيش أصناف'}
 })}).catch(function(){if(box)box.style.display='none'})}
+function loadBestSellers(){var sec=document.getElementById('bestSec');if(!sec)return;if(!BESTSELL||!BESTSELL.on){sec.style.display='none';return}
+fetch(SUPABASE_URL+'/rest/v1/rpc/top_sellers',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_limit:8})}).then(function(r){return r.ok?r.json():[]}).then(function(a){
+var row=document.getElementById('bestRow');row.innerHTML='';var n=0;
+(a||[]).forEach(function(t){var k=null;Object.keys(flat).forEach(function(fk){var f=flat[fk];if(f.name===t.name&&f.label===(t.label||'')&&!f.off)k=fk});if(!k)return;var f=flat[k];n++;
+var c=document.createElement('div');c.className='best-card';
+var nm=document.createElement('div');nm.className='bn';nm.textContent=f.name+(f.label?' ('+f.label+')':'');c.appendChild(nm);
+var pr=document.createElement('div');pr.className='bp';pr.textContent=f.price+' ج';c.appendChild(pr);
+var q=document.createElement('div');q.className='bq';q.textContent='اتطلب '+t.qty+' مرة';c.appendChild(q);
+c.appendChild(stepper(k));row.appendChild(c)});
+sec.style.display=n?'':'none'}).catch(function(){sec.style.display='none'})}
+var BESTSELL={on:false};
 function initAuth(){if(location.hash&&location.hash.indexOf('access_token=')>-1){var h={};location.hash.slice(1).split('&').forEach(function(p){var kv=p.split('=');h[kv[0]]=decodeURIComponent(kv[1]||'')});if(h.access_token){saveCustSess({access:h.access_token,refresh:h.refresh_token||'',exp:Date.now()+((+h.expires_in||3600)-60)*1000});history.replaceState(null,'',location.pathname+location.search)}}var p=Promise.resolve();if(custSess&&!sessValid())p=refreshCustSess();p.then(function(){getCustUser().then(function(){if(custUser)loadProfile();else updateAcct()})})}
 document.getElementById('glogin').onclick=loginGoogle;document.getElementById('elogin').onclick=openEmailSheet;document.getElementById('lback').onclick=function(){document.getElementById('lsheet').style.display='none'};document.getElementById('lgoogle').onclick=loginGoogle;document.getElementById('lemail').onclick=function(){document.getElementById('lsheet').style.display='none';openEmailSheet()};document.getElementById('eback').onclick=closeEmailSheet;document.getElementById('eSend').onclick=sendEmailOtp;document.getElementById('eResend').onclick=sendEmailOtp;document.getElementById('eChange').onclick=function(){document.getElementById('estep2').style.display='none';document.getElementById('estep1').style.display=''};document.getElementById('glogout').onclick=logoutGoogle;
 document.getElementById('myord').onclick=function(){openMyOrders()};document.getElementById('oback').onclick=function(){document.getElementById('osheet').style.display='none'};
@@ -434,12 +453,12 @@ document.getElementById('newo').onclick=function(){cart={};notes={};save();curNo
 
 if(!CFG.wa)document.getElementById('warn').style.display='block';
 var ITEMPH={};
-function applySettings(rows){var cfg=null,pr=null,ly=null,ord=null,bn=null,ma=null,brc=null,ad=null;(rows||[]).forEach(function(r){if(r.key==='config')cfg=r.value;if(r.key==='prices')pr=r.value;if(r.key==='loyalty')ly=r.value;if(r.key==='order')ord=r.value;if(r.key==='item_photos')ITEMPH=r.value||{};if(r.key==='banner')bn=r.value;if(r.key==='menu_add')ma=r.value;if(r.key==='branches')brc=r.value;if(r.key==='addons')ADDONS=r.value||{}});
+function applySettings(rows){var cfg=null,pr=null,ly=null,ord=null,bn=null,ma=null,brc=null,ad=null;(rows||[]).forEach(function(r){if(r.key==='config')cfg=r.value;if(r.key==='prices')pr=r.value;if(r.key==='loyalty')ly=r.value;if(r.key==='order')ord=r.value;if(r.key==='item_photos')ITEMPH=r.value||{};if(r.key==='banner')bn=r.value;if(r.key==='menu_add')ma=r.value;if(r.key==='branches')brc=r.value;if(r.key==='addons')ADDONS=r.value||{};if(r.key==='best_sellers')BESTSELL=r.value||{on:false}});
  MENU.length=0;BASE_MENU.forEach(function(g){MENU.push(JSON.parse(JSON.stringify(g)))});
  var ob=document.getElementById('offerBar');if(bn&&bn.on&&(bn.text||bn.img)){ob.style.display='block';ob.innerHTML='';if(bn.img){var bi=document.createElement('img');bi.src=bn.img;bi.alt='عرض';ob.appendChild(bi)}if(bn.text){var bt=document.createElement('div');bt.textContent=bn.text;ob.appendChild(bt)}}else{ob.style.display='none'}
 function copyGfCode(){var c='gadfree';var h=document.getElementById('gfHint');var orig='للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه';function done(){if(h){h.textContent='✅ اتنسخ! اكتبه في خانة البرومو عند الطلب';setTimeout(function(){h.textContent=orig},3000)}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(c).then(done,function(){fb()})}else{fb()}function fb(){var t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(t)}}
  if(ord&&ord.length){var by={};MENU.forEach(function(g){by[g.g]=g});var nm=ord.map(function(n){return by[n]}).filter(Boolean);MENU.forEach(function(g){if(nm.indexOf(g)<0)nm.push(g)});MENU.length=0;nm.forEach(function(g){MENU.push(g)});if(cur>=MENU.length)cur=0;buildTabs()}
- applyMenuAdd(ma);buildFlat();BRANCHCFG=brc||{};buildBranchOptions();buildTabs();
+ applyMenuAdd(ma);buildFlat();BRANCHCFG=brc||{};buildBranchOptions();buildTabs();loadBestSellers();
  if(ly){if(typeof ly.earn_per_egp==='number')LOYAL.earn=ly.earn_per_egp;if(typeof ly.redeem_points_per_egp==='number')LOYAL.rate=ly.redeem_points_per_egp;if(typeof ly.min_redeem_points==='number')LOYAL.min=ly.min_redeem_points;updateAcct()}
  if(cfg){if(typeof cfg.fee==='number')CFG.fee=cfg.fee;if(typeof cfg.vat==='number')CFG.vat=cfg.vat/100;if(typeof cfg.min==='number')CFG.min=cfg.min;if(cfg.wa)CFG.wa=String(cfg.wa)}
  if(pr){var ov=pr.overrides||{},off=pr.off||[];MENU.forEach(function(g,gi){g.s.forEach(function(s,si){s.i.forEach(function(it,ii){it.o.forEach(function(o,oi){var key=it.n+'|'+(o.l||'');var f=flat[gi+'.'+si+'.'+ii+'.'+oi];if(ov[key]!==undefined&&!isNaN(+ov[key])){o.p=+ov[key];f.price=+ov[key]}o.off=off.indexOf(key)>-1;f.off=o.off})})})});
