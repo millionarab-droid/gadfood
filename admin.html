@@ -26,6 +26,10 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 .card{background:#fff;border-radius:16px;padding:12px;margin:10px 0;box-shadow:0 1px 4px rgba(0,0,0,.1);border-right:6px solid #bbb}
 .card.new{border-right-color:var(--red)}.card.preparing{border-right-color:#e0a100}.card.delivering{border-right-color:var(--blue)}.card.done{border-right-color:#1fa855}.card.cancelled{border-right-color:#999;opacity:.7}
 .card.fresh{animation:fl 1.2s ease-in-out 4;box-shadow:0 0 0 3px rgba(232,17,45,.45)}
+.card.risky{border-right-color:#a92318;box-shadow:0 0 0 2px rgba(169,35,24,.35),0 1px 4px rgba(0,0,0,.1)}
+.hist{background:#f7f5f0;border:1px dashed #d8d2c4;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:13px;line-height:1.9}
+.hist .warn{color:#a92318;font-weight:800}
+.hist .hx{color:#888}
 @keyframes fl{50%{background:#fff0f2}}
 .hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .no{font-weight:800;font-size:17px;direction:ltr}
@@ -228,6 +232,8 @@ function filtered(){var s=$('fs').value,b=$('fb').value,q=$('fq').value.trim().t
  var t1=d1?new Date(d1+'T00:00:00').getTime():0,t2=d2?new Date(d2+'T23:59:59').getTime():Infinity;
  return orders.filter(function(o){var t=new Date(o.created_at).getTime();if(s&&o.status!==s)return false;if(b&&o.branch!==b)return false;if(t<t1||t>t2)return false;
   if(q){var hay=((o.name||'')+' '+(o.phone||'')+' '+(o.order_no||'')).toLowerCase();if(hay.indexOf(q)<0)return false}return true})}
+function custHist(phone){var hs=orders.filter(function(x){return x.phone===phone});var cx=hs.filter(function(x){return x.status==='cancelled'}).length;var done=hs.filter(function(x){return x.status==='done'}).length;var spent=hs.filter(function(x){return x.status!=='cancelled'}).reduce(function(a,x){return a+Number(x.total||0)},0);var recent=hs.slice().sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at)}).slice(0,3);return {n:hs.length,cx:cx,done:done,spent:spent,recent:recent}}
+function histHtml(h,o){var r=h.recent.filter(function(x){return x.id!==o.id});var s='<div class="hist">📋 سجل الزبون: '+h.n+' أوردر ('+h.done+' اتسلم، '+h.cx+' ملغي) — إجمالي مشترياته '+n2(h.spent)+' ج';if(h.cx>1)s+=' — <span class="warn">⚠️ ألغى '+h.cx+' أوردرات قبل كده</span>';if(r.length)s+='<br><span class="hx">آخر أوردراته: '+r.map(function(x){return esc(x.order_no)+' ('+ST[x.status]+' — '+n2(x.total)+' ج)'}).join('، ')+'</span>';return s+'</div>'}
 function render(){
  var sel=$('fb');var cur=sel.value;var bs={};orders.forEach(function(o){if(o.branch)bs[o.branch]=1});var want=Object.keys(bs).sort();
  if(sel.options.length-1!==want.length){sel.innerHTML='<option value="">كل الفروع</option>'+want.map(function(x){return '<option>'+esc(x)+'</option>'}).join('');sel.value=cur}
@@ -235,13 +241,13 @@ function render(){
  $('s1').textContent=today.length;$('s2').textContent=n2(today.filter(function(o){return o.status!=='cancelled'}).reduce(function(a,o){return a+Number(o.total||0)},0));
  $('s3').textContent=orders.filter(function(o){return o.status==='new'}).length;$('s4').textContent=orders.filter(function(o){return o.status==='preparing'||o.status==='delivering'}).length;
  var f=filtered();var L=$('list');L.innerHTML='';$('emp').style.display=f.length?'none':'block';$('emp').textContent='مفيش طلبات';
- f.forEach(function(o){var c=document.createElement('div');c.className='card '+o.status+(fresh[o.id]?' fresh':'');
+ f.forEach(function(o){var h=custHist(o.phone);var c=document.createElement('div');c.className='card '+o.status+(fresh[o.id]?' fresh':'')+(h.cx>1?' risky':'');
   var items=(o.items&&o.items.length?o.items:[]).map(function(i){return '<div>• '+esc(i.q)+' × '+esc(i.n)+(i.l?' ('+esc(i.l)+')':'')+' — '+n2(i.q*i.p)+' ج</div>'+(i.addons&&i.addons.length?'<div class="nt">＋ '+i.addons.map(function(a){return esc(a.n)+' (+'+n2(a.p)+' ج)'}).join('، ')+'</div>':'')+(i.note?'<div class="nt">↳ '+esc(i.note)+'</div>':'')}).join('')||esc(o.items_text||'');
   var loc=o.location?'<div class="row"><b>الموقع</b><a href="'+esc(o.location)+'" target="_blank" rel="noopener">فتح على الخريطة 📍</a></div>':'';
   c.innerHTML='<div class="hd"><span class="no">'+esc(o.order_no)+'</span><span class="tm">'+tm(o.created_at)+'</span><span class="chip '+o.status+'">'+((o.fulfillment==='pickup'&&o.status==='delivering')?'جاهز للاستلام':ST[o.status])+'</span></div>'+
   '<div class="row"><b>الاسم</b><span>'+esc(o.name)+'</span></div><div class="row"><b>الموبايل</b><a href="tel:'+esc(o.phone)+'" dir="ltr">'+esc(o.phone)+'</a></div>'+
   '<div class="row"><b>العنوان</b><span>'+esc(o.address)+'</span></div>'+loc+'<div class="row"><b>الفرع</b><span>'+esc(o.branch||'-')+'</span></div>'+(o.fulfillment?'<div class="row"><b>الاستلام</b><span>'+(o.fulfillment==='pickup'?'استلام من المطعم':'توصيل')+'</span></div>':'')+
-  '<div class="items">'+items+'</div>'+(o.notes?'<div class="row"><b>ملاحظات</b><span>'+esc(o.notes)+'</span></div>':'')+
+  '<div class="items">'+items+'</div>'+histHtml(h,o)+(o.notes?'<div class="row"><b>ملاحظات</b><span>'+esc(o.notes)+'</span></div>':'')+
   '<div class="tt"><span>الأصناف</span><span>'+n2(o.subtotal)+' ج</span></div>'+(Number(o.discount)>0?'<div class="tt"><span>الخصم</span><span>- '+n2(o.discount)+' ج</span></div>':'')+'<div class="tt"><span>التوصيل'+(o.promo?' ('+esc(o.promo)+')':'')+'</span><span>'+(Number(o.delivery)?n2(o.delivery)+' ج':'مجاني')+'</span></div><div class="tt"><span>الضريبة</span><span>'+n2(o.vat)+' ج</span></div><div class="tt g"><span>الإجمالي ('+esc(o.payment||'')+')</span><span>'+n2(o.total)+' ج</span></div>'+
   '<div class="acts">'+['new','preparing','delivering','done','cancelled'].map(function(k){return '<button data-id="'+o.id+'" data-st="'+k+'" class="'+(o.status===k?'on':'')+'">'+ST[k]+'</button>'}).join('')+
   '<button class="pr" data-print="'+o.id+'">🖨️ طباعة</button><button class="pr" data-copy="'+o.id+'">📋 نسخ الأوردر</button><button class="pr" data-bl="'+o.id+'" style="background:#a92318;color:#fff">🚫 حظر الزبون</button><a class="wa" target="_blank" rel="noopener" href="https://wa.me/'+waPhone(o.phone)+'?text='+encodeURIComponent('أهلاً '+(o.name||'')+'، تم استلام طلبك رقم '+o.order_no+' من جاد وجاري تجهيزه. الإجمالي '+n2(o.total)+' ج. شكراً لاختيارك جاد 🍽️')+'">واتساب للعميل</a></div>';
