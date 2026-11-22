@@ -60,8 +60,6 @@ header p{margin:4px 0 0;font-size:14px}
 .ad-row .ad-pr{font-weight:800;color:var(--blue);font-size:14px}
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.15);display:flex;gap:8px}
 .bar #open{flex:1;width:auto}
-.bar button.grp{flex:none;width:auto;background:linear-gradient(135deg,#a92318,#184898);font-size:15px;padding:14px 16px;animation:grpPulse 2s infinite}
-.bar button.grp.on{background:linear-gradient(135deg,#a92318,#184898);animation:none;box-shadow:inset 0 0 0 2px #fff}
 @keyframes grpPulse{0%,100%{box-shadow:0 0 0 0 rgba(169,35,24,.45)}50%{box-shadow:0 0 0 8px rgba(169,35,24,0)}}
 .bar button{width:100%;border:0;border-radius:16px;padding:14px;font-family:inherit;font-weight:800;font-size:17px;background:var(--red);color:#fff;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .bar button[disabled]{background:#b9b4a9}
@@ -88,11 +86,12 @@ header p{margin:4px 0 0;font-size:14px}
 .grp-chip.add{border-style:dashed;color:var(--blue)}
 .grp-tgl{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(135deg,#a92318,#184898);color:#fff;font-family:inherit;font-weight:800;font-size:14.5px;cursor:pointer;animation:grpPulse 2s infinite}
 .grp-tgl.on{animation:none;box-shadow:inset 0 0 0 2px #fff}
-.grphelp{position:fixed;left:12px;right:12px;bottom:96px;z-index:70;background:#fff;border:2px solid var(--red);border-radius:18px;padding:16px 16px 14px;box-shadow:0 10px 34px rgba(0,0,0,.28);max-width:520px;margin-left:auto;margin-right:auto}
-.grphelp b{font-size:16.5px;color:var(--red)}
-.grphelp .hs{margin:10px 0 4px;font-size:14.5px;line-height:1.9}
-.grphelp .ok{width:100%;border:0;border-radius:12px;padding:12px;background:var(--red);color:#fff;font-family:inherit;font-weight:800;font-size:15.5px;cursor:pointer;margin-top:10px}
-.grphelp .x{position:absolute;top:8px;left:10px;border:0;background:none;font-size:18px;color:#999;cursor:pointer;font-family:inherit}
+#acct button.grp-tgl{background:linear-gradient(135deg,#a92318,#184898);animation:grpPulse 2s infinite}
+#acct button.grp-tgl.on{animation:none;box-shadow:inset 0 0 0 2px #fff}
+.grp-panel{background:#fff;border-bottom:1px solid #e5e1d8;padding:10px 12px}
+.grp-panel b{color:var(--red);font-size:15px}
+.grp-panel .hs{font-size:13.5px;line-height:1.8;color:#555;margin:6px 0 2px}
+#grpPanel .grpbar{position:static;border-bottom:0;padding:8px 0 2px}
 .grp-sub{font-weight:800;font-size:14.5px;color:var(--red);border-bottom:1px dashed #e5e1d8;padding:6px 0 4px;margin-top:6px;display:flex;justify-content:space-between}
 .grp-split{background:#fff8e1;border:1px dashed #e0a100;border-radius:14px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.9}
 .grp-split div{display:flex;justify-content:space-between;gap:8px}
@@ -187,7 +186,8 @@ textarea{min-height:80px;resize:vertical}
 <div id="offerBar"></div>
 <div id="gfBanner" onclick="copyGfCode()" role="button" title="دوس عشان تنسخ الكود"><span class="gf-ic">🛵</span> <span class="gf-tx" id="gfTx">توصيل مجاني</span> <span class="gf-code">gadfree</span><span class="gf-hint" id="gfHint">للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه</span></div>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
-<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button><button id="langBtn" type="button" style="background:#6b7280">EN</button></div>
+<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button class="grp-tgl" id="grpTglTop" type="button">👥 مع صحابك</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button><button id="langBtn" type="button" style="background:#6b7280">EN</button></div>
+<div id="grpPanel" style="display:none"><div class="grp-panel"><b id="grpHelpTitle">👥 اطلب مع صحابك — إزاي؟</b><div class="hs"><div id="grpHelpS1">1️⃣ دوس ➕ صديق وضيف أصحابك</div><div id="grpHelpS2">2️⃣ دوس على اسم كل واحد، وبعدين اختار أصنافه من المنيو</div><div id="grpHelpS3">3️⃣ التوصيل والضريبة بيتقسموا تلقائي، وكل واحد يعرف عليه كام</div><div id="grpHelpS4">4️⃣ أصحابك بيتحفظوا في حسابك، فالمرة الجاية تلاقيهم جاهزين</div></div><div id="grpBarPanel" class="grpbar" style="display:none"></div></div></div>
 <div class="stats" id="custStats" style="display:none"><div class="stat"><span class="st-ic">⭐</span><b id="stPts">0</b><span class="st-lb" id="lbPts">نقاطك تساوي</span><span class="st-sub" id="stPtsSub"></span></div><div class="stat"><span class="st-ic">🕐</span><b id="stLast">—</b><span class="st-lb" id="lbLast">آخر أوردر</span><span class="st-sub" id="stLastSub"></span></div><div class="stat"><span class="st-ic">🍽️</span><b id="stCnt">0</b><span class="st-lb" id="lbCnt">أوردر من جاد</span><span class="st-sub" id="subCnt">كل طلباتك</span></div><div class="stat"><span class="st-ic">❤️</span><b id="stTop">—</b><span class="st-lb" id="lbTop">أكتر صنف طلبته</span><span class="st-sub" id="stTopSub"></span></div></div>
 <div class="best" id="bestSec" style="display:none"><h2 id="bestTitle">🔥 الأعلى مبيعاً</h2><div class="best-row" id="bestRow"></div></div>
 <div id="trackBar" style="display:none"><div class="tk-head"><b id="tkTitle">🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم الاستلام</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div></div>
@@ -196,10 +196,10 @@ textarea{min-height:80px;resize:vertical}
 <div id="grpBar" class="grpbar" style="display:none"></div>
 <div class="wrap" id="menu"></div>
 <div class="story"><h3 id="stTitle">حكاية جاد — من 1960</h3><p id="stP1">من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p id="stP2" style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div>
-<div class="bar"><button id="open" disabled><span id="openLbl">عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button><button id="grpTglBar" type="button" class="grp">👥 مع صحابك</button></div>
+<div class="bar"><button id="open" disabled><span id="openLbl">عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button></div>
 <div id="sheet"><div class="in">
 <button class="back" id="back">→ رجوع للمنيو</button>
-<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="grp-tgl" id="grpTgl" type="button">👥 مع صحابك</button><button id="grpHelpBtn" type="button" style="flex:none;border:2px solid #d8d5cd;background:#fff;border-radius:12px;padding:9px 12px;font-family:inherit;font-weight:800;font-size:13.5px;color:#555;cursor:pointer">؟ إزاي؟</button><span id="grpHint" style="font-size:13px;color:#777">اطلب ليك ولصحابك من موبايلك</span></div>
+<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="grp-tgl" id="grpTgl" type="button">👥 مع صحابك</button><span id="grpHint" style="font-size:13px;color:#777">اطلب ليك ولصحابك من موبايلك</span></div>
 <div id="grpBarSheet" class="grpbar" style="display:none"></div>
 <h3 id="shTitle">طلبك</h3><div id="lines"></div>
 <label id="lbPromo">برومو كود (لو عندك)</label>
@@ -225,7 +225,6 @@ textarea{min-height:80px;resize:vertical}
 <textarea id="prev" readonly></textarea>
 <p class="note" id="sheetNote">بعد الضغط على «تأكيد الطلب» طلبك بيتسجّل عند المطعم على طول، وبعدها تختار تتابع مع خدمة العملاء واتساب ولا تكتفي بالموقع.</p>
 </div></div>
-<div id="grpHelp" class="grphelp" style="display:none"><button id="grpHelpX" class="x" type="button">✕</button><b id="grpHelpTitle">👥 اطلب مع صحابك — إزاي؟</b><div class="hs"><div id="grpHelpS1">1️⃣ دوس ➕ صديق وضيف أصحابك</div><div id="grpHelpS2">2️⃣ دوس على اسم كل واحد، وبعدين اختار أصنافه من المنيو</div><div id="grpHelpS3">3️⃣ التوصيل والضريبة بيتقسموا تلقائي، وكل واحد يعرف عليه كام</div><div id="grpHelpS4">4️⃣ أصحابك بيتحفظوا في حسابك، فالمرة الجاية تلاقيهم جاهزين</div></div><button id="grpHelpOk" class="ok" type="button">فهمت، يلا نطلب 👥</button></div>
 <div id="lsheet"><div class="in"><button class="back" id="lback">→ رجوع</button><h3 id="lsTitle">سجّل دخول الأول</h3><p id="lsTxt" style="margin:8px 0">عشان تكمل طلبك لازم تسجّل دخول — اختار الطريقة اللي تريحك. طلبك محفوظ في السلة ومش هيضيع.</p><button class="g" id="lgoogle" type="button" style="width:100%;margin:8px 0">دخول بجوجل</button><button id="lemail" type="button" style="width:100%;margin:8px 0;background:#0e7490">دخول بالإيميل</button></div></div>
 <div id="osheet"><div class="in"><button class="back" id="oback">→ رجوع للمنيو</button><h3 id="osTitle">أوردراتي</h3><div id="olist"></div></div></div><div id="esheet"><div class="in"><button class="back" id="eback">→ رجوع للمنيو</button><h3 id="esTitle">دخول بالإيميل</h3><div id="estep1"><label id="esLb">الإيميل</label><input id="eEmail" type="email" placeholder="example@mail.com" dir="ltr" style="text-align:left"><p id="eMsg1">هنبعتلك لينك دخول على إيميلك — دوس عليه عشان تدخل على طول.</p><button id="eSend" type="button">ابعت اللينك</button></div><div id="estep2" style="display:none"><p><span id="eSentTxt">بعتنا لينك دخول على</span> <b id="eSentTo"></b></p><p id="eMsg2">دوس على اللينك اللي في الإيميل عشان تدخل على طول — اللينك صالح لمدة ساعة.</p><p style="margin-top:10px"><button class="alt" id="eResend" type="button">ابعت اللينك تاني</button> <button class="alt" id="eChange" type="button">غيّر الإيميل</button></p></div></div></div><div id="csheet"><div class="in"><button class="back" id="cback">→ رجوع</button><h3 id="ctitle">💬 تواصل مع المطعم</h3><div id="cmsgs"></div></div><div class="cbar"><input id="cin" type="text" dir="auto" placeholder="اكتب رسالتك هنا…" maxlength="1000"><button id="csend" type="button">إرسال</button></div></div>
 <div id="installHelp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;padding:20px" onclick="if(event.target===this)this.style.display='none'">
@@ -281,13 +280,11 @@ var I18N_EN={ui:{
  "→ رجوع للمنيو": "→ Back to menu",
  "→ رجوع": "→ Back",
  "👥 مع صحابك: مفعّل": "👥 With friends: ON",
- "؟ إزاي؟": "How?",
  "👥 اطلب مع صحابك — إزاي؟": "👥 Order with your friends — how?",
  "1️⃣ دوس ➕ صديق وضيف أصحابك": "1️⃣ Tap ➕ Friend and add your friends",
  "2️⃣ دوس على اسم كل واحد، وبعدين اختار أصنافه من المنيو": "2️⃣ Tap each person's name, then pick their items from the menu",
  "3️⃣ التوصيل والضريبة بيتقسموا تلقائي، وكل واحد يعرف عليه كام": "3️⃣ Delivery and VAT are split automatically, and everyone sees their share",
  "4️⃣ أصحابك بيتحفظوا في حسابك، فالمرة الجاية تلاقيهم جاهزين": "4️⃣ Your friends are saved to your account, ready next time",
- "فهمت، يلا نطلب 👥": "Got it, let's order 👥",
  "اطلب ليك ولصحابك من موبايلك": "Order for you and your friends from your phone",
  "دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو": "Tap the name of the person you are ordering for, then add items from the menu",
  "أنا": "Me",
@@ -816,30 +813,23 @@ function grpSplitCalc(persons,fee,vat,disc,total){var S=0;persons.forEach(functi
  return out}
 function grpSplit(){var ps=grpPersons();if(ps.length<2)return null;var t=totals();return grpSplitCalc(ps.map(function(p){return {name:p.name,items:p.items}}),t.fee,t.vat,t.disc+t.ptsDisc,t.total)}
 function grpSplitHtml(sp,final){var h='<div class="g"><span>💰 '+T(final?'تقسيمة الأوردر — كل واحد عليه كام':'كل واحد عليه كام')+'</span><span></span></div>';sp.forEach(function(p){h+='<div><span>'+escH(p.name)+'</span><span><b>'+fmt(p.total)+'</b></span></div><div style="font-size:12.5px;color:#888"><span>'+T('أصناف')+' '+fmt(p.items)+(p.discount>0?' − '+T('خصم')+' '+fmt(p.discount):'')+' + '+T('توصيل')+' '+fmt(p.delivery)+' + '+T('ضريبة')+' '+fmt(p.vat)+'</span><span></span></div>'});return h}
-function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=T(on?'👥 مع صحابك: مفعّل':'👥 مع صحابك') }var tb=document.getElementById('grpTglBar');if(tb){tb.classList.toggle('on',on);tb.textContent=T('👥 مع صحابك')}var hint=document.getElementById('grpHint');if(hint)hint.textContent=T(on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك');
- ['grpBar','grpBarSheet'].forEach(function(id){var b=document.getElementById(id);if(!b)return;b.style.display=on?'':'none';if(!on){b.innerHTML='';return}
+function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=T(on?'👥 مع صحابك: مفعّل':'👥 مع صحابك')}var tt=document.getElementById('grpTglTop');if(tt){tt.classList.toggle('on',on);tt.textContent=T(on?'👥 مع صحابك: مفعّل':'👥 مع صحابك')}var pn=document.getElementById('grpPanel');if(pn)pn.style.display=on?'':'none';var hint=document.getElementById('grpHint');if(hint)hint.textContent=T(on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك');
+ ['grpBar','grpBarSheet','grpBarPanel'].forEach(function(id){var b=document.getElementById(id);if(!b)return;b.style.display=on?'':'none';if(!on){b.innerHTML='';return}
   var h='<button type="button" class="grp-chip'+(grpPerson===''?' on':'')+'" data-person="">'+T('أنا')+'</button>';
   grpFriends.forEach(function(fn){h+='<button type="button" class="grp-chip'+(grpPerson===fn?' on':'')+'" data-person="'+escH(fn)+'">'+escH(fn)+' <span class="x" data-del="'+escH(fn)+'">'+(grpDelArm===fn?T('تأكيد؟'):'✕')+'</span></button>'});
   h+='<button type="button" class="grp-chip add" data-add="1">'+T('➕ صديق')+'</button>';
-  h+='<button type="button" class="grp-chip" data-help="1">'+T('؟ إزاي؟')+'</button>';
   if(grpAddOpen)h+='<span style="display:flex;gap:6px;flex:none"><input class="grp-new" placeholder="'+T('اسم الصديق')+'" style="width:110px;border:1px solid #d8d5cd;border-radius:10px;padding:7px 9px;font-family:inherit;font-size:14px"><button type="button" class="grp-addbtn" style="border:0;border-radius:10px;padding:7px 12px;background:var(--blue);color:#fff;font-family:inherit;font-weight:700;cursor:pointer">'+T('إضافة')+'</button></span>';
   b.innerHTML=h})}
 function grpRerender(){var y=window.scrollY;render();window.scrollTo(0,y)}
 function grpSetPerson(name){grpPerson=name||'';grpAddOpen=false;save();renderGrpBar();grpRerender()}
 function grpAddFriend(name){name=(name||'').trim();if(!name)return;if(grpFriends.indexOf(name)<0)grpFriends.push(name);grpPerson=name;grpAddOpen=false;save();renderGrpBar();grpRerender()}
 function grpRemoveFriend(fn){if(grpDelArm!==fn){grpDelArm=fn;renderGrpBar();setTimeout(function(){if(grpDelArm===fn){grpDelArm=null;renderGrpBar()}},3000);return}grpDelArm=null;grpFriends=grpFriends.filter(function(x){return x!==fn});delete grpCarts[fn];if(grpPerson===fn)grpPerson='';save();renderGrpBar();grpRerender();drawSheet()}
-function grpHelpSeen(){try{return localStorage.getItem('gad_grp_help')==='1'}catch(e){return false}}
-function showGrpHelp(){var h=document.getElementById('grpHelp');if(h)h.style.display=''}
-function hideGrpHelp(seen){var h=document.getElementById('grpHelp');if(h)h.style.display='none';if(seen){try{localStorage.setItem('gad_grp_help','1')}catch(e){}}}
-function grpToggle(on){if(on){grpOn=true;grpPerson='';save();renderGrpBar();grpRerender();drawSheet();if(!grpHelpSeen())showGrpHelp()}else{Object.keys(grpCarts).forEach(function(fn){Object.keys(grpCarts[fn]).forEach(function(k){cart[k]=(cart[k]||0)+grpCarts[fn][k]})});grpCarts={};grpOn=false;grpPerson='';grpAddOpen=false;save();renderGrpBar();grpRerender();drawSheet()}}
-function grpBarClick(ev){var hp=ev.target.closest?ev.target.closest('[data-help]'):null;if(hp){showGrpHelp();return}var del=ev.target.closest?ev.target.closest('[data-del]'):null;if(del){ev.stopPropagation();grpRemoveFriend(del.getAttribute('data-del'));return}var add=ev.target.closest?ev.target.closest('[data-add]'):null;if(add){grpAddOpen=!grpAddOpen;renderGrpBar();var inp=ev.currentTarget.querySelector('.grp-new');if(inp)inp.focus();return}var ab=ev.target.closest?ev.target.closest('.grp-addbtn'):null;if(ab){var inp2=ev.currentTarget.querySelector('.grp-new');grpAddFriend(inp2?inp2.value:'');return}var ch=ev.target.closest?ev.target.closest('[data-person]'):null;if(ch){grpSetPerson(ch.getAttribute('data-person'));return}}
+function grpToggle(on){if(on){grpOn=true;grpPerson='';save();renderGrpBar();grpRerender();drawSheet()}else{Object.keys(grpCarts).forEach(function(fn){Object.keys(grpCarts[fn]).forEach(function(k){cart[k]=(cart[k]||0)+grpCarts[fn][k]})});grpCarts={};grpOn=false;grpPerson='';grpAddOpen=false;save();renderGrpBar();grpRerender();drawSheet()}}
+function grpBarClick(ev){var del=ev.target.closest?ev.target.closest('[data-del]'):null;if(del){ev.stopPropagation();grpRemoveFriend(del.getAttribute('data-del'));return}var add=ev.target.closest?ev.target.closest('[data-add]'):null;if(add){grpAddOpen=!grpAddOpen;renderGrpBar();var inp=ev.currentTarget.querySelector('.grp-new');if(inp)inp.focus();return}var ab=ev.target.closest?ev.target.closest('.grp-addbtn'):null;if(ab){var inp2=ev.currentTarget.querySelector('.grp-new');grpAddFriend(inp2?inp2.value:'');return}var ch=ev.target.closest?ev.target.closest('[data-person]'):null;if(ch){grpSetPerson(ch.getAttribute('data-person'));return}}
 function grpBarKeys(ev){if(ev.key==='Enter'&&ev.target.classList&&ev.target.classList.contains('grp-new')){grpAddFriend(ev.target.value)}}
 ['grpBar','grpBarSheet'].forEach(function(id){var b=document.getElementById(id);if(b){b.addEventListener('click',grpBarClick);b.addEventListener('keydown',grpBarKeys)}});
 document.getElementById('grpTgl').onclick=function(){grpToggle(!grpOn)};
-document.getElementById('grpTglBar').onclick=function(){grpToggle(!grpOn)};
-document.getElementById('grpHelpBtn').onclick=function(){showGrpHelp()};
-document.getElementById('grpHelpOk').onclick=function(){hideGrpHelp(true)};
-document.getElementById('grpHelpX').onclick=function(){hideGrpHelp(true)};
+document.getElementById('grpTglTop').onclick=function(){grpToggle(!grpOn)};
 
 function setEl(id,ar){var el=document.getElementById(id);if(el)el.textContent=T(ar)}
 function setPh(id,ar){var el=document.getElementById(id);if(el)el.placeholder=T(ar)}
@@ -853,7 +843,7 @@ function applyLang(){
  setEl('glogin','دخول بجوجل');setEl('elogin','دخول بالإيميل');setEl('myord','أوردراتي');setEl('glogout','خروج');setEl('installBtn','📲 ثبّت التطبيق');
  setEl('lbPts','نقاطك تساوي');setEl('lbLast','آخر أوردر');setEl('lbCnt','أوردر من جاد');setEl('subCnt','كل طلباتك');setEl('lbTop','أكتر صنف طلبته');
  setEl('bestTitle','🔥 الأعلى مبيعاً');
- setEl('grpHelpTitle','👥 اطلب مع صحابك — إزاي؟');setEl('grpHelpS1','1️⃣ دوس ➕ صديق وضيف أصحابك');setEl('grpHelpS2','2️⃣ دوس على اسم كل واحد، وبعدين اختار أصنافه من المنيو');setEl('grpHelpS3','3️⃣ التوصيل والضريبة بيتقسموا تلقائي، وكل واحد يعرف عليه كام');setEl('grpHelpS4','4️⃣ أصحابك بيتحفظوا في حسابك، فالمرة الجاية تلاقيهم جاهزين');setEl('grpHelpOk','فهمت، يلا نطلب 👥');setEl('grpHelpBtn','؟ إزاي؟');
+ setEl('grpHelpTitle','👥 اطلب مع صحابك — إزاي؟');setEl('grpHelpS1','1️⃣ دوس ➕ صديق وضيف أصحابك');setEl('grpHelpS2','2️⃣ دوس على اسم كل واحد، وبعدين اختار أصنافه من المنيو');setEl('grpHelpS3','3️⃣ التوصيل والضريبة بيتقسموا تلقائي، وكل واحد يعرف عليه كام');setEl('grpHelpS4','4️⃣ أصحابك بيتحفظوا في حسابك، فالمرة الجاية تلاقيهم جاهزين');
  setEl('tkTitle','🍽️ حالة طلبك');
  var tkT=document.querySelectorAll('#tkSteps .tk-t');if(tkT.length===4){tkT[0].textContent=T('تم الاستلام');tkT[1].textContent=T('بيتحضّر');tkT[2].textContent=lastTrackFul==='pickup'?T('جاهز للاستلام'):T('خرج للتوصيل');tkT[3].textContent=T('تم التوصيل')}
  setEl('stTitle','حكاية جاد — من 1960');setEl('stP1','من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.');setEl('stP2','الخط الساخن 16475');

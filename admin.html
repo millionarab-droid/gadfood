@@ -46,6 +46,7 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 .acts button,.acts a{border:0;border-radius:10px;padding:8px 11px;font-family:inherit;font-weight:700;font-size:13.5px;background:#e9e5dc;color:#333;cursor:pointer;text-decoration:none}
 .acts .on{background:var(--blue);color:#fff}
 .acts .pr{background:#6b7280;color:#fff}.acts .wa{background:#1fa855;color:#fff}
+.cp{border:1px solid #ddd;background:#fff;border-radius:8px;padding:1px 7px;font-size:12px;cursor:pointer;margin-inline-start:6px;vertical-align:middle;line-height:1.6}
 .empty{text-align:center;color:#888;padding:40px 10px}
 .tabs{display:flex;gap:6px;margin:6px 0 10px;overflow-x:auto}.tabs button{flex:1;border:0;border-radius:12px;padding:10px 8px;font-family:inherit;font-weight:800;font-size:14.5px;background:#e3dfd5;color:#444;cursor:pointer;white-space:nowrap}.tabs button.on{background:var(--blue);color:#fff}
 .box{background:#fff;border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}.box h3{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:24px;color:var(--red);margin:0 0 4px}
@@ -250,13 +251,13 @@ function render(){
  $('s3').textContent=orders.filter(function(o){return o.status==='new'}).length;$('s4').textContent=orders.filter(function(o){return o.status==='preparing'||o.status==='delivering'}).length;
  var f=filtered();var L=$('list');L.innerHTML='';$('emp').style.display=f.length?'none':'block';$('emp').textContent='مفيش طلبات';
  f.forEach(function(o){var h=custHist(o.phone);var c=document.createElement('div');c.className='card '+o.status+(fresh[o.id]?' fresh':'')+(h.cx>1?' risky':'');
-  var items=(o.items&&o.items.length?o.items:[]).map(function(i){return '<div>• '+esc(i.q)+' × '+esc(i.n)+(i.l?' ('+esc(i.l)+')':'')+' — '+n2(i.q*i.p)+' ج'+(i['for']&&i['for']!==o.name?' <span style="color:#888">— لـ'+esc(i['for'])+'</span>':'')+'</div>'+(i.addons&&i.addons.length?'<div class="nt">＋ '+i.addons.map(function(a){return esc(a.n)+' (+'+n2(a.p)+' ج)'}).join('، ')+'</div>':'')+(i.note?'<div class="nt">↳ '+esc(i.note)+'</div>':'')}).join('')||esc(o.items_text||'');
-  var loc=o.location?'<div class="row"><b>الموقع</b><a href="'+esc(o.location)+'" target="_blank" rel="noopener">فتح على الخريطة 📍</a></div>':'';
-  c.innerHTML='<div class="hd"><span class="no">'+esc(o.order_no)+'</span><span class="tm">'+tm(o.created_at)+'</span><span class="chip '+o.status+'">'+((o.fulfillment==='pickup'&&o.status==='delivering')?'جاهز للاستلام':ST[o.status])+'</span></div>'+
-  '<div class="row"><b>الاسم</b><span>'+esc(o.name)+'</span></div><div class="row"><b>الموبايل</b><a href="tel:'+esc(o.phone)+'" dir="ltr">'+esc(o.phone)+'</a></div>'+
-  '<div class="row"><b>العنوان</b><span>'+esc(o.address)+'</span></div>'+loc+'<div class="row"><b>الفرع</b><span>'+esc(o.branch||'-')+'</span></div>'+(o.fulfillment?'<div class="row"><b>الاستلام</b><span>'+(o.fulfillment==='pickup'?'استلام من المطعم':'توصيل')+'</span></div>':'')+
-  '<div class="items">'+items+'</div>'+histHtml(h,o)+(o.notes?'<div class="row"><b>ملاحظات</b><span>'+esc(o.notes)+'</span></div>':'')+
-  '<div class="tt"><span>الأصناف</span><span>'+n2(o.subtotal)+' ج</span></div>'+(Number(o.discount)>0?'<div class="tt"><span>الخصم</span><span>- '+n2(o.discount)+' ج</span></div>':'')+'<div class="tt"><span>التوصيل'+(o.promo?' ('+esc(o.promo)+')':'')+'</span><span>'+(Number(o.delivery)?n2(o.delivery)+' ج':'مجاني')+'</span></div><div class="tt"><span>الضريبة</span><span>'+n2(o.vat)+' ج</span></div><div class="tt g"><span>الإجمالي ('+esc(o.payment||'')+')</span><span>'+n2(o.total)+' ج</span></div>'+
+  var items=(o.items&&o.items.length?o.items:[]).map(function(i,ix){return '<div>• '+esc(i.q)+' × '+esc(i.n)+(i.l?' ('+esc(i.l)+')':'')+' — '+n2(i.q*i.p)+' ج'+(i['for']&&i['for']!==o.name?' <span style="color:#888">— لـ'+esc(i['for'])+'</span>':'')+' <button class="cp" data-cp="item" data-id="'+o.id+'" data-ix="'+ix+'">📋</button></div>'+(i.addons&&i.addons.length?'<div class="nt">＋ '+i.addons.map(function(a){return esc(a.n)+' (+'+n2(a.p)+' ج)'}).join('، ')+'</div>':'')+(i.note?'<div class="nt">↳ '+esc(i.note)+'</div>':'')}).join('')||esc(o.items_text||'');
+  var loc=o.location?'<div class="row"><b>الموقع</b><a href="'+esc(o.location)+'" target="_blank" rel="noopener">فتح على الخريطة 📍</a><button class="cp" data-cp="loc" data-id="'+o.id+'">📋</button></div>':'';
+  c.innerHTML='<div class="hd"><span class="no">'+esc(o.order_no)+'</span><button class="cp" data-cp="no" data-id="'+o.id+'">📋</button><span class="tm">'+tm(o.created_at)+'</span><span class="chip '+o.status+'">'+((o.fulfillment==='pickup'&&o.status==='delivering')?'جاهز للاستلام':ST[o.status])+'</span></div>'+
+  '<div class="row"><b>الاسم</b><span>'+esc(o.name)+'</span><button class="cp" data-cp="name" data-id="'+o.id+'">📋</button></div><div class="row"><b>الموبايل</b><a href="tel:'+esc(o.phone)+'" dir="ltr">'+esc(o.phone)+'</a><button class="cp" data-cp="phone" data-id="'+o.id+'">📋</button></div>'+
+  '<div class="row"><b>العنوان</b><span>'+esc(o.address)+'</span><button class="cp" data-cp="addr" data-id="'+o.id+'">📋</button></div>'+loc+'<div class="row"><b>الفرع</b><span>'+esc(o.branch||'-')+'</span><button class="cp" data-cp="branch" data-id="'+o.id+'">📋</button></div>'+(o.fulfillment?'<div class="row"><b>الاستلام</b><span>'+(o.fulfillment==='pickup'?'استلام من المطعم':'توصيل')+'</span></div>':'')+
+  '<div class="items">'+items+'</div>'+histHtml(h,o)+(o.notes?'<div class="row"><b>ملاحظات</b><span>'+esc(o.notes)+'</span><button class="cp" data-cp="notes" data-id="'+o.id+'">📋</button></div>':'')+
+  '<div class="tt"><span>الأصناف</span><span>'+n2(o.subtotal)+' ج</span></div>'+(Number(o.discount)>0?'<div class="tt"><span>الخصم</span><span>- '+n2(o.discount)+' ج</span></div>':'')+'<div class="tt"><span>التوصيل'+(o.promo?' ('+esc(o.promo)+')':'')+'</span><span>'+(Number(o.delivery)?n2(o.delivery)+' ج':'مجاني')+'</span></div><div class="tt"><span>الضريبة</span><span>'+n2(o.vat)+' ج</span></div><div class="tt g"><span>الإجمالي ('+esc(o.payment||'')+')</span><span>'+n2(o.total)+' ج</span><button class="cp" data-cp="total" data-id="'+o.id+'">📋</button></div>'+
   '<div class="acts">'+['new','preparing','delivering','done','cancelled'].map(function(k){return '<button data-id="'+o.id+'" data-st="'+k+'" class="'+(o.status===k?'on':'')+'">'+ST[k]+'</button>'}).join('')+
   '<button class="pr" data-print="'+o.id+'">🖨️ طباعة</button><button class="pr" data-copy="'+o.id+'">📋 نسخ الأوردر</button><button class="pr" data-bl="'+o.id+'" style="background:#a92318;color:#fff">🚫 حظر الزبون</button><a class="wa" target="_blank" rel="noopener" href="https://wa.me/'+waPhone(o.phone)+'?text='+encodeURIComponent('أهلاً '+(o.name||'')+'، تم استلام طلبك رقم '+o.order_no+' من جاد وجاري تجهيزه. الإجمالي '+n2(o.total)+' ج. شكراً لاختيارك جاد 🍽️')+'">واتساب للعميل</a></div>';
   L.appendChild(c)})}
@@ -264,7 +265,7 @@ $('list').addEventListener('click',function(e){var b=e.target.closest('button');
  if(b.dataset.bl){if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='تأكيد الحظر؟';setTimeout(function(){b.dataset.arm='';b.textContent='🚫 حظر الزبون'},3000);return}api('/rest/v1/rpc/block_customer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_order_id:+b.dataset.bl})}).then(function(r){if(r.ok){b.textContent='✓ اتحظر';b.disabled=true}else{b.textContent='تعذّر الحظر';setTimeout(function(){b.textContent='🚫 حظر الزبون'},2500)}}).catch(function(){b.textContent='تعذّر الحظر'});return}
  if(b.dataset.st){var id=b.dataset.id,st=b.dataset.st;b.disabled=true;
   api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({status:st})}).then(function(r){if(r.ok){orders.forEach(function(o){if(String(o.id)===id)o.status=st});delete fresh[id];render();if(st==='done'){api('/rest/v1/rpc/award_loyalty_points',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_order_id:+id})}).then(function(rr){return rr.ok?rr.json():0}).then(function(pts){if(pts>0){orders.forEach(function(o){if(String(o.id)===id)o.points_earned=pts});render()}}).catch(function(){})}}else{b.disabled=false;alert('تعذر تغيير الحالة')}}).catch(function(){b.disabled=false})}
- else if(b.dataset.copy){copyOrder(b,b.dataset.copy)}else if(b.dataset.print){printOrder(b.dataset.print)}});
+ else if(b.dataset.cp){copyField(b,b.dataset.cp,b.dataset.id,b.dataset.ix)}else if(b.dataset.copy){copyOrder(b,b.dataset.copy)}else if(b.dataset.print){printOrder(b.dataset.print)}});
 function copyOrder(btn,id){var o=orders.filter(function(x){return String(x.id)===String(id)})[0];if(!o)return;
 var L=[];L.push('أوردر '+o.order_no+' — '+tm(o.created_at));L.push('الاسم: '+(o.name||''));L.push('الموبايل: '+(o.phone||''));L.push('العنوان: '+(o.address||''));L.push('الفرع: '+(o.branch||'-'));L.push('الاستلام: '+(o.fulfillment==='pickup'?'استلام من المطعم':'توصيل'));
 (o.items||[]).forEach(function(i){L.push('• '+i.q+' × '+i.n+(i.l?' ('+i.l+')':'')+' = '+n2(i.q*i.p)+' ج'+(i.addons&&i.addons.length?' [+ إضافات: '+i.addons.map(function(a){return a.n+' (+'+n2(a.p)+' ج)'}).join('، ')+']':'')+(i.note?' [ملاحظة: '+i.note+']':''))});
@@ -276,6 +277,21 @@ if(Number(o.points_redeemed)>0)L.push('نقاط مستبدلة: '+o.points_redee
 if(o.notes)L.push('ملاحظات: '+o.notes);
 var txt=L.join('\n');
 function done(){btn.textContent='✓ اتنسخ';setTimeout(function(){btn.textContent='📋 نسخ الأوردر'},2000)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){fb()})}else{fb()}
+function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(ta)}}
+function copyField(btn,kind,id,ix){var o=orders.filter(function(x){return String(x.id)===String(id)})[0];if(!o)return;
+var txt='';
+if(kind==='no')txt=o.order_no||'';
+else if(kind==='name')txt=o.name||'';
+else if(kind==='phone')txt=o.phone||'';
+else if(kind==='addr')txt=o.address||'';
+else if(kind==='branch')txt=o.branch||'';
+else if(kind==='loc')txt=o.location||'';
+else if(kind==='notes')txt=o.notes||'';
+else if(kind==='total')txt=n2(o.total)+' ج';
+else if(kind==='item'){var it=(o.items||[])[+ix];if(!it)return;txt=it.q+' × '+it.n+(it.l?' ('+it.l+')':'')+' = '+n2(it.q*it.p)+' ج'+(it.addons&&it.addons.length?' [+ إضافات: '+it.addons.map(function(a){return a.n+' (+'+n2(a.p)+' ج)'}).join('، ')+']':'')+(it.note?' [ملاحظة: '+it.note+']':'')}
+if(!txt)return;
+function done(){btn.textContent='✓';setTimeout(function(){btn.textContent='📋'},1500)}
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){fb()})}else{fb()}
 function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(ta)}}
 function printOrder(id){var o=orders.filter(function(x){return String(x.id)===String(id)})[0];if(!o)return;
