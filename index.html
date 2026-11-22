@@ -177,62 +177,508 @@ textarea{min-height:80px;resize:vertical}
 #fb{display:none;margin-top:12px}
 #fb .w{color:#7a4b00;background:#fff3cd;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.7}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#a92318"><link rel="apple-touch-icon" href="icon-192.png"></head><body>
-<header><img class="logoimg" src="logo-v2.png" alt="جاد GAD"><p class="tagline">أكل لكل الناس</p></header><div class="pat"></div>
+<header><img class="logoimg" src="logo-v2.png" alt="جاد GAD"><p class="tagline" id="tagline">أكل لكل الناس</p></header><div class="pat"></div>
 <div id="offerBar"></div>
-<div id="gfBanner" onclick="copyGfCode()" role="button" title="دوس عشان تنسخ الكود"><span class="gf-ic">🛵</span> <span class="gf-tx">توصيل مجاني</span> <span class="gf-code">gadfree</span><span class="gf-hint" id="gfHint">للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه</span></div>
+<div id="gfBanner" onclick="copyGfCode()" role="button" title="دوس عشان تنسخ الكود"><span class="gf-ic">🛵</span> <span class="gf-tx" id="gfTx">توصيل مجاني</span> <span class="gf-code">gadfree</span><span class="gf-hint" id="gfHint">للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه</span></div>
 <div id="warn">⚠️ لم يتم ضبط رقم الواتساب بعد.</div>
-<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button></div>
-<div class="stats" id="custStats" style="display:none"><div class="stat"><span class="st-ic">⭐</span><b id="stPts">0</b><span class="st-lb">نقاطك تساوي</span><span class="st-sub" id="stPtsSub"></span></div><div class="stat"><span class="st-ic">🕐</span><b id="stLast">—</b><span class="st-lb">آخر أوردر</span><span class="st-sub" id="stLastSub"></span></div><div class="stat"><span class="st-ic">🍽️</span><b id="stCnt">0</b><span class="st-lb">أوردر من جاد</span><span class="st-sub">كل طلباتك</span></div><div class="stat"><span class="st-ic">❤️</span><b id="stTop">—</b><span class="st-lb">أكتر صنف طلبته</span><span class="st-sub" id="stTopSub"></span></div></div>
-<div class="best" id="bestSec" style="display:none"><h2>🔥 الأعلى مبيعاً</h2><div class="best-row" id="bestRow"></div></div>
-<div id="trackBar" style="display:none"><div class="tk-head"><b>🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم الاستلام</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div></div>
+<div id="acct"><span class="who" id="acctWho">سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة</span><span class="pts" id="acctPts" style="display:none"></span><button class="g" id="glogin" type="button">دخول بجوجل</button><button id="elogin" type="button" style="background:#0e7490">دخول بالإيميل</button><button id="myord" type="button" style="display:none">أوردراتي</button><button id="glogout" type="button" style="display:none;background:#6b7280">خروج</button><button id="installBtn" type="button" style="background:#1fa855">📲 ثبّت التطبيق</button><button id="langBtn" type="button" style="background:#6b7280">EN</button></div>
+<div class="stats" id="custStats" style="display:none"><div class="stat"><span class="st-ic">⭐</span><b id="stPts">0</b><span class="st-lb" id="lbPts">نقاطك تساوي</span><span class="st-sub" id="stPtsSub"></span></div><div class="stat"><span class="st-ic">🕐</span><b id="stLast">—</b><span class="st-lb" id="lbLast">آخر أوردر</span><span class="st-sub" id="stLastSub"></span></div><div class="stat"><span class="st-ic">🍽️</span><b id="stCnt">0</b><span class="st-lb" id="lbCnt">أوردر من جاد</span><span class="st-sub" id="subCnt">كل طلباتك</span></div><div class="stat"><span class="st-ic">❤️</span><b id="stTop">—</b><span class="st-lb" id="lbTop">أكتر صنف طلبته</span><span class="st-sub" id="stTopSub"></span></div></div>
+<div class="best" id="bestSec" style="display:none"><h2 id="bestTitle">🔥 الأعلى مبيعاً</h2><div class="best-row" id="bestRow"></div></div>
+<div id="trackBar" style="display:none"><div class="tk-head"><b id="tkTitle">🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم الاستلام</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div></div>
 <div class="tabs" id="tabs"></div>
 <input class="srch" id="q" type="search" placeholder="ابحث عن صنف…">
 <div id="grpBar" class="grpbar" style="display:none"></div>
 <div class="wrap" id="menu"></div>
-<div class="story"><h3>حكاية جاد — من 1960</h3><p>من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div>
-<div class="bar"><button id="open" disabled><span>عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button><button id="grpTglBar" type="button" class="grp">👥 جماعي</button></div>
+<div class="story"><h3 id="stTitle">حكاية جاد — من 1960</h3><p id="stP1">من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p id="stP2" style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div>
+<div class="bar"><button id="open" disabled><span id="openLbl">عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button><button id="grpTglBar" type="button" class="grp">👥 جماعي</button></div>
 <div id="sheet"><div class="in">
 <button class="back" id="back">→ رجوع للمنيو</button>
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="grp-tgl" id="grpTgl" type="button">👥 طلب جماعي</button><span id="grpHint" style="font-size:13px;color:#777">اطلب ليك ولصحابك من موبايلك</span></div>
 <div id="grpBarSheet" class="grpbar" style="display:none"></div>
-<h3>طلبك</h3><div id="lines"></div>
-<label>برومو كود (لو عندك)</label>
+<h3 id="shTitle">طلبك</h3><div id="lines"></div>
+<label id="lbPromo">برومو كود (لو عندك)</label>
 <div class="promo"><input id="pc" placeholder="اكتب الكود" autocapitalize="off" autocomplete="off"><button id="pa" type="button">تطبيق</button></div><div class="pm" id="pm"></div>
-<div class="loy" id="loyBox" style="display:none"><b>⭐ نقاط الولاء</b><div id="loyInfo"></div><div class="promo" style="margin-top:6px"><input id="redeemIn" type="number" inputmode="numeric" placeholder="عدد النقاط اللي عايز تستبدلها"><button id="redeemBtn" type="button">استخدام النقاط</button></div><div class="pm" id="loym"></div></div>
+<div class="loy" id="loyBox" style="display:none"><b id="loyTitle">⭐ نقاط الولاء</b><div id="loyInfo"></div><div class="promo" style="margin-top:6px"><input id="redeemIn" type="number" inputmode="numeric" placeholder="عدد النقاط اللي عايز تستبدلها"><button id="redeemBtn" type="button">استخدام النقاط</button></div><div class="pm" id="loym"></div></div>
 <div class="tot" id="tot"></div>
 <div id="grpSplit" class="grp-split" style="display:none"></div>
-<label>الاسم</label><input id="nm" autocomplete="name" placeholder="اسمك">
-<label>رقم الموبايل</label><input id="ph" type="tel" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx">
-<div id="addrRow"><label>العنوان بالتفصيل</label><textarea id="ad" placeholder="المنطقة، الشارع، رقم العمارة، الدور، الشقة، علامة مميزة"></textarea></div>
-<div id="locRow"><label>موقعك على الخريطة (اختياري)</label>
+<label id="lbName">الاسم</label><input id="nm" autocomplete="name" placeholder="اسمك">
+<label id="lbPhone">رقم الموبايل</label><input id="ph" type="tel" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx">
+<div id="addrRow"><label id="lbAddr">العنوان بالتفصيل</label><textarea id="ad" placeholder="المنطقة، الشارع، رقم العمارة، الدور، الشقة، علامة مميزة"></textarea></div>
+<div id="locRow"><label id="lbLoc">موقعك على الخريطة (اختياري)</label>
 <div class="promo"><input id="lk" inputmode="url" placeholder="الصق لينك موقعك من خرائط جوجل"><button id="gps" type="button">📍 موقعي</button></div>
 <div class="pm" id="gpsm"></div></div>
-<label>الفرع</label><select id="br"></select><div class="pm" id="brmsg"></div>
-<label>طريقة الاستلام</label><select id="ful"><option value="delivery">توصيل للعنوان</option><option value="pickup">استلام من المطعم</option></select>
-<label>طريقة الدفع</label><select id="pay"><option>كاش عند الاستلام</option></select>
-<label>ملاحظات عامة على الطلب (اختياري)</label><textarea id="nt" placeholder="مثال: رن عليا لما توصل…"></textarea>
+<label id="lbBranch">الفرع</label><select id="br"></select><div class="pm" id="brmsg"></div>
+<label id="lbFul">طريقة الاستلام</label><select id="ful"><option value="delivery">توصيل للعنوان</option><option value="pickup">استلام من المطعم</option></select>
+<label id="lbPay">طريقة الدفع</label><select id="pay"><option value="كاش عند الاستلام">كاش عند الاستلام</option></select>
+<label id="lbNotes">ملاحظات عامة على الطلب (اختياري)</label><textarea id="nt" placeholder="مثال: رن عليا لما توصل…"></textarea>
 <div class="err" id="err"></div>
 <a class="send" id="send" href="#" target="_blank" rel="noopener">تأكيد الطلب</a>
-<div id="rec" class="pm" style="font-weight:700;margin-top:10px"></div><button class="alt" id="chatbtn" type="button" style="display:none;background:#0053aa;margin-top:10px">💬 تواصل مع المطعم بخصوص الطلب ده</button><input id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;opacity:0"><div id="fb"><div class="w"><b>لو حابب تبعت الطلب واتساب:</b><br>اضغط «افتح تطبيق واتساب» تحت، أو ابعت رسالة على الرقم <b dir="ltr" id="wanum"></b></div>
+<div id="rec" class="pm" style="font-weight:700;margin-top:10px"></div><button class="alt" id="chatbtn" type="button" style="display:none;background:#0053aa;margin-top:10px">💬 تواصل مع المطعم بخصوص الطلب ده</button><input id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;opacity:0"><div id="fb"><div class="w"><b id="fbTitle">لو حابب تبعت الطلب واتساب:</b><br><span id="fbTxt">اضغط «افتح تطبيق واتساب» تحت، أو ابعت رسالة على الرقم</span> <b dir="ltr" id="wanum"></b></div>
 <a class="alt g" id="app" href="#">افتح تطبيق واتساب</a><button class="alt" id="newo" type="button" style="background:#0053aa">ابدأ طلب جديد</button></div>
-<div id="follow"><b>تمام، طلبك اتسجّل ✅</b><p style="margin:6px 0">عايز تتابع طلبك إزاي؟</p><a class="alt g" id="followWa" href="#" target="_blank" rel="noopener">💬 متابعة مع خدمة العملاء واتساب</a><button class="alt" id="followSite" type="button" style="background:#0053aa">📍 متابعة الطلب من الموقع</button></div>
+<div id="follow"><b id="folTitle">تمام، طلبك اتسجّل ✅</b><p id="folQ" style="margin:6px 0">عايز تتابع طلبك إزاي؟</p><a class="alt g" id="followWa" href="#" target="_blank" rel="noopener">💬 متابعة مع خدمة العملاء واتساب</a><button class="alt" id="followSite" type="button" style="background:#0053aa">📍 متابعة الطلب من الموقع</button></div>
 <textarea id="prev" readonly></textarea>
-<p class="note">بعد الضغط على «تأكيد الطلب» طلبك بيتسجّل عند المطعم على طول، وبعدها تختار تتابع مع خدمة العملاء واتساب ولا تكتفي بالموقع.</p>
+<p class="note" id="sheetNote">بعد الضغط على «تأكيد الطلب» طلبك بيتسجّل عند المطعم على طول، وبعدها تختار تتابع مع خدمة العملاء واتساب ولا تكتفي بالموقع.</p>
 </div></div>
-<div id="lsheet"><div class="in"><button class="back" id="lback">→ رجوع</button><h3>سجّل دخول الأول</h3><p style="margin:8px 0">عشان تكمل طلبك لازم تسجّل دخول — اختار الطريقة اللي تريحك. طلبك محفوظ في السلة ومش هيضيع.</p><button class="g" id="lgoogle" type="button" style="width:100%;margin:8px 0">دخول بجوجل</button><button id="lemail" type="button" style="width:100%;margin:8px 0;background:#0e7490">دخول بالإيميل</button></div></div>
-<div id="osheet"><div class="in"><button class="back" id="oback">→ رجوع للمنيو</button><h3>أوردراتي</h3><div id="olist"></div></div></div><div id="esheet"><div class="in"><button class="back" id="eback">→ رجوع للمنيو</button><h3>دخول بالإيميل</h3><div id="estep1"><label>الإيميل</label><input id="eEmail" type="email" placeholder="example@mail.com" dir="ltr" style="text-align:left"><p id="eMsg1">هنبعتلك لينك دخول على إيميلك — دوس عليه عشان تدخل على طول.</p><button id="eSend" type="button">ابعت اللينك</button></div><div id="estep2" style="display:none"><p>بعتنا لينك دخول على <b id="eSentTo"></b></p><p id="eMsg2">دوس على اللينك اللي في الإيميل عشان تدخل على طول — اللينك صالح لمدة ساعة.</p><p style="margin-top:10px"><button class="alt" id="eResend" type="button">ابعت اللينك تاني</button> <button class="alt" id="eChange" type="button">غيّر الإيميل</button></p></div></div></div><div id="csheet"><div class="in"><button class="back" id="cback">→ رجوع</button><h3 id="ctitle">💬 تواصل مع المطعم</h3><div id="cmsgs"></div></div><div class="cbar"><input id="cin" type="text" dir="auto" placeholder="اكتب رسالتك هنا…" maxlength="1000"><button id="csend" type="button">إرسال</button></div></div>
+<div id="lsheet"><div class="in"><button class="back" id="lback">→ رجوع</button><h3 id="lsTitle">سجّل دخول الأول</h3><p id="lsTxt" style="margin:8px 0">عشان تكمل طلبك لازم تسجّل دخول — اختار الطريقة اللي تريحك. طلبك محفوظ في السلة ومش هيضيع.</p><button class="g" id="lgoogle" type="button" style="width:100%;margin:8px 0">دخول بجوجل</button><button id="lemail" type="button" style="width:100%;margin:8px 0;background:#0e7490">دخول بالإيميل</button></div></div>
+<div id="osheet"><div class="in"><button class="back" id="oback">→ رجوع للمنيو</button><h3 id="osTitle">أوردراتي</h3><div id="olist"></div></div></div><div id="esheet"><div class="in"><button class="back" id="eback">→ رجوع للمنيو</button><h3 id="esTitle">دخول بالإيميل</h3><div id="estep1"><label id="esLb">الإيميل</label><input id="eEmail" type="email" placeholder="example@mail.com" dir="ltr" style="text-align:left"><p id="eMsg1">هنبعتلك لينك دخول على إيميلك — دوس عليه عشان تدخل على طول.</p><button id="eSend" type="button">ابعت اللينك</button></div><div id="estep2" style="display:none"><p><span id="eSentTxt">بعتنا لينك دخول على</span> <b id="eSentTo"></b></p><p id="eMsg2">دوس على اللينك اللي في الإيميل عشان تدخل على طول — اللينك صالح لمدة ساعة.</p><p style="margin-top:10px"><button class="alt" id="eResend" type="button">ابعت اللينك تاني</button> <button class="alt" id="eChange" type="button">غيّر الإيميل</button></p></div></div></div><div id="csheet"><div class="in"><button class="back" id="cback">→ رجوع</button><h3 id="ctitle">💬 تواصل مع المطعم</h3><div id="cmsgs"></div></div><div class="cbar"><input id="cin" type="text" dir="auto" placeholder="اكتب رسالتك هنا…" maxlength="1000"><button id="csend" type="button">إرسال</button></div></div>
 <div id="installHelp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;padding:20px" onclick="if(event.target===this)this.style.display='none'">
 <div style="background:#fff;border-radius:16px;max-width:420px;margin:60px auto;padding:18px;line-height:1.9;font-size:15px">
-<b style="font-size:18px">📲 تثبيت تطبيق جاد</b>
-<div style="margin-top:8px"><b>أوبرا (أندرويد):</b> دوس على قايمة المتصفح ⋮ فوق ← اختار «Home Screen» ← «Add».</div>
-<div><b>كروم (أندرويد):</b> قايمة ⋮ ← «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».</div>
-<div><b>آيفون (سفاري):</b> زرار المشاركة تحت ← «إضافة إلى الشاشة الرئيسية».</div>
-<button type="button" onclick="document.getElementById('installHelp').style.display='none'" style="margin-top:12px;width:100%;border:0;border-radius:12px;padding:11px;font-family:inherit;font-weight:700;font-size:15px;background:#a92318;color:#fff">تمام</button>
+<b id="ihTitle" style="font-size:18px">📲 تثبيت تطبيق جاد</b>
+<div id="ih1" style="margin-top:8px"><b>أوبرا (أندرويد):</b> دوس على قايمة المتصفح ⋮ فوق ← اختار «Home Screen» ← «Add».</div>
+<div id="ih2"><b>كروم (أندرويد):</b> قايمة ⋮ ← «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».</div>
+<div id="ih3"><b>آيفون (سفاري):</b> زرار المشاركة تحت ← «إضافة إلى الشاشة الرئيسية».</div>
+<button type="button" onclick="document.getElementById('installHelp').style.display='none'" id="ihOk" style="margin-top:12px;width:100%;border:0;border-radius:12px;padding:11px;font-family:inherit;font-weight:700;font-size:15px;background:#a92318;color:#fff">تمام</button>
 </div></div>
 <script>
 var SUPABASE_URL='https://apcvurppgwscpktdurdt.supabase.co';var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwY3Z1cnBwZ3dzY3BrdGR1cmR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MzE0NzgsImV4cCI6MjExMDQwNzQ3OH0.mm4Mqs7u9QaXMxq6sShrEU2oRUgxc3tVR40w6X2xgTk';
 var DB_ON=SUPABASE_URL.indexOf('http')===0&&SUPABASE_ANON_KEY.indexOf('PUT_')!==0;
-var CFG={"wa": "201022336696", "fee": 30, "vat": 0.14, "promo": "gadfree", "min": 0, "brand": "جاد", "phone": "16475"};var MENU=[{"g": "شرقي", "s": [{"t": "ساندوتشات الفول", "k": "ful", "i": [{"n": "فول بالخلطة", "o": [{"l": "", "p": 15}]}, {"n": "فول ليمون معصفر / فول إسكندراني", "o": [{"l": "", "p": 22}]}, {"n": "فول زيت زيتون", "o": [{"l": "", "p": 23}]}, {"n": "فول زيت حار", "o": [{"l": "", "p": 21}]}, {"n": "فول صلصة", "o": [{"l": "", "p": 21}]}, {"n": "فول حمص", "o": [{"l": "", "p": 25}]}, {"n": "فول بيض أومليت", "o": [{"l": "", "p": 26}]}, {"n": "فول بيض مسلوق", "o": [{"l": "", "p": 25}]}, {"n": "فول سجق", "o": [{"l": "", "p": 46}]}, {"n": "فول ديناميت خبز فرنساوي", "o": [{"l": "", "p": 37}]}]}, {"t": "ساندوتشات الفلافل", "k": "fal", "i": [{"n": "فلافل", "o": [{"l": "", "p": 15}]}, {"n": "فلافل محشية", "o": [{"l": "", "p": 19}]}, {"n": "فلافل كيري", "o": [{"l": "", "p": 28}]}, {"n": "فلافل ليمون معصفر", "o": [{"l": "", "p": 22}]}, {"n": "فلافل حمص", "o": [{"l": "", "p": 25}]}, {"n": "فلافل بيض أومليت", "o": [{"l": "", "p": 26}]}, {"n": "فلافل بيض مسلوق", "o": [{"l": "", "p": 25}]}, {"n": "فلافل ديناميت خبز فرنساوي", "o": [{"l": "", "p": 37}]}]}, {"t": "ساندوتشات البيض", "k": "egg", "i": [{"n": "بيض مسلوق", "o": [{"l": "شامي", "p": 21}]}, {"n": "بيض أومليت", "o": [{"l": "شامي", "p": 23}]}, {"n": "بيض بسطرمة", "o": [{"l": "شامي", "p": 36}]}, {"n": "عجة", "o": [{"l": "شامي", "p": 31}]}, {"n": "شكشوكة", "o": [{"l": "شامي", "p": 29}]}, {"n": "أومليت بيتزا", "o": [{"l": "شامي", "p": 36}]}, {"n": "أومليت شيدر", "o": [{"l": "فرنساوي", "p": 39}, {"l": "شامي", "p": 35}]}, {"n": "أومليت رومي", "o": [{"l": "فرنساوي", "p": 50}, {"l": "شامي", "p": 43}]}]}, {"t": "ساندوتشات متنوعة", "k": "misc", "i": [{"n": "جبنة بيضاء بالطماطم", "o": [{"l": "شامي", "p": 24}]}, {"n": "مسقعة /باذنجان مقلي", "o": [{"l": "شامي", "p": 24}]}, {"n": "سجق", "o": [{"l": "فرنساوي", "p": 66}]}, {"n": "بابا غنوج", "o": [{"l": "شامي", "p": 26}]}, {"n": "حمص", "o": [{"l": "شامي", "p": 27}]}, {"n": "جبنة رومي مقلية", "o": [{"l": "فرنساوي", "p": 45}, {"l": "شامي", "p": 39}]}, {"n": "بطاطس جبنة رومي", "o": [{"l": "فرنساوي", "p": 50}, {"l": "شامي", "p": 44}]}, {"n": "بطاطس شيدر", "o": [{"l": "فرنساوي", "p": 44}, {"l": "شامي", "p": 40}]}]}, {"t": "ساندوتشات البطاطس", "k": "pot", "i": [{"n": "بطاطس بوم فريت", "o": [{"l": "فرنساوي", "p": 29}, {"l": "شامي", "p": 25}]}, {"n": "بطاطس شيبسي", "o": [{"l": "شامي", "p": 22}]}, {"n": "بوم فريت بالبيض المسلوق", "o": [{"l": "شامي", "p": 35}]}, {"n": "بوم فريت بالبيض الأومليت", "o": [{"l": "شامي", "p": 36}]}, {"n": "بطاطس كاتشب ومايونيز", "o": [{"l": "شامي", "p": 30}]}, {"n": "بطاطس / باباغنوج / فلافل / باذنجان", "o": [{"l": "شامي", "p": 31}]}, {"n": "بيوريه سمن بلدي", "o": [{"l": "شامي", "p": 22}]}, {"n": "بيوريه بيض مسلوق", "o": [{"l": "شامي", "p": 32}]}, {"n": "بيوريه بيض أومليت", "o": [{"l": "شامي", "p": 33}]}, {"n": "بطاطس كول سلو", "o": [{"l": "شامي", "p": 39}]}, {"n": "بطاطس شيبسي/بوم فريت بالجبنة الرومي المبشورة", "o": [{"l": "شامي", "p": 42}]}]}]}, {"g": "علب شرقية", "s": [{"t": "علب شرقية", "k": "box", "i": [{"n": "علبة باذنجان مقلي", "o": [{"l": "", "p": 28}]}, {"n": "قرص فلافل بالسمسم", "o": [{"l": "", "p": 9}]}, {"n": "قرص فلافل محشية", "o": [{"l": "", "p": 10}]}, {"n": "طبق أومليت", "o": [{"l": "", "p": 40}]}, {"n": "بيض مسلوق", "o": [{"l": "", "p": 14}]}, {"n": "باكت بطاطس", "o": [{"l": "", "p": 35}]}, {"n": "جبنة بالطماطم", "o": [{"l": "", "p": 48}]}, {"n": "طبق بيض بالبسطرمة", "o": [{"l": "", "p": 70}]}, {"n": "علبة فول قدرة / سادة", "o": [{"l": "", "p": 40}]}, {"n": "علبة فول خلطة", "o": [{"l": "", "p": 44}]}, {"n": "علبة فول بالصلصة / بالزيت الحار", "o": [{"l": "", "p": 47}]}, {"n": "علبة فول سجق", "o": [{"l": "", "p": 82}]}, {"n": "علبة فول زيت زيتون", "o": [{"l": "", "p": 51}]}, {"n": "فول إسكندراني", "o": [{"l": "", "p": 50}]}, {"n": "علبة مسقعة", "o": [{"l": "", "p": 50}]}, {"n": "علبة بطاطس بيوريه", "o": [{"l": "", "p": 49}]}, {"n": "علبة عجينة طعمية", "o": [{"l": "", "p": 35}]}]}]}, {"g": "المشويات والوجبات", "s": [{"t": "المشويات على الفحم", "k": "grill", "i": [{"n": "نصف فرخة مشوية", "o": [{"l": "", "p": 170}]}, {"n": "طبق شيش طاووق", "o": [{"l": "", "p": 170}]}, {"n": "طبق ميكس جريل", "o": [{"l": "", "p": 360}]}, {"n": "طبق كفتة مشوية", "o": [{"l": "", "p": 170}]}, {"n": "طبق كباب وكفتة", "o": [{"l": "", "p": 285}]}, {"n": "طبق كباب بتلو", "o": [{"l": "", "p": 390}]}, {"n": "طبق دجاج بانيه", "o": [{"l": "", "p": 170}]}]}, {"t": "الوجبات", "k": "meals", "i": [{"n": "وجبة ربع دجاجة ورك", "o": [{"l": "", "p": 110}]}, {"n": "وجبة ربع دجاجة صدر", "o": [{"l": "", "p": 130}]}, {"n": "وجبة نصف دجاجة مشوية", "o": [{"l": "", "p": 190}]}, {"n": "وجبة شيش طاووق", "o": [{"l": "", "p": 175}]}, {"n": "وجبة دجاج بانيه", "o": [{"l": "", "p": 175}]}, {"n": "وجبة فتة شاورما لحم", "o": [{"l": "", "p": 180}]}, {"n": "وجبة فتة شاورما دجاج", "o": [{"l": "", "p": 180}]}, {"n": "وجبة كفتة", "o": [{"l": "", "p": 175}]}, {"n": "وجبة كباب وكفتة", "o": [{"l": "", "p": 310}]}, {"n": "وجبة ميكس مشاوي", "o": [{"l": "", "p": 180}]}]}, {"t": "وجبات التربو", "k": "turbo", "i": [{"n": "تربو كبدة", "o": [{"l": "", "p": 95}]}, {"n": "تربو سجق", "o": [{"l": "", "p": 120}]}, {"n": "تربو شيش", "o": [{"l": "", "p": 120}]}, {"n": "تربو بانيه", "o": [{"l": "", "p": 120}]}, {"n": "تربو كفتة", "o": [{"l": "", "p": 120}]}, {"n": "تربو ميكس", "o": [{"l": "", "p": 120}]}, {"n": "تربو شاورما", "o": [{"l": "", "p": 150}]}, {"n": "تربو جمبري", "o": [{"l": "", "p": 140}]}]}, {"t": "حواوشي", "k": "haw", "i": [{"n": "حواوشي", "o": [{"l": "", "p": 85}]}, {"n": "حواوشي جبنة موتزريلا", "o": [{"l": "", "p": 100}]}, {"n": "حواوشي جبنة شيدر", "o": [{"l": "", "p": 100}]}]}]}, {"g": "أطباق جاد", "s": [{"t": "أطباق جاد", "k": "gadd", "i": [{"n": "طاجن بامية", "o": [{"l": "", "p": 75}]}, {"n": "ملوخية", "o": [{"l": "", "p": 65}]}, {"n": "كبدة إسكندراني", "o": [{"l": "", "p": 115}]}, {"n": "دجاج بانيه", "o": [{"l": "", "p": 170}]}, {"n": "سمبوسك جبن (3 قطعة)", "o": [{"l": "", "p": 95}]}, {"n": "ورق عنب", "o": [{"l": "", "p": 95}]}, {"n": "شوربة لسان عصفور", "o": [{"l": "", "p": 42}]}, {"n": "شوربة عدس", "o": [{"l": "", "p": 50}]}]}, {"t": "الأرز والمكرونة", "k": "rice", "i": [{"n": "أرز أبيض", "o": [{"l": "", "p": 39}]}, {"n": "أرز كبدة", "o": [{"l": "", "p": 95}]}, {"n": "أرز جمبري", "o": [{"l": "", "p": 140}]}, {"n": "أرز صيادية", "o": [{"l": "", "p": 60}]}, {"n": "دولمة مشكل", "o": [{"l": "", "p": 95}]}, {"n": "مكرونة فرن", "o": [{"l": "", "p": 105}]}, {"n": "مكرونة بولونيز", "o": [{"l": "", "p": 105}]}, {"n": "مكرونة نجرسكو", "o": [{"l": "", "p": 140}]}, {"n": "أرز برياني سادة", "o": [{"l": "", "p": 55}]}, {"n": "إسباجتي صلصة", "o": [{"l": "", "p": 55}]}]}]}, {"g": "شاورما", "s": [{"t": "ساندوتشات الشاورما", "k": "shw", "i": [{"n": "ساندوتش شاورما لحم", "o": [{"l": "كيزر جامبو", "p": 95}, {"l": "وسط", "p": 95}, {"l": "فرنساوي", "p": 105}, {"l": "سوري", "p": 115}]}, {"n": "ساندوتش شاورما فراخ", "o": [{"l": "كيزر جامبو", "p": 95}, {"l": "وسط", "p": 95}, {"l": "فرنساوي", "p": 105}, {"l": "سوري", "p": 115}]}]}, {"t": "فتة الشاورما", "k": "fatta", "i": [{"n": "فتة شاورما لحم / ميكس", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 155}]}, {"n": "فتة شاورما فراخ", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 155}]}]}]}, {"g": "ساندوتشات", "s": [{"t": "ساندوتشات اللحوم", "k": "beef", "i": [{"n": "كفتة", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "كبدة", "o": [{"l": "شامي", "p": 62}, {"l": "وسط", "p": 58}, {"l": "فرنساوي", "p": 65}]}, {"n": "هوت دوج", "o": [{"l": "فرنساوي", "p": 72}]}, {"n": "بيف برجر", "o": [{"l": "كيزر جامبو", "p": 68}]}, {"n": "بيف برجر جبنة", "o": [{"l": "كيزر جامبو", "p": 80}]}, {"n": "بيف برجر بيض", "o": [{"l": "كيزر جامبو", "p": 80}]}, {"n": "بيف برجر ميكس", "o": [{"l": "كيزر جامبو", "p": 86}]}]}, {"t": "ساندوتشات الدجاج", "k": "chick", "i": [{"n": "فراخ بانيه بالجبنة الشيدر", "o": [{"l": "وسط", "p": 77}, {"l": "فرنساوي", "p": 95}]}, {"n": "شيش طاووق", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "فاهيتا فراخ", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "فراخ كرسبي بالجبنة الشيدر", "o": [{"l": "وسط", "p": 77}, {"l": "فرنساوي", "p": 95}]}, {"n": "فاهيتا اسبنش", "o": [{"l": "فرنساوي", "p": 100}]}]}, {"t": "ساندوتشات الأسماك", "k": "sea", "i": [{"n": "جمبري بانيه", "o": [{"l": "فرنساوي", "p": 145}]}, {"n": "جمبري فاهيتا", "o": [{"l": "فرنساوي", "p": 145}]}]}, {"t": "ساندوتشات رول", "k": "roll", "i": [{"n": "فلافل", "o": [{"l": "", "p": 36}]}, {"n": "أومليت", "o": [{"l": "", "p": 46}]}, {"n": "أومليت هوت دوج", "o": [{"l": "", "p": 78}]}, {"n": "بطاطس", "o": [{"l": "", "p": 54}]}, {"n": "بطاطس موتزريلا", "o": [{"l": "", "p": 75}]}, {"n": "بطاطس رومي", "o": [{"l": "", "p": 75}]}, {"n": "بطاطس شيدر", "o": [{"l": "", "p": 66}]}, {"n": "كفتة", "o": [{"l": "", "p": 100}]}, {"n": "طاووق", "o": [{"l": "", "p": 100}]}, {"n": "بانيه", "o": [{"l": "", "p": 100}]}, {"n": "كرسبي", "o": [{"l": "", "p": 100}]}, {"n": "كبدة", "o": [{"l": "", "p": 85}]}, {"n": "فاهيتا إسبانيش", "o": [{"l": "", "p": 110}]}]}]}, {"g": "بيتزا وفطائر وكريب", "s": [{"t": "البيتزا", "k": "pizza", "i": [{"n": "بيتزا مارجريتا", "o": [{"l": "كبير", "p": 120}, {"l": "وسط", "p": 100}]}, {"n": "سجق", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "هوت دوج", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "تونة", "o": [{"l": "كبير", "p": 185}]}, {"n": "مشروم", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "شاورما لحم", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "شاورما فراخ", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "ميكس جبن", "o": [{"l": "كبير", "p": 180}, {"l": "وسط", "p": 145}]}, {"n": "مشكل لحوم", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 150}]}, {"n": "بسطرمة", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "بسطرمة كيري", "o": [{"l": "كبير", "p": 200}, {"l": "وسط", "p": 165}]}, {"n": "جمبري", "o": [{"l": "كبير", "p": 210}, {"l": "وسط", "p": 165}]}]}, {"t": "الفطائر الشرقية والصواريخ", "k": "fat", "i": [{"n": "فطيرة سكر", "o": [{"l": "فطائر", "p": 90}]}, {"n": "فطيرة كاستر", "o": [{"l": "فطائر", "p": 110}]}, {"n": "فطيرة نوتيلا", "o": [{"l": "فطائر", "p": 180}]}, {"n": "فطيرة نوتيلا مكسرات", "o": [{"l": "فطائر", "p": 240}]}, {"n": "فطيرة مكسرات", "o": [{"l": "فطائر", "p": 210}]}, {"n": "فطيرة عسل وقشطة", "o": [{"l": "فطائر", "p": 185}]}, {"n": "فطيرة مكسرات عسل وقشطة", "o": [{"l": "فطائر", "p": 245}]}, {"n": "فطيرة مشلتت بالسمن البلدي", "o": [{"l": "فطائر", "p": 210}]}, {"n": "فطيرة زيتون وخضروات", "o": [{"l": "صواريخ", "p": 135}, {"l": "فطائر", "p": 135}]}, {"n": "فطيرة مشروم / مفروم", "o": [{"l": "صواريخ", "p": 185}, {"l": "فطائر", "p": 185}]}, {"n": "فطيرة هوت دوج / جبنة رومي / سجق", "o": [{"l": "صواريخ", "p": 190}, {"l": "فطائر", "p": 190}]}, {"n": "فطيرة شاورما لحم / بسطرمة / شاورما فراخ", "o": [{"l": "صواريخ", "p": 205}, {"l": "فطائر", "p": 205}]}, {"n": "فطيرة مشكل لحوم", "o": [{"l": "صواريخ", "p": 200}, {"l": "فطائر", "p": 200}]}, {"n": "فطيرة تونة", "o": [{"l": "صواريخ", "p": 195}, {"l": "فطائر", "p": 195}]}, {"n": "فطيرة مشكل جبن", "o": [{"l": "صواريخ", "p": 190}, {"l": "فطائر", "p": 190}]}, {"n": "فطيرة سوبر جاد", "o": [{"l": "صواريخ", "p": 195}, {"l": "فطائر", "p": 195}]}, {"n": "فطيرة بسطرمة كيري", "o": [{"l": "صواريخ", "p": 215}, {"l": "فطائر", "p": 215}]}]}, {"t": "الكريب", "k": "crepe", "i": [{"n": "كريب برجر", "o": [{"l": "", "p": 110}]}, {"n": "كريب هوت دوج مكسيكان", "o": [{"l": "", "p": 110}]}, {"n": "كريب كفتة مشوية", "o": [{"l": "", "p": 135}]}, {"n": "كريب سجق", "o": [{"l": "", "p": 135}]}, {"n": "كريب بسطرمة كيري", "o": [{"l": "", "p": 150}]}, {"n": "كريب شاورما لحمة", "o": [{"l": "", "p": 155}]}, {"n": "كريب شاورما فراخ", "o": [{"l": "", "p": 155}]}, {"n": "كريب فراخ بانيه", "o": [{"l": "", "p": 135}]}, {"n": "كريب سوبر كرانشي", "o": [{"l": "", "p": 140}]}, {"n": "كريب طاووق", "o": [{"l": "", "p": 135}]}, {"n": "كريب فاهيتا فراخ", "o": [{"l": "", "p": 135}]}, {"n": "كريب تشيكن باربيكيو", "o": [{"l": "", "p": 135}]}, {"n": "كريب بطاطس", "o": [{"l": "", "p": 85}]}, {"n": "كريب ميكس تشيز", "o": [{"l": "", "p": 130}]}, {"n": "كريب نوتيلا نيو كريم", "o": [{"l": "", "p": 130}]}]}]}, {"g": "سلطات ومشروبات", "s": [{"t": "السلطات", "k": "salad", "i": [{"n": "حمص", "o": [{"l": "", "p": 42}]}, {"n": "بابا غنوج", "o": [{"l": "", "p": 40}]}, {"n": "باذنجان مخلل", "o": [{"l": "", "p": 28}]}, {"n": "فلفل مقلي", "o": [{"l": "", "p": 27}]}, {"n": "مخلل لوكس", "o": [{"l": "", "p": 20}]}, {"n": "طحينة", "o": [{"l": "", "p": 35}]}, {"n": "سلطة خضرة", "o": [{"l": "", "p": 27}]}, {"n": "كول سلو", "o": [{"l": "", "p": 40}]}, {"n": "ثومية", "o": [{"l": "", "p": 40}]}, {"n": "طماطم متبلة", "o": [{"l": "", "p": 33}]}]}, {"t": "المشروبات", "k": "drinks", "i": [{"n": "مانجو", "o": [{"l": "", "p": 65}]}, {"n": "ليمون", "o": [{"l": "", "p": 45}]}, {"n": "ليمون بالنعناع", "o": [{"l": "", "p": 45}]}, {"n": "مياه صغيرة", "o": [{"l": "", "p": 10}]}, {"n": "كانز", "o": [{"l": "", "p": 20}]}]}]}];var BR=["المهندسين", "عباس العقاد (مدينة نصر)", "وسط البلد", "المعادي", "المعراج", "الميرغني – مصر الجديدة", "التجمع الخامس – جامعة المستقبل", "التجمع الخامس – مسجد الحمد", "الشروق"];
+var CFG={"wa": "201022336696", "fee": 30, "vat": 0.14, "promo": "gadfree", "min": 0, "brand": "جاد", "phone": "16475"};
+var lang='ar';try{var _lg=localStorage.getItem('gad_lang');if(_lg==='en'||_lg==='ar')lang=_lg}catch(e){}
+var I18N_EN={ui:{
+ "اطلب من جاد": "Order from Gad",
+ "أكل لكل الناس": "Food for everyone",
+ "توصيل مجاني": "Free delivery",
+ "للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه": "For orders of 100 EGP or more — tap the code to copy it",
+ "دوس عشان تنسخ الكود": "Tap to copy the code",
+ "✅ اتنسخ! اكتبه في خانة البرومو عند الطلب": "✅ Copied! Enter it in the promo field when ordering",
+ "⚠️ لم يتم ضبط رقم الواتساب بعد.": "⚠️ WhatsApp number is not set yet.",
+ "سجّل الدخول عشان تحصل على نقاط وبرومو كود وخصومات كبيرة": "Sign in to earn points, promo codes and big discounts",
+ "سجّل الدخول عشان تقدر تطلب — وهتحصل على نقاط وبرومو كود وخصومات كبيرة": "Sign in to order — and earn points, promo codes and big discounts",
+ "دخول بجوجل": "Sign in with Google",
+ "دخول بالإيميل": "Sign in with email",
+ "أوردراتي": "My orders",
+ "خروج": "Sign out",
+ "📲 ثبّت التطبيق": "📲 Install the app",
+ "نقاطك تساوي": "Your points are worth",
+ "آخر أوردر": "Last order",
+ "أوردر من جاد": "Orders from Gad",
+ "كل طلباتك": "All your orders",
+ "أكتر صنف طلبته": "Your most ordered item",
+ "🔥 الأعلى مبيعاً": "🔥 Best sellers",
+ "🍽️ حالة طلبك": "🍽️ Your order status",
+ "تم استلام الأوردر في المطعم": "Order received at the restaurant",
+ "تم الاستلام": "Received",
+ "بيتحضّر": "Being prepared",
+ "خرج للتوصيل": "Out for delivery",
+ "تم التوصيل": "Delivered",
+ "جاهز للاستلام": "Ready for pickup",
+ "بالهنا والشفا 🎉": "Enjoy your meal 🎉",
+ "الأوردر ده اتلغى": "This order was cancelled",
+ "بنحدّث الحالة كل 5 ثواني — مش محتاج تعمل ريفرش": "We update the status every 5 seconds — no need to refresh",
+ "ابحث عن صنف…": "Search for an item…",
+ "حكاية جاد — من 1960": "The story of Gad — since 1960",
+ "من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.": "Since 1960, Gad has served authentic oriental food — foul, taameya and grills — with the same taste and quality generations grew up with in Egypt. Today you can order online from the same kitchen, delivered hot to your door.",
+ "الخط الساخن 16475": "Hotline 16475",
+ "عرض الطلب": "View order",
+ "👥 جماعي": "👥 Group",
+ "→ رجوع للمنيو": "→ Back to menu",
+ "→ رجوع": "→ Back",
+ "👥 طلب جماعي": "👥 Group order",
+ "👥 طلب جماعي: مفعّل": "👥 Group order: ON",
+ "اطلب ليك ولصحابك من موبايلك": "Order for you and your friends from your phone",
+ "دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو": "Tap the name of the person you are ordering for, then add items from the menu",
+ "أنا": "Me",
+ "➕ صديق": "➕ Friend",
+ "اسم الصديق": "Friend's name",
+ "إضافة": "Add",
+ "تأكيد؟": "Confirm?",
+ "طلبك": "Your order",
+ "برومو كود (لو عندك)": "Promo code (if you have one)",
+ "اكتب الكود": "Enter the code",
+ "تطبيق": "Apply",
+ "⭐ نقاط الولاء": "⭐ Loyalty points",
+ "عدد النقاط اللي عايز تستبدلها": "Points you want to redeem",
+ "استخدام النقاط": "Use points",
+ "الاسم": "Name",
+ "اسمك": "Your name",
+ "رقم الموبايل": "Mobile number",
+ "العنوان بالتفصيل": "Address in detail",
+ "المنطقة، الشارع، رقم العمارة، الدور، الشقة، علامة مميزة": "Area, street, building no., floor, apartment, landmark",
+ "موقعك على الخريطة (اختياري)": "Your location on the map (optional)",
+ "الصق لينك موقعك من خرائط جوجل": "Paste your location link from Google Maps",
+ "📍 موقعي": "📍 My location",
+ "الفرع": "Branch",
+ "طريقة الاستلام": "How to receive",
+ "توصيل للعنوان": "Delivery to address",
+ "استلام من المطعم": "Pickup from restaurant",
+ "طريقة الدفع": "Payment method",
+ "كاش عند الاستلام": "Cash on delivery",
+ "ملاحظات عامة على الطلب (اختياري)": "General notes on the order (optional)",
+ "مثال: رن عليا لما توصل…": "e.g. call me when you arrive…",
+ "تأكيد الطلب": "Confirm order",
+ "لو حابب تبعت الطلب واتساب:": "If you want to send the order on WhatsApp:",
+ "اضغط «افتح تطبيق واتساب» تحت، أو ابعت رسالة على الرقم": "Tap “Open WhatsApp app” below, or send a message to",
+ "افتح تطبيق واتساب": "Open WhatsApp app",
+ "ابدأ طلب جديد": "Start a new order",
+ "تمام، طلبك اتسجّل ✅": "Done, your order is registered ✅",
+ "عايز تتابع طلبك إزاي؟": "How do you want to follow your order?",
+ "💬 متابعة مع خدمة العملاء واتساب": "💬 Follow up with customer service on WhatsApp",
+ "📍 متابعة الطلب من الموقع": "📍 Track the order on the website",
+ "بعد الضغط على «تأكيد الطلب» طلبك بيتسجّل عند المطعم على طول، وبعدها تختار تتابع مع خدمة العملاء واتساب ولا تكتفي بالموقع.": "After tapping “Confirm order”, your order is registered at the restaurant right away, then you choose whether to follow up with customer service on WhatsApp or just track it on the website.",
+ "سجّل دخول الأول": "Sign in first",
+ "عشان تكمل طلبك لازم تسجّل دخول — اختار الطريقة اللي تريحك. طلبك محفوظ في السلة ومش هيضيع.": "To complete your order you need to sign in — pick the way that suits you. Your order is saved in the cart and won't be lost.",
+ "الإيميل": "Email",
+ "هنبعتلك لينك دخول على إيميلك — دوس عليه عشان تدخل على طول.": "We will send a sign-in link to your email — tap it to sign in right away.",
+ "ابعت اللينك": "Send the link",
+ "بعتنا لينك دخول على": "We sent a sign-in link to",
+ "دوس على اللينك اللي في الإيميل عشان تدخل على طول — اللينك صالح لمدة ساعة.": "Tap the link in the email to sign in right away — the link is valid for one hour.",
+ "ابعت اللينك تاني": "Send the link again",
+ "غيّر الإيميل": "Change email",
+ "اكتب رسالتك هنا…": "Write your message here…",
+ "إرسال": "Send",
+ "📲 تثبيت تطبيق جاد": "📲 Install the Gad app",
+ "أوبرا (أندرويد):": "Opera (Android):",
+ "دوس على قايمة المتصفح ⋮ فوق ← اختار «Home Screen» ← «Add».": "Tap the browser menu ⋮ at the top ← choose “Home Screen” ← “Add”.",
+ "كروم (أندرويد):": "Chrome (Android):",
+ "قايمة ⋮ ← «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».": "Menu ⋮ ← “Install app” or “Add to Home screen”.",
+ "آيفون (سفاري):": "iPhone (Safari):",
+ "زرار المشاركة تحت ← «إضافة إلى الشاشة الرئيسية».": "Share button below ← “Add to Home Screen”.",
+ "تمام": "OK",
+ "إجمالي الأصناف": "Items total",
+ "خصم": "Discount",
+ "خصم نقاط ({n} نقطة)": "Points discount ({n} points)",
+ "نقطة": "points",
+ "الاستلام": "Pickup",
+ "من المطعم — بدون رسوم توصيل": "From the restaurant — no delivery fee",
+ "التوصيل": "Delivery",
+ "مجاني 🎉": "Free 🎉",
+ "ضريبة القيمة المضافة": "VAT",
+ "الإجمالي": "Total",
+ "هتكسب من الأوردر ده": "You will earn from this order",
+ "⚠️ البرومو محتاج حد أدنى {n} جنيه (أصنافك حاليًا {s} جنيه)": "⚠️ This promo needs a minimum order of {n} EGP (your items are currently {s} EGP)",
+ "⚠️ البرومو محتاج حد أدنى {n} جنيه": "⚠️ This promo needs a minimum order of {n} EGP",
+ "البرومو محتاج حد أدنى {n} جنيه (أصنافك حاليًا {s} جنيه)": "This promo needs a minimum order of {n} EGP (your items are currently {s} EGP)",
+ "البرومو ده للي صرفوا {n}جنيه الشهر ده": "This promo is for customers who spent {n} EGP this month",
+ "البرومو ده للي طلبوا {n}أوردرات الشهر ده": "This promo is for customers who placed {n} orders this month",
+ "البرومو ده لعملاء محددين": "This promo is for selected customers",
+ "البرومو ده محتاج أوردر بحد أدنى {n} جنيه (أصنافك حاليًا {s} جنيه)": "This promo needs an order of at least {n} EGP (your items are currently {s} EGP)",
+ "تم تطبيق الكود: ": "Code applied: ",
+ "خصم {n}%": "{n}% off",
+ "خصم {n} جنيه": "{n} EGP off",
+ "الكود غير صحيح": "Invalid code",
+ "جاري التحقق…": "Checking…",
+ "تقسيمة الأوردر — كل واحد عليه كام": "Order split — how much each person owes",
+ "كل واحد عليه كام": "How much each person owes",
+ "أصناف": "Items",
+ "أصناف: ": "Items: ",
+ "توصيل": "Delivery",
+ "ضريبة": "Tax",
+ "النهاردة": "Today",
+ "امبارح": "Yesterday",
+ "منذ {n} يوم": "{n} days ago",
+ "لسه مطلبتش": "You haven't ordered yet",
+ "أول أوردر مستنيك 😋": "Your first order is waiting 😋",
+ "طلبته {n} مرة": "Ordered it {n} times",
+ "لسه مفيش أصناف": "No items yet",
+ "{n} نقطة": "{n} points",
+ "أهلاً ": "Welcome, ",
+ "⭐ نقاطك: ": "⭐ Your points: ",
+ "معاك {p} نقطة. كل جنيه بتدفعه = نقطة، وكل {r} نقاط = 1 جنيه خصم (أقل استبدال {m} نقطة).": "You have {p} points. Every EGP you pay = 1 point, and every {r} points = 1 EGP discount (minimum redemption {m} points).",
+ "مغلق مؤقتًا — ": "Temporarily closed — ",
+ "صيانة": "maintenance",
+ "مغلق الآن — مواعيد العمل من ": "Closed now — working hours from ",
+ " إلى ": " to ",
+ "اختار الفرع اللي هتستلم منه أو هيوصلك منه الأوردر": "Choose the branch you will pick up from or get delivery from",
+ "⚠️ الفرع ده {r} — اختار فرع تاني": "⚠️ This branch is {r} — choose another branch",
+ "مواعيد العمل: ": "Working hours: ",
+ "من ": "from ",
+ "طوال اليوم": "All day",
+ "— اختار الفرع —": "— Choose a branch —",
+ "السلة فاضية — اختار أصناف الأول": "The cart is empty — choose items first",
+ "اكتب اسمك": "Enter your name",
+ "اكتب رقم موبايل صحيح": "Enter a valid mobile number",
+ "اختار الفرع": "Choose a branch",
+ "الفرع ده {r} — اختار فرع تاني": "This branch is {r} — choose another branch",
+ "اكتب العنوان بالتفصيل": "Enter the address in detail",
+ "الحد الأدنى للطلب {n} جنيه": "Minimum order is {n} EGP",
+ "جاري تسجيل الطلب عند المطعم…": "Registering your order at the restaurant…",
+ "✓ تم تسجيل طلبك عند المطعم (رقم {n})": "✓ Your order is registered at the restaurant (no. {n})",
+ "⚠️ الحد المسموح 3 أوردرات في الساعة من نفس الرقم — جرّب تاني بعد شوية": "⚠️ Limit is 3 orders per hour from the same number — try again later",
+ "⚠️ الحساب ده محظور من الطلب — تواصل مع المطعم على 16475": "⚠️ This account is blocked from ordering — contact the restaurant at 16475",
+ "⚠️ البرومو ده مش متاح ليك — اتشال الخصم، ابعت الطلب تاني": "⚠️ This promo is not available for you — the discount was removed, send the order again",
+ "⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني": "⚠️ Could not use the points, the discount was removed — send the order again",
+ "⚠️ تعذر تسجيل الطلب عندنا ({s}): ": "⚠️ Could not register the order ({s}): ",
+ "⚠️ تعذر تسجيل الطلب عندنا — خطأ شبكة: ": "⚠️ Could not register the order — network error: ",
+ "⚠️ انتهت جلستك، سجّل دخول تاني أو كمّل كضيف — ابعت الطلب تاني": "⚠️ Your session expired, sign in again or continue as a guest — send the order again",
+ "⚠️ اكتب إيميل صحيح الأول.": "⚠️ Enter a valid email first.",
+ "بيتبعت…": "Sending…",
+ "تعذّر إرسال اللينك — جرّب تاني.": "Could not send the link — try again.",
+ "⚠️ مشكلة في الاتصال — جرّب تاني.": "⚠️ Connection problem — try again.",
+ "تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)": "Location is not available here. Enter the address in detail, or send your location on WhatsApp (📎 ← Location)",
+ "جاري التحديد… (اسمح للمتصفح بالوصول للموقع)": "Locating… (allow the browser to access your location)",
+ "✓ تم تحديد موقعك": "✓ Your location is set",
+ "الموقع مش مسموح. فعّله من إعدادات المتصفح، أو ابعت موقعك من واتساب (📎 ← الموقع)": "Location is not allowed. Enable it in browser settings, or send your location on WhatsApp (📎 ← Location)",
+ "مقدرناش نحدد الموقع. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)": "Could not determine your location. Enter the address in detail, or send your location on WhatsApp (📎 ← Location)",
+ "سجّل دخول بجوجل الأول": "Sign in with Google first",
+ "لسه بنحمّل نقاطك، حاول تاني": "Still loading your points, try again",
+ "أقل استبدال {n} نقطة": "Minimum redemption is {n} points",
+ "معاك {n} نقطة بس": "You only have {n} points",
+ "النقاط دي مش كافية لخصم جنيه": "These points are not enough for a 1 EGP discount",
+ "✓ هيتخصم {d} جنيه من الأوردر ده ({v} نقطة)، وهيتخصموا من رصيدك لما تبعت الطلب": "✓ {d} EGP will be deducted from this order ({v} points), and they will be deducted from your balance when you send the order",
+ "جاري التحميل…": "Loading…",
+ "لسه معملتش أوردرات": "You haven't placed any orders yet",
+ "تعذر تحميل الأوردرات": "Could not load the orders",
+ "اطلب زيه تاني": "Order it again",
+ "💬 تواصل": "💬 Chat",
+ "لسه مفيش رسايل — اكتب رسالتك والمطعم هيرد عليك هنا.": "No messages yet — write your message and the restaurant will reply here.",
+ "أنت": "You",
+ "المطعم": "The restaurant",
+ "💬 تواصل مع المطعم — طلب {n}": "💬 Chat with the restaurant — order {n}",
+ "اتسلّم": "Delivered",
+ "ملغي": "Cancelled",
+ "مفيش نتائج": "No results",
+ "ملاحظات على الصنف (مثال: بدون سلطة، ملح خفيف)": "Notes on the item (e.g. no salad, light salt)",
+ "➕ إضافات": "➕ Add-ons",
+ "اتطلب {n} مرة": "Ordered {n} times"
+},items:{
+ "أرز أبيض": "White Rice",
+ "أرز برياني سادة": "Plain Biryani Rice",
+ "أرز جمبري": "Shrimp Rice",
+ "أرز صيادية": "Sayadia Rice",
+ "أرز كبدة": "Liver Rice",
+ "أومليت": "Omelette",
+ "أومليت بيتزا": "Pizza Omelette",
+ "أومليت رومي": "Romy Cheese Omelette",
+ "أومليت شيدر": "Cheddar Omelette",
+ "أومليت هوت دوج": "Hot Dog Omelette",
+ "إسباجتي صلصة": "Spaghetti with Tomato Sauce",
+ "بابا غنوج": "Baba Ghanoush",
+ "باذنجان مخلل": "Pickled Eggplant",
+ "باكت بطاطس": "Potato Pack",
+ "بانيه": "Pane",
+ "بسطرمة": "Pastrami",
+ "بسطرمة كيري": "Pastrami with Kiri Cheese",
+ "بطاطس": "Potatoes",
+ "بطاطس / باباغنوج / فلافل / باذنجان": "Potatoes / Baba Ghanoush / Falafel / Eggplant",
+ "بطاطس بوم فريت": "Pommes Frites",
+ "بطاطس جبنة رومي": "Potatoes with Romy Cheese",
+ "بطاطس رومي": "Potatoes with Romy Cheese",
+ "بطاطس شيبسي": "Potato Chips",
+ "بطاطس شيبسي/بوم فريت بالجبنة الرومي المبشورة": "Chips / Pommes Frites with Grated Romy Cheese",
+ "بطاطس شيدر": "Potatoes with Cheddar",
+ "بطاطس كاتشب ومايونيز": "Potatoes with Ketchup & Mayonnaise",
+ "بطاطس كول سلو": "Potatoes with Coleslaw",
+ "بطاطس موتزريلا": "Potatoes with Mozzarella",
+ "بوم فريت بالبيض الأومليت": "Pommes Frites with Omelette",
+ "بوم فريت بالبيض المسلوق": "Pommes Frites with Boiled Eggs",
+ "بيتزا مارجريتا": "Margherita Pizza",
+ "بيض أومليت": "Omelette Eggs",
+ "بيض بسطرمة": "Pastrami Eggs",
+ "بيض مسلوق": "Boiled Eggs",
+ "بيف برجر": "Beef Burger",
+ "بيف برجر بيض": "Beef Burger with Egg",
+ "بيف برجر جبنة": "Beef Burger with Cheese",
+ "بيف برجر ميكس": "Beef Burger Mix",
+ "بيوريه بيض أومليت": "Mashed Potatoes with Omelette",
+ "بيوريه بيض مسلوق": "Mashed Potatoes with Boiled Eggs",
+ "بيوريه سمن بلدي": "Mashed Potatoes with Baladi Ghee",
+ "تربو بانيه": "Turbo Pane",
+ "تربو جمبري": "Turbo Shrimp",
+ "تربو سجق": "Turbo Sausage",
+ "تربو شاورما": "Turbo Shawarma",
+ "تربو شيش": "Turbo Shish",
+ "تربو كبدة": "Turbo Liver",
+ "تربو كفتة": "Turbo Kofta",
+ "تربو ميكس": "Turbo Mix",
+ "تونة": "Tuna",
+ "ثومية": "Toumeya (Garlic Sauce)",
+ "جبنة بالطماطم": "Cheese with Tomatoes",
+ "جبنة بيضاء بالطماطم": "White Cheese with Tomatoes",
+ "جبنة رومي مقلية": "Fried Romy Cheese",
+ "جمبري": "Shrimp",
+ "جمبري بانيه": "Pane Shrimp",
+ "جمبري فاهيتا": "Shrimp Fajita",
+ "حمص": "Hummus",
+ "حواوشي": "Hawawshi",
+ "حواوشي جبنة شيدر": "Hawawshi with Cheddar",
+ "حواوشي جبنة موتزريلا": "Hawawshi with Mozzarella",
+ "دجاج بانيه": "Pane Chicken",
+ "دولمة مشكل": "Mixed Dolma",
+ "ساندوتش شاورما فراخ": "Chicken Shawarma Sandwich",
+ "ساندوتش شاورما لحم": "Beef Shawarma Sandwich",
+ "سجق": "Sausage (Sujuk)",
+ "سلطة خضرة": "Green Salad",
+ "سمبوسك جبن (3 قطعة)": "Cheese Sambusa (3 pcs)",
+ "شاورما فراخ": "Chicken Shawarma",
+ "شاورما لحم": "Beef Shawarma",
+ "شكشوكة": "Shakshuka",
+ "شوربة عدس": "Lentil Soup",
+ "شوربة لسان عصفور": "Orzo Soup",
+ "شيش طاووق": "Shish Tawook",
+ "طاجن بامية": "Okra Tagine",
+ "طاووق": "Tawook",
+ "طبق أومليت": "Omelette Plate",
+ "طبق بيض بالبسطرمة": "Eggs with Pastrami Plate",
+ "طبق دجاج بانيه": "Pane Chicken Plate",
+ "طبق شيش طاووق": "Shish Tawook Plate",
+ "طبق كباب بتلو": "Veal Kebab Plate",
+ "طبق كباب وكفتة": "Kebab & Kofta Plate",
+ "طبق كفتة مشوية": "Grilled Kofta Plate",
+ "طبق ميكس جريل": "Mixed Grill Plate",
+ "طحينة": "Tahini",
+ "طماطم متبلة": "Seasoned Tomatoes",
+ "عجة": "Egga (Herb Omelette)",
+ "علبة باذنجان مقلي": "Fried Eggplant Box",
+ "علبة بطاطس بيوريه": "Mashed Potatoes Box",
+ "علبة عجينة طعمية": "Taameya Dough Box",
+ "علبة فول بالصلصة / بالزيت الحار": "Foul with Sauce / Hot Oil Box",
+ "علبة فول خلطة": "Mixed Foul Box",
+ "علبة فول زيت زيتون": "Foul with Olive Oil Box",
+ "علبة فول سجق": "Foul with Sausage Box",
+ "علبة فول قدرة / سادة": "Foul Qidra / Plain Box",
+ "علبة مسقعة": "Moussaka Box",
+ "فاهيتا إسبانيش": "Spanish Fajita",
+ "فاهيتا اسبنش": "Spanish Fajita",
+ "فاهيتا فراخ": "Chicken Fajita",
+ "فتة شاورما فراخ": "Chicken Shawarma Fattah",
+ "فتة شاورما لحم / ميكس": "Beef / Mixed Shawarma Fattah",
+ "فراخ بانيه بالجبنة الشيدر": "Pane Chicken with Cheddar",
+ "فراخ كرسبي بالجبنة الشيدر": "Crispy Chicken with Cheddar",
+ "فطيرة بسطرمة كيري": "Pastrami & Kiri Feteer",
+ "فطيرة تونة": "Tuna Feteer",
+ "فطيرة زيتون وخضروات": "Olives & Vegetables Feteer",
+ "فطيرة سكر": "Sugar Feteer",
+ "فطيرة سوبر جاد": "Super Gad Feteer",
+ "فطيرة شاورما لحم / بسطرمة / شاورما فراخ": "Beef Shawarma / Pastrami / Chicken Shawarma Feteer",
+ "فطيرة عسل وقشطة": "Honey & Cream Feteer",
+ "فطيرة كاستر": "Custard Feteer",
+ "فطيرة مشروم / مفروم": "Mushroom / Minced Meat Feteer",
+ "فطيرة مشكل جبن": "Mixed Cheese Feteer",
+ "فطيرة مشكل لحوم": "Mixed Meat Feteer",
+ "فطيرة مشلتت بالسمن البلدي": "Meshaltet with Baladi Ghee",
+ "فطيرة مكسرات": "Nuts Feteer",
+ "فطيرة مكسرات عسل وقشطة": "Nuts, Honey & Cream Feteer",
+ "فطيرة نوتيلا": "Nutella Feteer",
+ "فطيرة نوتيلا مكسرات": "Nutella & Nuts Feteer",
+ "فطيرة هوت دوج / جبنة رومي / سجق": "Hot Dog / Romy Cheese / Sausage Feteer",
+ "فلافل": "Falafel",
+ "فلافل بيض أومليت": "Falafel with Omelette",
+ "فلافل بيض مسلوق": "Falafel with Boiled Eggs",
+ "فلافل حمص": "Falafel with Hummus",
+ "فلافل ديناميت خبز فرنساوي": "Dynamite Falafel on French Bread",
+ "فلافل كيري": "Falafel with Kiri Cheese",
+ "فلافل ليمون معصفر": "Falafel with Pickled Lemon",
+ "فلافل محشية": "Stuffed Falafel",
+ "فلفل مقلي": "Fried Peppers",
+ "فول إسكندراني": "Alexandrian Foul",
+ "فول بالخلطة": "Foul with Mixed Toppings",
+ "فول بيض أومليت": "Foul with Omelette",
+ "فول بيض مسلوق": "Foul with Boiled Eggs",
+ "فول حمص": "Foul with Hummus",
+ "فول ديناميت خبز فرنساوي": "Dynamite Foul on French Bread",
+ "فول زيت حار": "Foul with Hot Oil",
+ "فول زيت زيتون": "Foul with Olive Oil",
+ "فول سجق": "Foul with Sausage",
+ "فول صلصة": "Foul with Tomato Sauce",
+ "فول ليمون معصفر / فول إسكندراني": "Foul with Pickled Lemon / Alexandrian Foul",
+ "قرص فلافل بالسمسم": "Falafel Patty with Sesame",
+ "قرص فلافل محشية": "Stuffed Falafel Patty",
+ "كانز": "Can",
+ "كبدة": "Liver",
+ "كبدة إسكندراني": "Alexandrian Liver",
+ "كرسبي": "Crispy",
+ "كريب برجر": "Burger Crepe",
+ "كريب بسطرمة كيري": "Pastrami & Kiri Crepe",
+ "كريب بطاطس": "Potato Crepe",
+ "كريب تشيكن باربيكيو": "Chicken BBQ Crepe",
+ "كريب سجق": "Sausage Crepe",
+ "كريب سوبر كرانشي": "Super Crunchy Crepe",
+ "كريب شاورما فراخ": "Chicken Shawarma Crepe",
+ "كريب شاورما لحمة": "Beef Shawarma Crepe",
+ "كريب طاووق": "Tawook Crepe",
+ "كريب فاهيتا فراخ": "Chicken Fajita Crepe",
+ "كريب فراخ بانيه": "Pane Chicken Crepe",
+ "كريب كفتة مشوية": "Grilled Kofta Crepe",
+ "كريب ميكس تشيز": "Mixed Cheese Crepe",
+ "كريب نوتيلا نيو كريم": "Nutella New Cream Crepe",
+ "كريب هوت دوج مكسيكان": "Mexican Hot Dog Crepe",
+ "كفتة": "Kofta",
+ "كول سلو": "Coleslaw",
+ "ليمون": "Lemon",
+ "ليمون بالنعناع": "Lemon with Mint",
+ "مانجو": "Mango",
+ "مخلل لوكس": "Luxe Pickles",
+ "مسقعة /باذنجان مقلي": "Moussaka / Fried Eggplant",
+ "مشروم": "Mushroom",
+ "مشكل لحوم": "Mixed Meats",
+ "مكرونة بولونيز": "Bolognese Pasta",
+ "مكرونة فرن": "Baked Pasta",
+ "مكرونة نجرسكو": "Negresco Pasta",
+ "ملوخية": "Mulukhiyah",
+ "مياه صغيرة": "Small Water",
+ "ميكس جبن": "Mixed Cheese",
+ "نصف فرخة مشوية": "Half Grilled Chicken",
+ "هوت دوج": "Hot Dog",
+ "وجبة دجاج بانيه": "Pane Chicken Meal",
+ "وجبة ربع دجاجة صدر": "Quarter Chicken Breast Meal",
+ "وجبة ربع دجاجة ورك": "Quarter Chicken Leg Meal",
+ "وجبة شيش طاووق": "Shish Tawook Meal",
+ "وجبة فتة شاورما دجاج": "Chicken Shawarma Fattah Meal",
+ "وجبة فتة شاورما لحم": "Beef Shawarma Fattah Meal",
+ "وجبة كباب وكفتة": "Kebab & Kofta Meal",
+ "وجبة كفتة": "Kofta Meal",
+ "وجبة ميكس مشاوي": "Mixed Grill Meal",
+ "وجبة نصف دجاجة مشوية": "Half Grilled Chicken Meal",
+ "ورق عنب": "Grape Leaves"
+},opts:{
+ "شامي": "Shami",
+ "فرنساوي": "French",
+ "وسط": "Medium",
+ "كبير": "Large",
+ "سوري": "Syrian",
+ "كيزر جامبو": "Jumbo Kaiser",
+ "صواريخ": "Rockets",
+ "فطائر": "Feteer"
+},sections:{
+ "ساندوتشات الفول": "Foul Sandwiches",
+ "ساندوتشات الفلافل": "Falafel Sandwiches",
+ "ساندوتشات البيض": "Egg Sandwiches",
+ "ساندوتشات متنوعة": "Assorted Sandwiches",
+ "ساندوتشات البطاطس": "Potato Sandwiches",
+ "علب شرقية": "Oriental Boxes",
+ "المشويات على الفحم": "Charcoal Grills",
+ "الوجبات": "Meals",
+ "وجبات التربو": "Turbo Meals",
+ "حواوشي": "Hawawshi",
+ "أطباق جاد": "Gad's Dishes",
+ "الأرز والمكرونة": "Rice & Pasta",
+ "ساندوتشات الشاورما": "Shawarma Sandwiches",
+ "فتة الشاورما": "Shawarma Fattah",
+ "ساندوتشات اللحوم": "Meat Sandwiches",
+ "ساندوتشات الدجاج": "Chicken Sandwiches",
+ "ساندوتشات الأسماك": "Fish Sandwiches",
+ "ساندوتشات رول": "Roll Sandwiches",
+ "البيتزا": "Pizza",
+ "الفطائر الشرقية والصواريخ": "Oriental Feteer & Rockets",
+ "الكريب": "Crepe",
+ "السلطات": "Salads",
+ "المشروبات": "Drinks"
+},groups:{
+ "شرقي": "Oriental",
+ "علب شرقية": "Oriental Boxes",
+ "المشويات والوجبات": "Grills & Meals",
+ "أطباق جاد": "Gad's Dishes",
+ "شاورما": "Shawarma",
+ "ساندوتشات": "Sandwiches",
+ "بيتزا وفطائر وكريب": "Pizza, Feteer & Crepe",
+ "سلطات ومشروبات": "Salads & Drinks"
+},branches:{
+ "المهندسين": "Mohandessin",
+ "عباس العقاد (مدينة نصر)": "Abbas El Akkad (Nasr City)",
+ "وسط البلد": "Downtown",
+ "المعادي": "Maadi",
+ "المعراج": "El Merag",
+ "الميرغني – مصر الجديدة": "Mirghani – Heliopolis",
+ "التجمع الخامس – جامعة المستقبل": "Fifth Settlement – Future University",
+ "التجمع الخامس – مسجد الحمد": "Fifth Settlement – Al Hamd Mosque",
+ "الشروق": "Shorouk"
+},addons:{
+ "جبنة زيادة": "Extra Cheese"
+}};
+function T(s){return lang==='en'?(I18N_EN.ui[s]||s):s}
+function TN(s){if(lang!=='en')return s;return I18N_EN.items[s]||I18N_EN.opts[s]||I18N_EN.sections[s]||I18N_EN.groups[s]||I18N_EN.branches[s]||I18N_EN.addons[s]||s}
+function LOC(){return lang==='en'?'en-GB':'ar-EG'}
+function CUR(){return lang==='en'?' EGP':' جنيه'}var MENU=[{"g": "شرقي", "s": [{"t": "ساندوتشات الفول", "k": "ful", "i": [{"n": "فول بالخلطة", "o": [{"l": "", "p": 15}]}, {"n": "فول ليمون معصفر / فول إسكندراني", "o": [{"l": "", "p": 22}]}, {"n": "فول زيت زيتون", "o": [{"l": "", "p": 23}]}, {"n": "فول زيت حار", "o": [{"l": "", "p": 21}]}, {"n": "فول صلصة", "o": [{"l": "", "p": 21}]}, {"n": "فول حمص", "o": [{"l": "", "p": 25}]}, {"n": "فول بيض أومليت", "o": [{"l": "", "p": 26}]}, {"n": "فول بيض مسلوق", "o": [{"l": "", "p": 25}]}, {"n": "فول سجق", "o": [{"l": "", "p": 46}]}, {"n": "فول ديناميت خبز فرنساوي", "o": [{"l": "", "p": 37}]}]}, {"t": "ساندوتشات الفلافل", "k": "fal", "i": [{"n": "فلافل", "o": [{"l": "", "p": 15}]}, {"n": "فلافل محشية", "o": [{"l": "", "p": 19}]}, {"n": "فلافل كيري", "o": [{"l": "", "p": 28}]}, {"n": "فلافل ليمون معصفر", "o": [{"l": "", "p": 22}]}, {"n": "فلافل حمص", "o": [{"l": "", "p": 25}]}, {"n": "فلافل بيض أومليت", "o": [{"l": "", "p": 26}]}, {"n": "فلافل بيض مسلوق", "o": [{"l": "", "p": 25}]}, {"n": "فلافل ديناميت خبز فرنساوي", "o": [{"l": "", "p": 37}]}]}, {"t": "ساندوتشات البيض", "k": "egg", "i": [{"n": "بيض مسلوق", "o": [{"l": "شامي", "p": 21}]}, {"n": "بيض أومليت", "o": [{"l": "شامي", "p": 23}]}, {"n": "بيض بسطرمة", "o": [{"l": "شامي", "p": 36}]}, {"n": "عجة", "o": [{"l": "شامي", "p": 31}]}, {"n": "شكشوكة", "o": [{"l": "شامي", "p": 29}]}, {"n": "أومليت بيتزا", "o": [{"l": "شامي", "p": 36}]}, {"n": "أومليت شيدر", "o": [{"l": "فرنساوي", "p": 39}, {"l": "شامي", "p": 35}]}, {"n": "أومليت رومي", "o": [{"l": "فرنساوي", "p": 50}, {"l": "شامي", "p": 43}]}]}, {"t": "ساندوتشات متنوعة", "k": "misc", "i": [{"n": "جبنة بيضاء بالطماطم", "o": [{"l": "شامي", "p": 24}]}, {"n": "مسقعة /باذنجان مقلي", "o": [{"l": "شامي", "p": 24}]}, {"n": "سجق", "o": [{"l": "فرنساوي", "p": 66}]}, {"n": "بابا غنوج", "o": [{"l": "شامي", "p": 26}]}, {"n": "حمص", "o": [{"l": "شامي", "p": 27}]}, {"n": "جبنة رومي مقلية", "o": [{"l": "فرنساوي", "p": 45}, {"l": "شامي", "p": 39}]}, {"n": "بطاطس جبنة رومي", "o": [{"l": "فرنساوي", "p": 50}, {"l": "شامي", "p": 44}]}, {"n": "بطاطس شيدر", "o": [{"l": "فرنساوي", "p": 44}, {"l": "شامي", "p": 40}]}]}, {"t": "ساندوتشات البطاطس", "k": "pot", "i": [{"n": "بطاطس بوم فريت", "o": [{"l": "فرنساوي", "p": 29}, {"l": "شامي", "p": 25}]}, {"n": "بطاطس شيبسي", "o": [{"l": "شامي", "p": 22}]}, {"n": "بوم فريت بالبيض المسلوق", "o": [{"l": "شامي", "p": 35}]}, {"n": "بوم فريت بالبيض الأومليت", "o": [{"l": "شامي", "p": 36}]}, {"n": "بطاطس كاتشب ومايونيز", "o": [{"l": "شامي", "p": 30}]}, {"n": "بطاطس / باباغنوج / فلافل / باذنجان", "o": [{"l": "شامي", "p": 31}]}, {"n": "بيوريه سمن بلدي", "o": [{"l": "شامي", "p": 22}]}, {"n": "بيوريه بيض مسلوق", "o": [{"l": "شامي", "p": 32}]}, {"n": "بيوريه بيض أومليت", "o": [{"l": "شامي", "p": 33}]}, {"n": "بطاطس كول سلو", "o": [{"l": "شامي", "p": 39}]}, {"n": "بطاطس شيبسي/بوم فريت بالجبنة الرومي المبشورة", "o": [{"l": "شامي", "p": 42}]}]}]}, {"g": "علب شرقية", "s": [{"t": "علب شرقية", "k": "box", "i": [{"n": "علبة باذنجان مقلي", "o": [{"l": "", "p": 28}]}, {"n": "قرص فلافل بالسمسم", "o": [{"l": "", "p": 9}]}, {"n": "قرص فلافل محشية", "o": [{"l": "", "p": 10}]}, {"n": "طبق أومليت", "o": [{"l": "", "p": 40}]}, {"n": "بيض مسلوق", "o": [{"l": "", "p": 14}]}, {"n": "باكت بطاطس", "o": [{"l": "", "p": 35}]}, {"n": "جبنة بالطماطم", "o": [{"l": "", "p": 48}]}, {"n": "طبق بيض بالبسطرمة", "o": [{"l": "", "p": 70}]}, {"n": "علبة فول قدرة / سادة", "o": [{"l": "", "p": 40}]}, {"n": "علبة فول خلطة", "o": [{"l": "", "p": 44}]}, {"n": "علبة فول بالصلصة / بالزيت الحار", "o": [{"l": "", "p": 47}]}, {"n": "علبة فول سجق", "o": [{"l": "", "p": 82}]}, {"n": "علبة فول زيت زيتون", "o": [{"l": "", "p": 51}]}, {"n": "فول إسكندراني", "o": [{"l": "", "p": 50}]}, {"n": "علبة مسقعة", "o": [{"l": "", "p": 50}]}, {"n": "علبة بطاطس بيوريه", "o": [{"l": "", "p": 49}]}, {"n": "علبة عجينة طعمية", "o": [{"l": "", "p": 35}]}]}]}, {"g": "المشويات والوجبات", "s": [{"t": "المشويات على الفحم", "k": "grill", "i": [{"n": "نصف فرخة مشوية", "o": [{"l": "", "p": 170}]}, {"n": "طبق شيش طاووق", "o": [{"l": "", "p": 170}]}, {"n": "طبق ميكس جريل", "o": [{"l": "", "p": 360}]}, {"n": "طبق كفتة مشوية", "o": [{"l": "", "p": 170}]}, {"n": "طبق كباب وكفتة", "o": [{"l": "", "p": 285}]}, {"n": "طبق كباب بتلو", "o": [{"l": "", "p": 390}]}, {"n": "طبق دجاج بانيه", "o": [{"l": "", "p": 170}]}]}, {"t": "الوجبات", "k": "meals", "i": [{"n": "وجبة ربع دجاجة ورك", "o": [{"l": "", "p": 110}]}, {"n": "وجبة ربع دجاجة صدر", "o": [{"l": "", "p": 130}]}, {"n": "وجبة نصف دجاجة مشوية", "o": [{"l": "", "p": 190}]}, {"n": "وجبة شيش طاووق", "o": [{"l": "", "p": 175}]}, {"n": "وجبة دجاج بانيه", "o": [{"l": "", "p": 175}]}, {"n": "وجبة فتة شاورما لحم", "o": [{"l": "", "p": 180}]}, {"n": "وجبة فتة شاورما دجاج", "o": [{"l": "", "p": 180}]}, {"n": "وجبة كفتة", "o": [{"l": "", "p": 175}]}, {"n": "وجبة كباب وكفتة", "o": [{"l": "", "p": 310}]}, {"n": "وجبة ميكس مشاوي", "o": [{"l": "", "p": 180}]}]}, {"t": "وجبات التربو", "k": "turbo", "i": [{"n": "تربو كبدة", "o": [{"l": "", "p": 95}]}, {"n": "تربو سجق", "o": [{"l": "", "p": 120}]}, {"n": "تربو شيش", "o": [{"l": "", "p": 120}]}, {"n": "تربو بانيه", "o": [{"l": "", "p": 120}]}, {"n": "تربو كفتة", "o": [{"l": "", "p": 120}]}, {"n": "تربو ميكس", "o": [{"l": "", "p": 120}]}, {"n": "تربو شاورما", "o": [{"l": "", "p": 150}]}, {"n": "تربو جمبري", "o": [{"l": "", "p": 140}]}]}, {"t": "حواوشي", "k": "haw", "i": [{"n": "حواوشي", "o": [{"l": "", "p": 85}]}, {"n": "حواوشي جبنة موتزريلا", "o": [{"l": "", "p": 100}]}, {"n": "حواوشي جبنة شيدر", "o": [{"l": "", "p": 100}]}]}]}, {"g": "أطباق جاد", "s": [{"t": "أطباق جاد", "k": "gadd", "i": [{"n": "طاجن بامية", "o": [{"l": "", "p": 75}]}, {"n": "ملوخية", "o": [{"l": "", "p": 65}]}, {"n": "كبدة إسكندراني", "o": [{"l": "", "p": 115}]}, {"n": "دجاج بانيه", "o": [{"l": "", "p": 170}]}, {"n": "سمبوسك جبن (3 قطعة)", "o": [{"l": "", "p": 95}]}, {"n": "ورق عنب", "o": [{"l": "", "p": 95}]}, {"n": "شوربة لسان عصفور", "o": [{"l": "", "p": 42}]}, {"n": "شوربة عدس", "o": [{"l": "", "p": 50}]}]}, {"t": "الأرز والمكرونة", "k": "rice", "i": [{"n": "أرز أبيض", "o": [{"l": "", "p": 39}]}, {"n": "أرز كبدة", "o": [{"l": "", "p": 95}]}, {"n": "أرز جمبري", "o": [{"l": "", "p": 140}]}, {"n": "أرز صيادية", "o": [{"l": "", "p": 60}]}, {"n": "دولمة مشكل", "o": [{"l": "", "p": 95}]}, {"n": "مكرونة فرن", "o": [{"l": "", "p": 105}]}, {"n": "مكرونة بولونيز", "o": [{"l": "", "p": 105}]}, {"n": "مكرونة نجرسكو", "o": [{"l": "", "p": 140}]}, {"n": "أرز برياني سادة", "o": [{"l": "", "p": 55}]}, {"n": "إسباجتي صلصة", "o": [{"l": "", "p": 55}]}]}]}, {"g": "شاورما", "s": [{"t": "ساندوتشات الشاورما", "k": "shw", "i": [{"n": "ساندوتش شاورما لحم", "o": [{"l": "كيزر جامبو", "p": 95}, {"l": "وسط", "p": 95}, {"l": "فرنساوي", "p": 105}, {"l": "سوري", "p": 115}]}, {"n": "ساندوتش شاورما فراخ", "o": [{"l": "كيزر جامبو", "p": 95}, {"l": "وسط", "p": 95}, {"l": "فرنساوي", "p": 105}, {"l": "سوري", "p": 115}]}]}, {"t": "فتة الشاورما", "k": "fatta", "i": [{"n": "فتة شاورما لحم / ميكس", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 155}]}, {"n": "فتة شاورما فراخ", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 155}]}]}]}, {"g": "ساندوتشات", "s": [{"t": "ساندوتشات اللحوم", "k": "beef", "i": [{"n": "كفتة", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "كبدة", "o": [{"l": "شامي", "p": 62}, {"l": "وسط", "p": 58}, {"l": "فرنساوي", "p": 65}]}, {"n": "هوت دوج", "o": [{"l": "فرنساوي", "p": 72}]}, {"n": "بيف برجر", "o": [{"l": "كيزر جامبو", "p": 68}]}, {"n": "بيف برجر جبنة", "o": [{"l": "كيزر جامبو", "p": 80}]}, {"n": "بيف برجر بيض", "o": [{"l": "كيزر جامبو", "p": 80}]}, {"n": "بيف برجر ميكس", "o": [{"l": "كيزر جامبو", "p": 86}]}]}, {"t": "ساندوتشات الدجاج", "k": "chick", "i": [{"n": "فراخ بانيه بالجبنة الشيدر", "o": [{"l": "وسط", "p": 77}, {"l": "فرنساوي", "p": 95}]}, {"n": "شيش طاووق", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "فاهيتا فراخ", "o": [{"l": "وسط", "p": 74}, {"l": "فرنساوي", "p": 92}]}, {"n": "فراخ كرسبي بالجبنة الشيدر", "o": [{"l": "وسط", "p": 77}, {"l": "فرنساوي", "p": 95}]}, {"n": "فاهيتا اسبنش", "o": [{"l": "فرنساوي", "p": 100}]}]}, {"t": "ساندوتشات الأسماك", "k": "sea", "i": [{"n": "جمبري بانيه", "o": [{"l": "فرنساوي", "p": 145}]}, {"n": "جمبري فاهيتا", "o": [{"l": "فرنساوي", "p": 145}]}]}, {"t": "ساندوتشات رول", "k": "roll", "i": [{"n": "فلافل", "o": [{"l": "", "p": 36}]}, {"n": "أومليت", "o": [{"l": "", "p": 46}]}, {"n": "أومليت هوت دوج", "o": [{"l": "", "p": 78}]}, {"n": "بطاطس", "o": [{"l": "", "p": 54}]}, {"n": "بطاطس موتزريلا", "o": [{"l": "", "p": 75}]}, {"n": "بطاطس رومي", "o": [{"l": "", "p": 75}]}, {"n": "بطاطس شيدر", "o": [{"l": "", "p": 66}]}, {"n": "كفتة", "o": [{"l": "", "p": 100}]}, {"n": "طاووق", "o": [{"l": "", "p": 100}]}, {"n": "بانيه", "o": [{"l": "", "p": 100}]}, {"n": "كرسبي", "o": [{"l": "", "p": 100}]}, {"n": "كبدة", "o": [{"l": "", "p": 85}]}, {"n": "فاهيتا إسبانيش", "o": [{"l": "", "p": 110}]}]}]}, {"g": "بيتزا وفطائر وكريب", "s": [{"t": "البيتزا", "k": "pizza", "i": [{"n": "بيتزا مارجريتا", "o": [{"l": "كبير", "p": 120}, {"l": "وسط", "p": 100}]}, {"n": "سجق", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "هوت دوج", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "تونة", "o": [{"l": "كبير", "p": 185}]}, {"n": "مشروم", "o": [{"l": "كبير", "p": 170}, {"l": "وسط", "p": 140}]}, {"n": "شاورما لحم", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "شاورما فراخ", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "ميكس جبن", "o": [{"l": "كبير", "p": 180}, {"l": "وسط", "p": 145}]}, {"n": "مشكل لحوم", "o": [{"l": "كبير", "p": 185}, {"l": "وسط", "p": 150}]}, {"n": "بسطرمة", "o": [{"l": "كبير", "p": 190}, {"l": "وسط", "p": 155}]}, {"n": "بسطرمة كيري", "o": [{"l": "كبير", "p": 200}, {"l": "وسط", "p": 165}]}, {"n": "جمبري", "o": [{"l": "كبير", "p": 210}, {"l": "وسط", "p": 165}]}]}, {"t": "الفطائر الشرقية والصواريخ", "k": "fat", "i": [{"n": "فطيرة سكر", "o": [{"l": "فطائر", "p": 90}]}, {"n": "فطيرة كاستر", "o": [{"l": "فطائر", "p": 110}]}, {"n": "فطيرة نوتيلا", "o": [{"l": "فطائر", "p": 180}]}, {"n": "فطيرة نوتيلا مكسرات", "o": [{"l": "فطائر", "p": 240}]}, {"n": "فطيرة مكسرات", "o": [{"l": "فطائر", "p": 210}]}, {"n": "فطيرة عسل وقشطة", "o": [{"l": "فطائر", "p": 185}]}, {"n": "فطيرة مكسرات عسل وقشطة", "o": [{"l": "فطائر", "p": 245}]}, {"n": "فطيرة مشلتت بالسمن البلدي", "o": [{"l": "فطائر", "p": 210}]}, {"n": "فطيرة زيتون وخضروات", "o": [{"l": "صواريخ", "p": 135}, {"l": "فطائر", "p": 135}]}, {"n": "فطيرة مشروم / مفروم", "o": [{"l": "صواريخ", "p": 185}, {"l": "فطائر", "p": 185}]}, {"n": "فطيرة هوت دوج / جبنة رومي / سجق", "o": [{"l": "صواريخ", "p": 190}, {"l": "فطائر", "p": 190}]}, {"n": "فطيرة شاورما لحم / بسطرمة / شاورما فراخ", "o": [{"l": "صواريخ", "p": 205}, {"l": "فطائر", "p": 205}]}, {"n": "فطيرة مشكل لحوم", "o": [{"l": "صواريخ", "p": 200}, {"l": "فطائر", "p": 200}]}, {"n": "فطيرة تونة", "o": [{"l": "صواريخ", "p": 195}, {"l": "فطائر", "p": 195}]}, {"n": "فطيرة مشكل جبن", "o": [{"l": "صواريخ", "p": 190}, {"l": "فطائر", "p": 190}]}, {"n": "فطيرة سوبر جاد", "o": [{"l": "صواريخ", "p": 195}, {"l": "فطائر", "p": 195}]}, {"n": "فطيرة بسطرمة كيري", "o": [{"l": "صواريخ", "p": 215}, {"l": "فطائر", "p": 215}]}]}, {"t": "الكريب", "k": "crepe", "i": [{"n": "كريب برجر", "o": [{"l": "", "p": 110}]}, {"n": "كريب هوت دوج مكسيكان", "o": [{"l": "", "p": 110}]}, {"n": "كريب كفتة مشوية", "o": [{"l": "", "p": 135}]}, {"n": "كريب سجق", "o": [{"l": "", "p": 135}]}, {"n": "كريب بسطرمة كيري", "o": [{"l": "", "p": 150}]}, {"n": "كريب شاورما لحمة", "o": [{"l": "", "p": 155}]}, {"n": "كريب شاورما فراخ", "o": [{"l": "", "p": 155}]}, {"n": "كريب فراخ بانيه", "o": [{"l": "", "p": 135}]}, {"n": "كريب سوبر كرانشي", "o": [{"l": "", "p": 140}]}, {"n": "كريب طاووق", "o": [{"l": "", "p": 135}]}, {"n": "كريب فاهيتا فراخ", "o": [{"l": "", "p": 135}]}, {"n": "كريب تشيكن باربيكيو", "o": [{"l": "", "p": 135}]}, {"n": "كريب بطاطس", "o": [{"l": "", "p": 85}]}, {"n": "كريب ميكس تشيز", "o": [{"l": "", "p": 130}]}, {"n": "كريب نوتيلا نيو كريم", "o": [{"l": "", "p": 130}]}]}]}, {"g": "سلطات ومشروبات", "s": [{"t": "السلطات", "k": "salad", "i": [{"n": "حمص", "o": [{"l": "", "p": 42}]}, {"n": "بابا غنوج", "o": [{"l": "", "p": 40}]}, {"n": "باذنجان مخلل", "o": [{"l": "", "p": 28}]}, {"n": "فلفل مقلي", "o": [{"l": "", "p": 27}]}, {"n": "مخلل لوكس", "o": [{"l": "", "p": 20}]}, {"n": "طحينة", "o": [{"l": "", "p": 35}]}, {"n": "سلطة خضرة", "o": [{"l": "", "p": 27}]}, {"n": "كول سلو", "o": [{"l": "", "p": 40}]}, {"n": "ثومية", "o": [{"l": "", "p": 40}]}, {"n": "طماطم متبلة", "o": [{"l": "", "p": 33}]}]}, {"t": "المشروبات", "k": "drinks", "i": [{"n": "مانجو", "o": [{"l": "", "p": 65}]}, {"n": "ليمون", "o": [{"l": "", "p": 45}]}, {"n": "ليمون بالنعناع", "o": [{"l": "", "p": 45}]}, {"n": "مياه صغيرة", "o": [{"l": "", "p": 10}]}, {"n": "كانز", "o": [{"l": "", "p": 20}]}]}]}];var BR=["المهندسين", "عباس العقاد (مدينة نصر)", "وسط البلد", "المعادي", "المعراج", "الميرغني – مصر الجديدة", "التجمع الخامس – جامعة المستقبل", "التجمع الخامس – مسجد الحمد", "الشروق"];
 var cart={},notes={};var KEY='gad_order_v2';
 var grpOn=false,grpFriends=[],grpCarts={},grpPerson='',grpAddOpen=false,grpDelArm=null,lastSplit=null;
 try{var st=JSON.parse(localStorage.getItem(KEY)||'{}');cart=st.cart||{};notes=st.notes||{};grpOn=!!st.grpOn;grpFriends=Array.isArray(st.grpFriends)?st.grpFriends.filter(function(x){return typeof x==='string'&&x.trim()}).map(function(x){return x.trim()}):[];grpCarts=(st.grpCarts&&typeof st.grpCarts==='object')?st.grpCarts:{};grpPerson=typeof st.grpPerson==='string'?st.grpPerson:''}catch(e){}
@@ -240,7 +686,7 @@ function grpPrune(){Object.keys(grpCarts).forEach(function(fn){if(grpFriends.ind
 grpPrune();
 function save(){try{localStorage.setItem(KEY,JSON.stringify({cart:cart,notes:notes,grpOn:grpOn,grpFriends:grpFriends,grpCarts:grpCarts,grpPerson:grpPerson}))}catch(e){}}
 function num(n){n=Math.round(n*100)/100;return (n%1===0)?String(n):n.toFixed(2)}
-function fmt(n){return num(n)+' جنيه'}
+function fmt(n){return num(n)+CUR()}
 var BASE_MENU=JSON.parse(JSON.stringify(MENU));
 var flat={};
 function buildFlat(){flat={};MENU.forEach(function(g,gi){g.s.forEach(function(s,si){s.i.forEach(function(it,ii){it.o.forEach(function(o,oi){flat[gi+'.'+si+'.'+ii+'.'+oi]={name:it.n,label:o.l,price:o.p,sec:s.t,sk:s.k,item:gi+'.'+si+'.'+ii}})})})});}
@@ -253,14 +699,15 @@ function addonsFor(sk,nm){var list=(ADDONS&&ADDONS[sk])||[];return list.filter(f
 function lineParts(k){var sp=String(k).split('|');return {base:sp[0],names:(sp.length>1&&sp[1])?sp[1].split(','):[]}}
 function linePrice(k){var lp=lineParts(k);var f=flat[lp.base];if(!f)return 0;var p=f.price;lp.names.forEach(function(nm){var a=addonByName(f.sk,nm);if(a)p+=+a.p||0});return p}
 function lineLabel(k){var lp=lineParts(k);var f=flat[lp.base];if(!f)return '';var lbl=f.label||'';if(lp.names.length)lbl+=(lbl?' + ':'')+lp.names.join('، ');return lbl}
+function lineLabelD(k){var lp=lineParts(k);var f=flat[lp.base];if(!f)return '';var lbl=f.label?TN(f.label):'';if(lp.names.length)lbl+=(lbl?' + ':'')+lp.names.map(function(nm){return TN(nm)}).join(lang==='en'?', ':'، ');return lbl}
 function pruneAddonLines(){[cart].concat(Object.keys(grpCarts).map(function(fn){return grpCarts[fn]})).forEach(function(cobj){Object.keys(cobj).forEach(function(k){var lp=lineParts(k);if(!lp.names.length)return;var f=flat[lp.base];if(!f){delete cobj[k];return}var ok=true;lp.names.forEach(function(nm){if(!addonByName(f.sk,nm))ok=false});if(!ok)delete cobj[k]})})}
 var MENU_ADD=[];
 function applyMenuAdd(arr){MENU_ADD.forEach(function(g){var i=MENU.indexOf(g);if(i>-1)MENU.splice(i,1)});MENU_ADD=[];(arr||[]).forEach(function(g){if(!g||!g.g)return;var ex=null;MENU.forEach(function(m){if(m.g===g.g)ex=m});if(ex){(g.s||[]).forEach(function(s){var es=null;ex.s.forEach(function(x){if(x.k===s.k)es=x});if(es){(s.i||[]).forEach(function(it){es.i.push(it)})}else ex.s.push(s)})}else{MENU.push(g);MENU_ADD.push(g)}})}
 var BRANCHCFG={};
 function tmMin(s){var p=String(s||'').split(':');return (+p[0]||0)*60+(+p[1]||0)}
-function branchInfo(name){var c=BRANCHCFG[name]||{};if(c.closed)return{closed:true,reason:'مغلق مؤقتًا — '+(c.reason||'صيانة')};if(c.open&&c.close){var now=new Date();var mins=now.getHours()*60+now.getMinutes();var o=tmMin(c.open),x=tmMin(c.close);var openNow=(o<=x)?(mins>=o&&mins<x):(mins>=o||mins<x);if(!openNow)return{closed:true,reason:'مغلق الآن — مواعيد العمل من '+c.open+' إلى '+c.close}}return{closed:false,reason:''}}
-function buildBranchOptions(){var sel=document.getElementById('br');var cur=sel.value;sel.innerHTML='';var ph=document.createElement('option');ph.value='';ph.textContent='— اختار الفرع —';sel.appendChild(ph);BR.forEach(function(b){var o=document.createElement('option');o.value=b;var inf=branchInfo(b);o.textContent=inf.closed?b+' ('+inf.reason+')':b;o.disabled=inf.closed;sel.appendChild(o)});if(cur&&BR.indexOf(cur)>-1&&!branchInfo(cur).closed)sel.value=cur;else sel.value='';updBranchMsg()}
-function updBranchMsg(){var m=document.getElementById('brmsg');if(!m)return;var v=document.getElementById('br').value;if(!v){m.textContent='اختار الفرع اللي هتستلم منه أو هيوصلك منه الأوردر';m.style.color='#555';return}var inf=branchInfo(v);var c=BRANCHCFG[v]||{};if(inf.closed){m.textContent='⚠️ الفرع ده '+inf.reason+' — اختار فرع تاني';m.style.color='#a92318'}else{m.textContent='مواعيد العمل: '+(c.open&&c.close?('من '+c.open+' إلى '+c.close):'طوال اليوم');m.style.color='#0a7a3b'}}
+function branchInfo(name){var c=BRANCHCFG[name]||{};if(c.closed)return{closed:true,reason:T('مغلق مؤقتًا — ')+(c.reason||T('صيانة'))};if(c.open&&c.close){var now=new Date();var mins=now.getHours()*60+now.getMinutes();var o=tmMin(c.open),x=tmMin(c.close);var openNow=(o<=x)?(mins>=o&&mins<x):(mins>=o||mins<x);if(!openNow)return{closed:true,reason:T('مغلق الآن — مواعيد العمل من ')+c.open+T(' إلى ')+c.close}}return{closed:false,reason:''}}
+function buildBranchOptions(){var sel=document.getElementById('br');var cur=sel.value;sel.innerHTML='';var ph=document.createElement('option');ph.value='';ph.textContent=T('— اختار الفرع —');sel.appendChild(ph);BR.forEach(function(b){var o=document.createElement('option');o.value=b;var inf=branchInfo(b);o.textContent=inf.closed?TN(b)+' ('+inf.reason+')':TN(b);o.disabled=inf.closed;sel.appendChild(o)});if(cur&&BR.indexOf(cur)>-1&&!branchInfo(cur).closed)sel.value=cur;else sel.value='';updBranchMsg()}
+function updBranchMsg(){var m=document.getElementById('brmsg');if(!m)return;var v=document.getElementById('br').value;if(!v){m.textContent=T('اختار الفرع اللي هتستلم منه أو هيوصلك منه الأوردر');m.style.color='#555';return}var inf=branchInfo(v);var c=BRANCHCFG[v]||{};if(inf.closed){m.textContent=T('⚠️ الفرع ده {r} — اختار فرع تاني').replace('{r}',inf.reason);m.style.color='#a92318'}else{m.textContent=T('مواعيد العمل: ')+(c.open&&c.close?(T('من ')+c.open+T(' إلى ')+c.close):T('طوال اليوم'));m.style.color='#0a7a3b'}}
 function fulfill(){var e=document.getElementById('ful');return e?e.value:'delivery'}
 Object.keys(cart).forEach(function(k){if(!flat[k]){var b=k.split('|')[0];if(!flat[b])delete cart[k]}});
 var promo=null;
@@ -273,11 +720,11 @@ function refreshCustSess(){if(!custSess||!custSess.refresh)return Promise.resolv
 function authHdr(extra){var h={'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'};if(sessValid())h['Authorization']='Bearer '+custSess.access;else h['Authorization']='Bearer '+SUPABASE_ANON_KEY;for(var k in (extra||{}))h[k]=extra[k];return h}
 function saveCustSess(s){custSess=s;try{if(s)localStorage.setItem(CKEY,JSON.stringify(s));else localStorage.removeItem(CKEY)}catch(e){}}
 function loginGoogle(){var r=location.href.split('#')[0];location.href=SUPABASE_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(r)}
-function loginFacebook(){var r=location.href.split('#')[0];location.href=SUPABASE_URL+'/auth/v1/authorize?provider=facebook&redirect_to='+encodeURIComponent(r)} var ePendingEmail='';function openEmailSheet(){document.getElementById('estep1').style.display='';document.getElementById('estep2').style.display='none';document.getElementById('eMsg1').textContent='هنبعتلك لينك دخول على إيميلك — دوس عليه عشان تدخل على طول.';document.getElementById('esheet').style.display='block'}function closeEmailSheet(){document.getElementById('esheet').style.display='none'}function sendEmailOtp(){var em=document.getElementById('eEmail').value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){document.getElementById('eMsg1').textContent='⚠️ اكتب إيميل صحيح الأول.';return}var b=document.getElementById('eSend');b.disabled=true;b.textContent='بيتبعت…';fetch(SUPABASE_URL+'/auth/v1/otp',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:em,create_user:true,redirect_to:location.origin+location.pathname})}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){b.disabled=false;b.textContent='ابعت اللينك';if(!x.ok){document.getElementById('eMsg1').textContent='⚠️ '+(x.j&&x.j.msg?x.j.msg:'تعذّر إرسال اللينك — جرّب تاني.');return}ePendingEmail=em;document.getElementById('eSentTo').textContent=em;document.getElementById('estep1').style.display='none';document.getElementById('estep2').style.display='';}).catch(function(){b.disabled=false;b.textContent='ابعت اللينك';document.getElementById('eMsg1').textContent='⚠️ مشكلة في الاتصال — جرّب تاني.'})}function logoutGoogle(){saveCustSess(null);custUser=null;profile=null;redeemUsed=0;redeemDisc=0;redeemedForNo=null;updateAcct();location.hash=''}
+function loginFacebook(){var r=location.href.split('#')[0];location.href=SUPABASE_URL+'/auth/v1/authorize?provider=facebook&redirect_to='+encodeURIComponent(r)} var ePendingEmail='';function openEmailSheet(){document.getElementById('estep1').style.display='';document.getElementById('estep2').style.display='none';document.getElementById('eMsg1').textContent=T('هنبعتلك لينك دخول على إيميلك — دوس عليه عشان تدخل على طول.');document.getElementById('esheet').style.display='block'}function closeEmailSheet(){document.getElementById('esheet').style.display='none'}function sendEmailOtp(){var em=document.getElementById('eEmail').value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){document.getElementById('eMsg1').textContent=T('⚠️ اكتب إيميل صحيح الأول.');return}var b=document.getElementById('eSend');b.disabled=true;b.textContent=T('بيتبعت…');fetch(SUPABASE_URL+'/auth/v1/otp',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:em,create_user:true,redirect_to:location.origin+location.pathname})}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){b.disabled=false;b.textContent=T('ابعت اللينك');if(!x.ok){document.getElementById('eMsg1').textContent='⚠️ '+(x.j&&x.j.msg?x.j.msg:T('تعذّر إرسال اللينك — جرّب تاني.'));return}ePendingEmail=em;document.getElementById('eSentTo').textContent=em;document.getElementById('estep1').style.display='none';document.getElementById('estep2').style.display='';}).catch(function(){b.disabled=false;b.textContent=T('ابعت اللينك');document.getElementById('eMsg1').textContent=T('⚠️ مشكلة في الاتصال — جرّب تاني.') })}function logoutGoogle(){saveCustSess(null);custUser=null;profile=null;redeemUsed=0;redeemDisc=0;redeemedForNo=null;updateAcct();location.hash=''}
 function getCustUser(){if(!custSess||!custSess.access)return Promise.resolve(null);return fetch(SUPABASE_URL+'/auth/v1/user',{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+custSess.access}}).then(function(r){return r.ok?r.json():null}).then(function(u){custUser=u&&u.id?u:null;return custUser}).catch(function(){return null})}
 function loadProfile(){if(!custUser)return Promise.resolve(null);return fetch(SUPABASE_URL+'/rest/v1/profiles?id=eq.'+custUser.id,{headers:authHdr()}).then(function(r){return r.ok?r.json():[]}).then(function(a){profile=(a&&a[0])||null;if(!profile){var nm=(custUser.user_metadata&&custUser.user_metadata.full_name)||'';profile={id:custUser.id,email:custUser.email,name:nm,points:0};fetch(SUPABASE_URL+'/rest/v1/profiles',{method:'POST',headers:authHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify([profile])}).catch(function(){})}if(profile){if(profile.name&&!document.getElementById('nm').value)document.getElementById('nm').value=profile.name;if(profile.phone)document.getElementById('ph').value=profile.phone;if(profile.address)document.getElementById('ad').value=profile.address;if(profile.branch)document.getElementById('br').value=profile.branch}updateAcct();if(profile&&Array.isArray(profile.friends)){var ch=false;profile.friends.forEach(function(fn){if(typeof fn==='string'&&fn.trim()&&grpFriends.indexOf(fn.trim())<0){grpFriends.push(fn.trim());ch=true}});if(ch){grpPrune();save();renderGrpBar()}}return profile}).catch(function(){return null})}
 function saveProfile(){if(!custUser||!profile)return;var p={id:custUser.id,email:custUser.email,name:((profile&&profile.name)||document.getElementById('nm').value.trim()),phone:document.getElementById('ph').value.trim(),address:document.getElementById('ad').value.trim(),branch:document.getElementById('br').value,friends:(profile.friends||[])};fetch(SUPABASE_URL+'/rest/v1/profiles?on_conflict=id',{method:'POST',headers:authHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify([p])}).catch(function(){})}
-function updateAcct(){var w=document.getElementById('acctWho'),pt=document.getElementById('acctPts'),lb=document.getElementById('loyBox');if(custUser){var nm=(profile&&profile.name)||(custUser.user_metadata&&custUser.user_metadata.full_name)||custUser.email;w.textContent='أهلاً '+nm;pt.style.display='';pt.textContent='⭐ نقاطك: '+(profile?profile.points:0);document.getElementById('glogin').style.display='none';document.getElementById('elogin').style.display='none';document.getElementById('myord').style.display='';document.getElementById('glogout').style.display='';lb.style.display='';document.getElementById('loyInfo').textContent='معاك '+(profile?profile.points:0)+' نقطة. كل جنيه بتدفعه = نقطة، وكل '+LOYAL.rate+' نقاط = 1 جنيه خصم (أقل استبدال '+LOYAL.min+' نقطة).';loadCustStats()}else{w.textContent='سجّل الدخول عشان تقدر تطلب — وهتحصل على نقاط وبرومو كود وخصومات كبيرة';pt.style.display='none';document.getElementById('glogin').style.display='';document.getElementById('elogin').style.display='';document.getElementById('myord').style.display='none';document.getElementById('glogout').style.display='none';lb.style.display='none';loadCustStats()}}
+function updateAcct(){var w=document.getElementById('acctWho'),pt=document.getElementById('acctPts'),lb=document.getElementById('loyBox');if(custUser){var nm=(profile&&profile.name)||(custUser.user_metadata&&custUser.user_metadata.full_name)||custUser.email;w.textContent=T('أهلاً ')+nm;pt.style.display='';pt.textContent=T('⭐ نقاطك: ')+(profile?profile.points:0);document.getElementById('glogin').style.display='none';document.getElementById('elogin').style.display='none';document.getElementById('myord').style.display='';document.getElementById('glogout').style.display='';lb.style.display='';document.getElementById('loyInfo').textContent=T('معاك {p} نقطة. كل جنيه بتدفعه = نقطة، وكل {r} نقاط = 1 جنيه خصم (أقل استبدال {m} نقطة).').replace('{p}',profile?profile.points:0).replace('{r}',LOYAL.rate).replace('{m}',LOYAL.min);loadCustStats()}else{w.textContent=T('سجّل الدخول عشان تقدر تطلب — وهتحصل على نقاط وبرومو كود وخصومات كبيرة');pt.style.display='none';document.getElementById('glogin').style.display='';document.getElementById('elogin').style.display='';document.getElementById('myord').style.display='none';document.getElementById('glogout').style.display='none';lb.style.display='none';loadCustStats()}}
 function countUp(el,target,suf){if(!el)return;var t0=null,dur=900;function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);el.textContent=Math.round(target*(1-Math.pow(1-p,3)))+(suf||'');if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)}
 function loadCustStats(){var box=document.getElementById('custStats');if(!custUser){if(box)box.style.display='none';return}
 var pts=(profile&&profile.points)||0;var egp=Math.floor(pts/LOYAL.rate);
@@ -287,22 +734,22 @@ cntP.then(function(total){
 var last=rows[0]||null;var top={},topN='',topQ=0;
 rows.forEach(function(o){if(o.status==='cancelled')return;(o.items||[]).forEach(function(i){var q=(top[i.n]||0)+(+i.q||0);top[i.n]=q;if(q>topQ){topQ=q;topN=i.n}})});
 if(box)box.style.display='';
-countUp(document.getElementById('stPts'),egp,' جنيه');
-document.getElementById('stPtsSub').textContent=pts+' نقطة';
+countUp(document.getElementById('stPts'),egp,CUR());
+document.getElementById('stPtsSub').textContent=T('{n} نقطة').replace('{n}',pts);
 var le=document.getElementById('stLast'),ls=document.getElementById('stLastSub');
-if(last){var d=new Date(last.created_at);var days=Math.floor((Date.now()-d.getTime())/86400000);var ds=d.toLocaleDateString('ar-EG',{day:'numeric',month:'long',year:'numeric'});le.textContent=days===0?'النهاردة':days===1?'امبارح':days<30?('منذ '+days+' يوم'):ds;ls.textContent=ds}else{le.textContent='لسه مطلبتش';ls.textContent='أول أوردر مستنيك 😋'}
+if(last){var d=new Date(last.created_at);var days=Math.floor((Date.now()-d.getTime())/86400000);var ds=d.toLocaleDateString(LOC(),{day:'numeric',month:'long',year:'numeric'});le.textContent=days===0?T('النهاردة'):days===1?T('امبارح'):days<30?T('منذ {n} يوم').replace('{n}',days):ds;ls.textContent=ds}else{le.textContent=T('لسه مطلبتش');ls.textContent=T('أول أوردر مستنيك 😋')}
 countUp(document.getElementById('stCnt'),total,'');
 var te=document.getElementById('stTop'),ts=document.getElementById('stTopSub');
-if(topN){te.textContent=topN;ts.textContent='طلبته '+topQ+' مرة'}else{te.textContent='—';ts.textContent='لسه مفيش أصناف'}
+if(topN){te.textContent=TN(topN);ts.textContent=T('طلبته {n} مرة').replace('{n}',topQ)}else{te.textContent='—';ts.textContent=T('لسه مفيش أصناف')}
 })}).catch(function(){if(box)box.style.display='none'})}
 function loadBestSellers(){var sec=document.getElementById('bestSec');if(!sec)return;if(!BESTSELL||!BESTSELL.on){sec.style.display='none';return}
 fetch(SUPABASE_URL+'/rest/v1/rpc/top_sellers',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_limit:8})}).then(function(r){return r.ok?r.json():[]}).then(function(a){
 var row=document.getElementById('bestRow');row.innerHTML='';var n=0;
 (a||[]).forEach(function(t){var k=null;Object.keys(flat).forEach(function(fk){var f=flat[fk];if(f.name===t.name&&f.label===(t.label||'')&&!f.off)k=fk});if(!k)return;var f=flat[k];n++;
 var c=document.createElement('div');c.className='best-card';
-var nm=document.createElement('div');nm.className='bn';nm.textContent=f.name+(f.label?' ('+f.label+')':'');c.appendChild(nm);
-var pr=document.createElement('div');pr.className='bp';pr.textContent=f.price+' ج';c.appendChild(pr);
-var q=document.createElement('div');q.className='bq';q.textContent='اتطلب '+t.qty+' مرة';c.appendChild(q);
+var nm=document.createElement('div');nm.className='bn';nm.textContent=TN(f.name)+(f.label?' ('+TN(f.label)+')':'');c.appendChild(nm);
+var pr=document.createElement('div');pr.className='bp';pr.textContent=fmt(f.price);c.appendChild(pr);
+var q=document.createElement('div');q.className='bq';q.textContent=T('اتطلب {n} مرة').replace('{n}',t.qty);c.appendChild(q);
 c.appendChild(stepper(k));row.appendChild(c)});
 sec.style.display=n?'':'none'}).catch(function(){sec.style.display='none'})}
 var BESTSELL={on:false};
@@ -316,17 +763,17 @@ function chatHeaders(){return custUser?authHdr():{'apikey':SUPABASE_ANON_KEY,'Au
 function loadChat(){if(!chatNo)return;var url=custUser?SUPABASE_URL+'/rest/v1/order_messages?order_no=eq.'+encodeURIComponent(chatNo)+'&order=created_at.asc':SUPABASE_URL+'/rest/v1/rpc/get_order_messages';
  var opt=custUser?{headers:chatHeaders()}:{method:'POST',headers:chatHeaders(),body:JSON.stringify({p_order_no:chatNo,p_phone:chatPhone})};
  fetch(url,opt).then(function(r){return r.ok?r.json():[]}).then(function(rows){var L=document.getElementById('cmsgs');var had=rows.length;rows.forEach(function(m){if(m.id>chatLastId){if(m.sender==='staff'&&chatLastId>0)chatBeep();chatLastId=m.id}});
-  L.innerHTML=rows.length?rows.map(function(m){return '<div class="cmsg '+(m.sender==='customer'?'me':'them')+'">'+escH(m.message)+'<span class="tm">'+(m.sender==='customer'?'أنت':(m.sender_name||'المطعم'))+' • '+new Date(m.created_at).toLocaleString('ar-EG')+'</span></div>'}).join(''):'<div class="empty">لسه مفيش رسايل — اكتب رسالتك والمطعم هيرد عليك هنا.</div>';
+  L.innerHTML=rows.length?rows.map(function(m){return '<div class="cmsg '+(m.sender==='customer'?'me':'them')+'">'+escH(m.message)+'<span class="tm">'+(m.sender==='customer'?T('أنت'):(m.sender_name||T('المطعم')))+' • '+new Date(m.created_at).toLocaleString(LOC())+'</span></div>'}).join(''):'<div class="empty">'+T('لسه مفيش رسايل — اكتب رسالتك والمطعم هيرد عليك هنا.')+'</div>';
   L.scrollTop=L.scrollHeight;
   fetch(SUPABASE_URL+'/rest/v1/rpc/mark_messages_read',{method:'POST',headers:chatHeaders(),body:JSON.stringify({p_order_no:chatNo,p_role:'customer',p_phone:chatPhone})}).catch(function(){})}).catch(function(){})}
-function openChat(orderNo,phone){chatNo=orderNo;chatPhone=phone||null;chatLastId=0;document.getElementById('ctitle').textContent='💬 تواصل مع المطعم — طلب '+orderNo;document.getElementById('csheet').style.display='block';loadChat();clearInterval(chatTimer);chatTimer=setInterval(loadChat,3000)}
+function openChat(orderNo,phone){chatNo=orderNo;chatPhone=phone||null;chatLastId=0;document.getElementById('ctitle').textContent=T('💬 تواصل مع المطعم — طلب {n}').replace('{n}',orderNo);document.getElementById('csheet').style.display='block';loadChat();clearInterval(chatTimer);chatTimer=setInterval(loadChat,3000)}
 function sendChat(){var inp=document.getElementById('cin');var v=inp.value.trim();if(!v||!chatNo)return;inp.value='';fetch(SUPABASE_URL+'/rest/v1/rpc/send_order_message',{method:'POST',headers:chatHeaders(),body:JSON.stringify({p_order_no:chatNo,p_text:v,p_sender:'customer',p_phone:chatPhone})}).then(function(r){if(r.ok)loadChat();else inp.value=v}).catch(function(){inp.value=v})}
 document.getElementById('csend').onclick=sendChat;
 document.getElementById('cin').addEventListener('keydown',function(e){if(e.key==='Enter')sendChat()});
 document.getElementById('cback').onclick=function(){document.getElementById('csheet').style.display='none';clearInterval(chatTimer);chatTimer=null};
 document.getElementById('chatbtn').onclick=function(){if(lastChatNo)openChat(lastChatNo,lastChatPhone)};
-function stLabel(o){return o.status==='done'?'اتسلّم':o.status==='cancelled'?'ملغي':o.status==='new'?'تم استلام الأوردر في المطعم':o.status==='preparing'?'بيتحضّر':o.status==='delivering'?(o.fulfillment==='pickup'?'جاهز للاستلام':'خرج للتوصيل'):o.status}
-var myOrdTimer=null;function loadMyOrders(first){var L=document.getElementById('olist');if(first)L.innerHTML='<div class="empty">جاري التحميل…</div>';if(!custUser){L.innerHTML='<div class="empty">سجّل دخول بجوجل الأول</div>';return}fetch(SUPABASE_URL+'/rest/v1/orders?user_id=eq.'+custUser.id+'&order=created_at.desc&limit=20',{headers:authHdr()}).then(function(r){return r.ok?r.json():[]}).then(function(rows){if(!rows.length){L.innerHTML='<div class="empty">لسه معملتش أوردرات</div>';return}L.innerHTML='';rows.forEach(function(o){var d=document.createElement('div');d.className='ocard';var its=(o.items||[]).map(function(i){return i.q+' × '+i.n+(i.l?' ('+i.l+')':'')}).join('، ');d.innerHTML='<div class="oh"><b dir="ltr">'+o.order_no+'</b><span>'+new Date(o.created_at).toLocaleDateString('ar-EG')+'</span><span>'+o.total+' ج</span><span>'+stLabel(o)+'</span>'+(o.points_earned?'<span>⭐ +'+o.points_earned+'</span>':'')+'</div><div style="font-size:14px;color:#555;margin-top:4px">'+its+'</div><button type="button">اطلب زيه تاني</button> <button type="button" style="background:#0053aa">💬 تواصل</button>';var bb=d.querySelectorAll('button');bb[0].onclick=function(){reorder(o)};bb[1].onclick=function(){openChat(o.order_no,o.phone)};L.appendChild(d)})}).catch(function(){L.innerHTML='<div class="empty">تعذر تحميل الأوردرات</div>'})}function openMyOrders(){document.getElementById('osheet').style.display='block';loadMyOrders(true);if(myOrdTimer)clearInterval(myOrdTimer);myOrdTimer=setInterval(function(){if(document.getElementById('osheet').style.display==='block')loadMyOrders(false);else{clearInterval(myOrdTimer);myOrdTimer=null}},5000)}
+function stLabel(o){return o.status==='done'?T('اتسلّم'):o.status==='cancelled'?T('ملغي'):o.status==='new'?T('تم استلام الأوردر في المطعم'):o.status==='preparing'?T('بيتحضّر'):o.status==='delivering'?(o.fulfillment==='pickup'?T('جاهز للاستلام'):T('خرج للتوصيل')):o.status}
+var myOrdTimer=null;function loadMyOrders(first){var L=document.getElementById('olist');if(first)L.innerHTML='<div class="empty">'+T('جاري التحميل…')+'</div>';if(!custUser){L.innerHTML='<div class="empty">'+T('سجّل دخول بجوجل الأول')+'</div>';return}fetch(SUPABASE_URL+'/rest/v1/orders?user_id=eq.'+custUser.id+'&order=created_at.desc&limit=20',{headers:authHdr()}).then(function(r){return r.ok?r.json():[]}).then(function(rows){if(!rows.length){L.innerHTML='<div class="empty">'+T('لسه معملتش أوردرات')+'</div>';return}L.innerHTML='';rows.forEach(function(o){var d=document.createElement('div');d.className='ocard';var its=(o.items||[]).map(function(i){return i.q+' × '+TN(i.n)+(i.l?' ('+TN(i.l)+')':'')}).join(lang==='en'?', ':'، ');d.innerHTML='<div class="oh"><b dir="ltr">'+o.order_no+'</b><span>'+new Date(o.created_at).toLocaleDateString(LOC())+'</span><span>'+fmt(o.total)+'</span><span>'+stLabel(o)+'</span>'+(o.points_earned?'<span>⭐ +'+o.points_earned+'</span>':'')+'</div><div style="font-size:14px;color:#555;margin-top:4px">'+its+'</div><button type="button">'+T('اطلب زيه تاني')+'</button> <button type="button" style="background:#0053aa">'+T('💬 تواصل')+'</button>';var bb=d.querySelectorAll('button');bb[0].onclick=function(){reorder(o)};bb[1].onclick=function(){openChat(o.order_no,o.phone)};L.appendChild(d)})}).catch(function(){L.innerHTML='<div class="empty">'+T('تعذر تحميل الأوردرات')+'</div>'})}function openMyOrders(){document.getElementById('osheet').style.display='block';loadMyOrders(true);if(myOrdTimer)clearInterval(myOrdTimer);myOrdTimer=setInterval(function(){if(document.getElementById('osheet').style.display==='block')loadMyOrders(false);else{clearInterval(myOrdTimer);myOrdTimer=null}},5000)}
 function reorder(o){cart={};notes={};grpCarts={};var isGrp=false;var me=grpMeName();var custName=o.name||me;
  (o.items||[]).forEach(function(it){var k=null;Object.keys(flat).forEach(function(fk){var f=flat[fk];if(f.name===it.n&&f.label===(it.l||''))k=fk});if(k){var names=[];(it.addons||[]).forEach(function(a){if(addonByName(flat[k].sk,a.n))names.push(a.n)});if(names.length){selAddons[flat[k].item]=names.slice().sort();k=k+'|'+names.slice().sort().join(',')}
  var who=it['for'];if(who&&who!==custName&&who!==me&&who!=='أنا'){isGrp=true;if(grpFriends.indexOf(who)<0)grpFriends.push(who);if(!grpCarts[who])grpCarts[who]={};grpCarts[who][k]=(grpCarts[who][k]||0)+it.q}else{cart[k]=(cart[k]||0)+it.q}}});
@@ -334,7 +781,7 @@ function reorder(o){cart={};notes={};grpCarts={};var isGrp=false;var me=grpMeNam
  save();document.getElementById('osheet').style.display='none';if(o.address)document.getElementById('ad').value=o.address;if(o.branch)document.getElementById('br').value=o.branch;drawSheet();sheet.style.display='block';renderGrpBar();refresh()}
 
 var tabs=document.getElementById('tabs'),menu=document.getElementById('menu'),cur=0;
-function buildTabs(){tabs.innerHTML='';MENU.forEach(function(g,gi){var b=document.createElement('button');b.className='tab';b.textContent=g.g;b.onclick=function(){cur=gi;document.getElementById('q').value='';render()};tabs.appendChild(b)})}
+function buildTabs(){tabs.innerHTML='';MENU.forEach(function(g,gi){var b=document.createElement('button');b.className='tab';b.textContent=TN(g.g);b.onclick=function(){cur=gi;document.getElementById('q').value='';render()};tabs.appendChild(b)})}
 buildTabs();
 function totals(){var c=0,s=0;Object.keys(cart).forEach(function(k){var q=cart[k];var f=flat[lineParts(k).base];if(q>0&&f){c+=q;s+=q*linePrice(k)}});
  if(grpOn)Object.keys(grpCarts).forEach(function(fn){Object.keys(grpCarts[fn]).forEach(function(k){var q=grpCarts[fn][k];var f=flat[lineParts(k).base];if(q>0&&f){c+=q;s+=q*linePrice(k)}})});
@@ -355,13 +802,13 @@ function grpSplitCalc(persons,fee,vat,disc,total){var S=0;persons.forEach(functi
  if(out.length){var drift=Math.round((total-out.reduce(function(a,x){return a+x.total},0))*100)/100;if(drift!==0){var lp=out[out.length-1];lp.total=Math.round((lp.total+drift)*100)/100;lp.vat=Math.max(0,Math.round((lp.vat+drift)*100)/100)}}
  return out}
 function grpSplit(){var ps=grpPersons();if(ps.length<2)return null;var t=totals();return grpSplitCalc(ps.map(function(p){return {name:p.name,items:p.items}}),t.fee,t.vat,t.disc+t.ptsDisc,t.total)}
-function grpSplitHtml(sp,final){var h='<div class="g"><span>💰 '+(final?'تقسيمة الأوردر — كل واحد عليه كام':'كل واحد عليه كام')+'</span><span></span></div>';sp.forEach(function(p){h+='<div><span>'+escH(p.name)+'</span><span><b>'+fmt(p.total)+'</b></span></div><div style="font-size:12.5px;color:#888"><span>أصناف '+fmt(p.items)+(p.discount>0?' − خصم '+fmt(p.discount):'')+' + توصيل '+fmt(p.delivery)+' + ضريبة '+fmt(p.vat)+'</span><span></span></div>'});return h}
-function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=on?'👥 طلب جماعي: مفعّل':'👥 طلب جماعي'}var tb=document.getElementById('grpTglBar');if(tb)tb.classList.toggle('on',on);var hint=document.getElementById('grpHint');if(hint)hint.textContent=on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك';
+function grpSplitHtml(sp,final){var h='<div class="g"><span>💰 '+T(final?'تقسيمة الأوردر — كل واحد عليه كام':'كل واحد عليه كام')+'</span><span></span></div>';sp.forEach(function(p){h+='<div><span>'+escH(p.name)+'</span><span><b>'+fmt(p.total)+'</b></span></div><div style="font-size:12.5px;color:#888"><span>'+T('أصناف')+' '+fmt(p.items)+(p.discount>0?' − '+T('خصم')+' '+fmt(p.discount):'')+' + '+T('توصيل')+' '+fmt(p.delivery)+' + '+T('ضريبة')+' '+fmt(p.vat)+'</span><span></span></div>'});return h}
+function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=T(on?'👥 طلب جماعي: مفعّل':'👥 طلب جماعي') }var tb=document.getElementById('grpTglBar');if(tb){tb.classList.toggle('on',on);tb.textContent=T('👥 جماعي')}var hint=document.getElementById('grpHint');if(hint)hint.textContent=T(on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك');
  ['grpBar','grpBarSheet'].forEach(function(id){var b=document.getElementById(id);if(!b)return;b.style.display=on?'':'none';if(!on){b.innerHTML='';return}
-  var h='<button type="button" class="grp-chip'+(grpPerson===''?' on':'')+'" data-person="">أنا</button>';
-  grpFriends.forEach(function(fn){h+='<button type="button" class="grp-chip'+(grpPerson===fn?' on':'')+'" data-person="'+escH(fn)+'">'+escH(fn)+' <span class="x" data-del="'+escH(fn)+'">'+(grpDelArm===fn?'تأكيد؟':'✕')+'</span></button>'});
-  h+='<button type="button" class="grp-chip add" data-add="1">➕ صديق</button>';
-  if(grpAddOpen)h+='<span style="display:flex;gap:6px;flex:none"><input class="grp-new" placeholder="اسم الصديق" style="width:110px;border:1px solid #d8d5cd;border-radius:10px;padding:7px 9px;font-family:inherit;font-size:14px"><button type="button" class="grp-addbtn" style="border:0;border-radius:10px;padding:7px 12px;background:var(--blue);color:#fff;font-family:inherit;font-weight:700;cursor:pointer">إضافة</button></span>';
+  var h='<button type="button" class="grp-chip'+(grpPerson===''?' on':'')+'" data-person="">'+T('أنا')+'</button>';
+  grpFriends.forEach(function(fn){h+='<button type="button" class="grp-chip'+(grpPerson===fn?' on':'')+'" data-person="'+escH(fn)+'">'+escH(fn)+' <span class="x" data-del="'+escH(fn)+'">'+(grpDelArm===fn?T('تأكيد؟'):'✕')+'</span></button>'});
+  h+='<button type="button" class="grp-chip add" data-add="1">'+T('➕ صديق')+'</button>';
+  if(grpAddOpen)h+='<span style="display:flex;gap:6px;flex:none"><input class="grp-new" placeholder="'+T('اسم الصديق')+'" style="width:110px;border:1px solid #d8d5cd;border-radius:10px;padding:7px 9px;font-family:inherit;font-size:14px"><button type="button" class="grp-addbtn" style="border:0;border-radius:10px;padding:7px 12px;background:var(--blue);color:#fff;font-family:inherit;font-weight:700;cursor:pointer">'+T('إضافة')+'</button></span>';
   b.innerHTML=h})}
 function grpRerender(){var y=window.scrollY;render();window.scrollTo(0,y)}
 function grpSetPerson(name){grpPerson=name||'';grpAddOpen=false;save();renderGrpBar();grpRerender()}
@@ -373,6 +820,56 @@ function grpBarKeys(ev){if(ev.key==='Enter'&&ev.target.classList&&ev.target.clas
 ['grpBar','grpBarSheet'].forEach(function(id){var b=document.getElementById(id);if(b){b.addEventListener('click',grpBarClick);b.addEventListener('keydown',grpBarKeys)}});
 document.getElementById('grpTgl').onclick=function(){grpToggle(!grpOn)};
 document.getElementById('grpTglBar').onclick=function(){grpToggle(!grpOn)};
+
+function setEl(id,ar){var el=document.getElementById(id);if(el)el.textContent=T(ar)}
+function setPh(id,ar){var el=document.getElementById(id);if(el)el.placeholder=T(ar)}
+function applyLang(){
+ document.documentElement.lang=lang;document.documentElement.dir=lang==='en'?'ltr':'rtl';document.title=T('اطلب من جاد');
+ var lb=document.getElementById('langBtn');if(lb)lb.textContent=lang==='en'?'عربي':'EN';
+ setEl('tagline','أكل لكل الناس');setEl('gfTx','توصيل مجاني');setEl('gfHint','للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه');
+ var gb=document.getElementById('gfBanner');if(gb)gb.title=T('دوس عشان تنسخ الكود');
+ setEl('warn','⚠️ لم يتم ضبط رقم الواتساب بعد.');
+ setEl('glogin','دخول بجوجل');setEl('elogin','دخول بالإيميل');setEl('myord','أوردراتي');setEl('glogout','خروج');setEl('installBtn','📲 ثبّت التطبيق');
+ setEl('lbPts','نقاطك تساوي');setEl('lbLast','آخر أوردر');setEl('lbCnt','أوردر من جاد');setEl('subCnt','كل طلباتك');setEl('lbTop','أكتر صنف طلبته');
+ setEl('bestTitle','🔥 الأعلى مبيعاً');
+ setEl('tkTitle','🍽️ حالة طلبك');
+ var tkT=document.querySelectorAll('#tkSteps .tk-t');if(tkT.length===4){tkT[0].textContent=T('تم الاستلام');tkT[1].textContent=T('بيتحضّر');tkT[2].textContent=lastTrackFul==='pickup'?T('جاهز للاستلام'):T('خرج للتوصيل');tkT[3].textContent=T('تم التوصيل')}
+ setEl('stTitle','حكاية جاد — من 1960');setEl('stP1','من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.');setEl('stP2','الخط الساخن 16475');
+ setEl('openLbl','عرض الطلب');
+ setEl('back','→ رجوع للمنيو');setEl('lback','→ رجوع');setEl('oback','→ رجوع للمنيو');setEl('eback','→ رجوع للمنيو');setEl('cback','→ رجوع');
+ setEl('shTitle','طلبك');
+ setEl('lbPromo','برومو كود (لو عندك)');setPh('pc','اكتب الكود');setEl('pa','تطبيق');
+ setEl('loyTitle','⭐ نقاط الولاء');setPh('redeemIn','عدد النقاط اللي عايز تستبدلها');setEl('redeemBtn','استخدام النقاط');
+ setEl('lbName','الاسم');setPh('nm','اسمك');setEl('lbPhone','رقم الموبايل');setPh('ph','01xxxxxxxxx');
+ setEl('lbAddr','العنوان بالتفصيل');setPh('ad','المنطقة، الشارع، رقم العمارة، الدور، الشقة، علامة مميزة');
+ setEl('lbLoc','موقعك على الخريطة (اختياري)');setPh('lk','الصق لينك موقعك من خرائط جوجل');setEl('gps','📍 موقعي');
+ setEl('lbBranch','الفرع');setEl('lbFul','طريقة الاستلام');setEl('lbPay','طريقة الدفع');setEl('lbNotes','ملاحظات عامة على الطلب (اختياري)');setPh('nt','مثال: رن عليا لما توصل…');
+ var fo=document.getElementById('ful').options;if(fo.length>1){fo[0].textContent=T('توصيل للعنوان');fo[1].textContent=T('استلام من المطعم')}
+ var po=document.getElementById('pay').options;if(po.length)po[0].textContent=T('كاش عند الاستلام');
+ setEl('send','تأكيد الطلب');
+ setEl('fbTitle','لو حابب تبعت الطلب واتساب:');setEl('fbTxt','اضغط «افتح تطبيق واتساب» تحت، أو ابعت رسالة على الرقم');setEl('app','افتح تطبيق واتساب');setEl('newo','ابدأ طلب جديد');
+ setEl('folTitle','تمام، طلبك اتسجّل ✅');setEl('folQ','عايز تتابع طلبك إزاي؟');setEl('followWa','💬 متابعة مع خدمة العملاء واتساب');setEl('followSite','📍 متابعة الطلب من الموقع');
+ setEl('sheetNote','بعد الضغط على «تأكيد الطلب» طلبك بيتسجّل عند المطعم على طول، وبعدها تختار تتابع مع خدمة العملاء واتساب ولا تكتفي بالموقع.');
+ setEl('lsTitle','سجّل دخول الأول');setEl('lsTxt','عشان تكمل طلبك لازم تسجّل دخول — اختار الطريقة اللي تريحك. طلبك محفوظ في السلة ومش هيضيع.');
+ setEl('lgoogle','دخول بجوجل');setEl('lemail','دخول بالإيميل');
+ setEl('esTitle','دخول بالإيميل');setEl('esLb','الإيميل');setEl('eSentTxt','بعتنا لينك دخول على');setEl('eMsg2','دوس على اللينك اللي في الإيميل عشان تدخل على طول — اللينك صالح لمدة ساعة.');setEl('eSend','ابعت اللينك');setEl('eResend','ابعت اللينك تاني');setEl('eChange','غيّر الإيميل');
+ setEl('osTitle','أوردراتي');
+ setPh('cin','اكتب رسالتك هنا…');setEl('csend','إرسال');
+ setEl('ihTitle','📲 تثبيت تطبيق جاد');
+ var ih1=document.getElementById('ih1');if(ih1)ih1.innerHTML='<b>'+T('أوبرا (أندرويد):')+'</b> '+T('دوس على قايمة المتصفح ⋮ فوق ← اختار «Home Screen» ← «Add».');
+ var ih2=document.getElementById('ih2');if(ih2)ih2.innerHTML='<b>'+T('كروم (أندرويد):')+'</b> '+T('قايمة ⋮ ← «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».');
+ var ih3=document.getElementById('ih3');if(ih3)ih3.innerHTML='<b>'+T('آيفون (سفاري):')+'</b> '+T('زرار المشاركة تحت ← «إضافة إلى الشاشة الرئيسية».');
+ setEl('ihOk','تمام');
+ setPh('q','ابحث عن صنف…');
+ buildTabs();buildBranchOptions();renderGrpBar();updateAcct();
+ if(lastTrackSt)renderTrack(lastTrackSt,lastTrackFul);
+ if(document.getElementById('sheet').style.display==='block')drawSheet();else drawTot();
+ if(document.getElementById('osheet').style.display==='block')loadMyOrders(false);
+ loadBestSellers();
+ render();
+}
+function setLang(l){lang=(l==='en')?'en':'ar';try{localStorage.setItem('gad_lang',lang)}catch(e){}applyLang();render()}
+document.getElementById('langBtn').onclick=function(){setLang(lang==='en'?'ar':'en')};
 function stepper(k,after,itemKey,person){var d=document.createElement('div');d.className='step';
  var plus=document.createElement('button');plus.type='button';plus.textContent='+';var q=document.createElement('span');q.className='q';var mi=document.createElement('button');mi.type='button';mi.textContent='−';mi.className='mi';
  function effKey(){if(!itemKey)return k;var sel=selAddons[itemKey]||[];return sel.length?k+'|'+sel.slice().sort().join(','):k}
@@ -381,30 +878,30 @@ function stepper(k,after,itemKey,person){var d=document.createElement('div');d.c
  plus.onclick=function(){var ek=effKey();var tc=tgt();tc[ek]=(tc[ek]||0)+1;save();r();updBar();if(after)after()};
  mi.onclick=function(){var ek=effKey();var tc=tgt();tc[ek]=Math.max(0,(tc[ek]||0)-1);if(!tc[ek])delete tc[ek];save();r();updBar();if(after)after()};
  d.appendChild(mi);d.appendChild(q);d.appendChild(plus);r();d.refresh=r;return d}
-function noteBox(ik){var i=document.createElement('input');i.className='cm';i.type='text';i.placeholder='ملاحظات على الصنف (مثال: بدون سلطة، ملح خفيف)';i.value=notes[ik]||'';
+function noteBox(ik){var i=document.createElement('input');i.className='cm';i.type='text';i.placeholder=T('ملاحظات على الصنف (مثال: بدون سلطة، ملح خفيف)');i.value=notes[ik]||'';
  i.addEventListener('input',function(){var v=i.value;if(v.trim())notes[ik]=v;else delete notes[ik];save()});return i}
 function render(){
  [].forEach.call(tabs.children,function(b,i){b.classList.toggle('on',i===cur&&!document.getElementById('q').value.trim())});
  menu.innerHTML='';var q=document.getElementById('q').value.trim();var any=false;
  MENU.forEach(function(g,gi){ if(!q&&gi!==cur)return;
   var SIMG={ful:'s-oriental.png',fal:'s-wrap.png',egg:'s-egg.png',misc:'s-misc.png',pot:'s-pot.png',box:'s-boxes.png',grill:'s-grill.png',meals:'s-meals.png',turbo:'s-sandwich.png',haw:'s-haw.png',gadd:'s-gadd.png',rice:'s-dishes.png',shw:'s-shawarma.png',fatta:'s-fatta.png',beef:'s-beef.png',chick:'s-sandwich.png',sea:'s-dishes.png',roll:'s-roll.png',pizza:'s-pizza.png',fat:'s-fat.png',crepe:'s-crepe.png',salad:'s-salads.png'};
-  g.s.forEach(function(s,si){var box=document.createElement('div');box.className='sec';if(SIMG[s.k]){var im=document.createElement('img');im.className='secimg';im.src=SIMG[s.k];im.alt=s.t;box.appendChild(im)}var h=document.createElement('h2');h.textContent=s.t;box.appendChild(h);var n=0;
-   s.i.forEach(function(it,ii){ if(q&&it.n.indexOf(q)<0&&s.t.indexOf(q)<0)return;if(!it.o.some(function(o){return !o.off}))return;n++;
-    var c=document.createElement('div');c.className='item';var top=document.createElement('div');top.className='itop';var pk=s.k+'|'+it.n;if(ITEMPH[pk]){var ph=document.createElement('img');ph.className='itph';ph.src=ITEMPH[pk];ph.alt=it.n;ph.loading='lazy';ph.onerror=function(){this.style.display='none'};top.appendChild(ph)}var nm=document.createElement('div');nm.className='nm';nm.textContent=it.n;top.appendChild(nm);c.appendChild(top);
+  g.s.forEach(function(s,si){var box=document.createElement('div');box.className='sec';if(SIMG[s.k]){var im=document.createElement('img');im.className='secimg';im.src=SIMG[s.k];im.alt=TN(s.t);box.appendChild(im)}var h=document.createElement('h2');h.textContent=TN(s.t);box.appendChild(h);var n=0;
+   s.i.forEach(function(it,ii){ if(q){var hay=(it.n+' '+TN(it.n)+' '+s.t+' '+TN(s.t)).toLowerCase();if(hay.indexOf(q.toLowerCase())<0)return}if(!it.o.some(function(o){return !o.off}))return;n++;
+    var c=document.createElement('div');c.className='item';var top=document.createElement('div');top.className='itop';var pk=s.k+'|'+it.n;if(ITEMPH[pk]){var ph=document.createElement('img');ph.className='itph';ph.src=ITEMPH[pk];ph.alt=it.n;ph.loading='lazy';ph.onerror=function(){this.style.display='none'};top.appendChild(ph)}var nm=document.createElement('div');nm.className='nm';nm.textContent=TN(it.n);top.appendChild(nm);c.appendChild(top);
     var ik=gi+'.'+si+'.'+ii;var stepRefs=[];
-    it.o.forEach(function(o,oi){if(o.off)return;var r=document.createElement('div');r.className='opt';var l=document.createElement('span');l.className='ol';l.textContent=o.l;var p=document.createElement('span');p.className='op';p.textContent=o.p+' ج';r.appendChild(l);r.appendChild(p);var st=stepper(gi+'.'+si+'.'+ii+'.'+oi,null,ik);stepRefs.push(st);r.appendChild(st);c.appendChild(r)});
+    it.o.forEach(function(o,oi){if(o.off)return;var r=document.createElement('div');r.className='opt';var l=document.createElement('span');l.className='ol';l.textContent=TN(o.l);var p=document.createElement('span');p.className='op';p.textContent=fmt(o.p);r.appendChild(l);r.appendChild(p);var st=stepper(gi+'.'+si+'.'+ii+'.'+oi,null,ik);stepRefs.push(st);r.appendChild(st);c.appendChild(r)});
     var adList=addonsFor(s.k,it.n);
     if(adList.length){if(!selAddons[ik])selAddons[ik]=[];var adWrap=document.createElement('div');adWrap.className='addons';var tgl=document.createElement('button');tgl.type='button';tgl.className='ad-tgl';var adBox=document.createElement('div');adBox.className='ad-box';adBox.style.display=adOpen[ik]?'':'none';
-     var adTglTxt=function(){tgl.textContent=(adOpen[ik]?'▼':'▶')+' ➕ إضافات'+(selAddons[ik].length?' ('+selAddons[ik].length+')':'')};
+     var adTglTxt=function(){tgl.textContent=(adOpen[ik]?'▼':'▶')+' '+T('➕ إضافات')+(selAddons[ik].length?' ('+selAddons[ik].length+')':'')};
      adTglTxt();tgl.onclick=function(){adOpen[ik]=!adOpen[ik];adBox.style.display=adOpen[ik]?'':'none';adTglTxt()};
      adList.forEach(function(a){var row=document.createElement('label');row.className='ad-row';var cb=document.createElement('input');cb.type='checkbox';cb.checked=selAddons[ik].indexOf(a.n)>-1;
       cb.onchange=function(){var arr=selAddons[ik];var ix=arr.indexOf(a.n);if(cb.checked&&ix<0)arr.push(a.n);if(!cb.checked&&ix>-1)arr.splice(ix,1);adTglTxt();stepRefs.forEach(function(st2){if(st2.refresh)st2.refresh()})};
-      var nm=document.createElement('span');nm.className='ad-nm';nm.textContent=a.n;var pr=document.createElement('span');pr.className='ad-pr';pr.textContent='+'+num(a.p)+' ج';row.appendChild(cb);row.appendChild(nm);row.appendChild(pr);adBox.appendChild(row)});
+      var nm=document.createElement('span');nm.className='ad-nm';nm.textContent=TN(a.n);var pr=document.createElement('span');pr.className='ad-pr';pr.textContent='+'+fmt(a.p);row.appendChild(cb);row.appendChild(nm);row.appendChild(pr);adBox.appendChild(row)});
      adWrap.appendChild(tgl);adWrap.appendChild(adBox);c.appendChild(adWrap)}
     c.appendChild(noteBox(ik));
     box.appendChild(c)});
    if(n){menu.appendChild(box);any=true}})});
- if(!any){menu.innerHTML='<div class="empty">مفيش نتائج</div>'}
+ if(!any){menu.innerHTML='<div class="empty">'+T('مفيش نتائج')+'</div>'}
  if(!q)window.scrollTo(0,0);renderGrpBar();updBar()}
 document.getElementById('q').addEventListener('input',render);
 var sheet=document.getElementById('sheet');
@@ -413,18 +910,18 @@ function drawSheet(){var L=document.getElementById('lines');L.innerHTML='';var a
  grpPersons().forEach(function(ps){var groups={},order=[];
   Object.keys(ps.cart).forEach(function(k){if(!(ps.cart[k]>0))return;var f=flat[lineParts(k).base];if(!f)return;if(!groups[f.item]){groups[f.item]=[];order.push(f.item)}groups[f.item].push(k)});
   if(!order.length)return;any=true;
-  if(grpOn){var sh=document.createElement('div');sh.className='grp-sub';var sn=document.createElement('span');sn.textContent='👤 '+ps.name;var ss=document.createElement('span');ss.textContent='أصناف: '+fmt(ps.items);sh.appendChild(sn);sh.appendChild(ss);L.appendChild(sh)}
-  order.forEach(function(ik){var ks=groups[ik];var g=document.createElement('div');g.className='grp';var t=document.createElement('div');t.className='gt';t.textContent=flat[lineParts(ks[0]).base].name;g.appendChild(t);
-   ks.forEach(function(k){var f=flat[lineParts(k).base];var d=document.createElement('div');d.className='line';var tx=document.createElement('div');tx.className='t';tx.textContent=lineLabel(k);
-    var pr=document.createElement('div');pr.className='pr';pr.textContent=num(ps.cart[k]*linePrice(k))+' ج';d.appendChild(tx);d.appendChild(pr);d.appendChild(stepper(k,drawSheet,null,ps.key));g.appendChild(d)});
+  if(grpOn){var sh=document.createElement('div');sh.className='grp-sub';var sn=document.createElement('span');sn.textContent='👤 '+ps.name;var ss=document.createElement('span');ss.textContent=T('أصناف: ')+fmt(ps.items);sh.appendChild(sn);sh.appendChild(ss);L.appendChild(sh)}
+  order.forEach(function(ik){var ks=groups[ik];var g=document.createElement('div');g.className='grp';var t=document.createElement('div');t.className='gt';t.textContent=TN(flat[lineParts(ks[0]).base].name);g.appendChild(t);
+   ks.forEach(function(k){var f=flat[lineParts(k).base];var d=document.createElement('div');d.className='line';var tx=document.createElement('div');tx.className='t';tx.textContent=lineLabelD(k);
+    var pr=document.createElement('div');pr.className='pr';pr.textContent=fmt(ps.cart[k]*linePrice(k));d.appendChild(tx);d.appendChild(pr);d.appendChild(stepper(k,drawSheet,null,ps.key));g.appendChild(d)});
    if(ps.key==='')g.appendChild(noteBox(ik));L.appendChild(g)});
  });
  drawTot();if(!any)sheet.style.display='none'}
-function drawTot(){var t=totals();var pmEl=document.getElementById('pm');if(pmEl&&promo&&promo.min>0&&t.s<promo.min){pmEl.style.color='#a92318';pmEl.textContent='⚠️ البرومو محتاج حد أدنى '+num(promo.min)+' جنيه (أصنافك حاليًا '+num(t.s)+' جنيه)'}var tt=document.getElementById('tot');
- tt.innerHTML='<div><span>إجمالي الأصناف</span><span>'+fmt(t.s)+'</span></div>'+
-  (t.disc>0?'<div><span>خصم ('+promo.code+')</span><span class="free">- '+fmt(t.disc)+'</span></div>':'')+(t.ptsDisc>0?'<div><span>خصم نقاط ('+redeemUsed+' نقطة)</span><span class="free">- '+fmt(t.ptsDisc)+'</span></div>':'')+(promo&&promo.min>0&&t.s<promo.min?'<div><span style="color:#a92318">⚠️ البرومو محتاج حد أدنى '+num(promo.min)+' جنيه</span><span></span></div>':'')+(fulfill()==='pickup'?'<div><span>الاستلام</span><span class="free">من المطعم — بدون رسوم توصيل</span></div>':'<div><span>التوصيل</span>'+(t.fee===0?'<span class="free">مجاني 🎉</span>':'<span>'+fmt(t.fee)+'</span>')+'</div>')+
-  '<div><span>ضريبة القيمة المضافة ('+Math.round(CFG.vat*100)+'%)</span><span>'+fmt(t.vat)+'</span></div>'+
-  '<div class="g"><span>الإجمالي</span><span>'+fmt(t.total)+'</span></div>'+(custUser?'<div><span>هتكسب من الأوردر ده</span><span>⭐ '+t.earn+' نقطة</span></div>':'')
+function drawTot(){var t=totals();var pmEl=document.getElementById('pm');if(pmEl&&promo&&promo.min>0&&t.s<promo.min){pmEl.style.color='#a92318';pmEl.textContent=T('⚠️ البرومو محتاج حد أدنى {n} جنيه (أصنافك حاليًا {s} جنيه)').replace('{n}',num(promo.min)).replace('{s}',num(t.s)) }var tt=document.getElementById('tot');
+ tt.innerHTML='<div><span>'+T('إجمالي الأصناف')+'</span><span>'+fmt(t.s)+'</span></div>'+
+  (t.disc>0?'<div><span>'+T('خصم')+' ('+promo.code+')</span><span class="free">- '+fmt(t.disc)+'</span></div>':'')+(t.ptsDisc>0?'<div><span>'+T('خصم نقاط ({n} نقطة)').replace('{n}',redeemUsed)+'</span><span class="free">- '+fmt(t.ptsDisc)+'</span></div>':'')+(promo&&promo.min>0&&t.s<promo.min?'<div><span style="color:#a92318">'+T('⚠️ البرومو محتاج حد أدنى {n} جنيه').replace('{n}',num(promo.min))+'</span><span></span></div>':'')+(fulfill()==='pickup'?'<div><span>'+T('الاستلام')+'</span><span class="free">'+T('من المطعم — بدون رسوم توصيل')+'</span></div>':'<div><span>'+T('التوصيل')+'</span>'+(t.fee===0?'<span class="free">'+T('مجاني 🎉')+'</span>':'<span>'+fmt(t.fee)+'</span>')+'</div>')+
+  '<div><span>'+T('ضريبة القيمة المضافة')+' ('+Math.round(CFG.vat*100)+'%)</span><span>'+fmt(t.vat)+'</span></div>'+
+  '<div class="g"><span>'+T('الإجمالي')+'</span><span>'+fmt(t.total)+'</span></div>'+(custUser?'<div><span>'+T('هتكسب من الأوردر ده')+'</span><span>⭐ '+t.earn+' '+T('نقطة')+'</span></div>':'')
  var gs=document.getElementById('grpSplit');var sp=grpOn?grpSplit():null;
  if(sp&&sp.length>1){gs.innerHTML=grpSplitHtml(sp,false);gs.style.display=''}
  else if(lastSplit){gs.innerHTML=grpSplitHtml(lastSplit,true);gs.style.display=''}
@@ -433,21 +930,21 @@ document.getElementById('open').onclick=function(){drawSheet();sheet.style.displ
 document.getElementById('back').onclick=function(){sheet.style.display='none';render()};
 document.getElementById('pa').onclick=function(){var v=document.getElementById('pc').value.trim().toLowerCase();var m=document.getElementById('pm');
  if(!v){promo=null;m.textContent='';drawTot();refresh();return}
- function ok(p){if(p.eligible===false){promo=null;m.style.color='#a92318';m.textContent=p.target_type==='min_spent'?'البرومو ده للي صرفوا '+num(+p.target_value||0)+'جنيه الشهر ده':p.target_type==='min_orders'?'البرومو ده للي طلبوا '+num(+p.target_value||0)+'أوردرات الشهر ده':'البرومو ده لعملاء محددين';drawTot();refresh();return}var mn=+p.min_order||0;promo={code:v,type:p.type,value:+p.value||0,min:mn};if(mn&&totals().s<mn){promo=null;m.style.color='#a92318';m.textContent='البرومو ده محتاج أوردر بحد أدنى '+num(mn)+' جنيه (أصنافك حاليًا '+num(totals().s)+' جنيه)';drawTot();refresh();return}m.style.color='#0a7a3b';m.textContent='✓ تم تطبيق الكود: '+(p.type==='free_delivery'?'توصيل مجاني':p.type==='percent'?'خصم '+num(+p.value)+'%':'خصم '+num(+p.value)+' جنيه');drawTot();refresh()}
- function bad(){promo=null;m.style.color='#a92318';m.textContent='الكود غير صحيح';drawTot();refresh()}
- if(DB_ON){m.style.color='#555';m.textContent='جاري التحقق…';
+ function ok(p){if(p.eligible===false){promo=null;m.style.color='#a92318';m.textContent=p.target_type==='min_spent'?T('البرومو ده للي صرفوا {n}جنيه الشهر ده').replace('{n}',num(+p.target_value||0)):p.target_type==='min_orders'?T('البرومو ده للي طلبوا {n}أوردرات الشهر ده').replace('{n}',num(+p.target_value||0)):T('البرومو ده لعملاء محددين');drawTot();refresh();return}var mn=+p.min_order||0;promo={code:v,type:p.type,value:+p.value||0,min:mn};if(mn&&totals().s<mn){promo=null;m.style.color='#a92318';m.textContent=T('البرومو ده محتاج أوردر بحد أدنى {n} جنيه (أصنافك حاليًا {s} جنيه)').replace('{n}',num(mn)).replace('{s}',num(totals().s));drawTot();refresh();return}m.style.color='#0a7a3b';m.textContent='✓ '+T('تم تطبيق الكود: ')+(p.type==='free_delivery'?T('توصيل مجاني'):p.type==='percent'?T('خصم {n}%').replace('{n}',num(+p.value)):T('خصم {n} جنيه').replace('{n}',num(+p.value)));drawTot();refresh()}
+ function bad(){promo=null;m.style.color='#a92318';m.textContent=T('الكود غير صحيح');drawTot();refresh()}
+ if(DB_ON){m.style.color='#555';m.textContent=T('جاري التحقق…');
   fetch(SUPABASE_URL+'/rest/v1/rpc/check_promo',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({p:v,p_phone:document.getElementById('ph').value.trim()||null,p_email:(custUser&&custUser.email)||null})})
    .then(function(r){return r.ok?r.json():[]}).then(function(a){var x=Array.isArray(a)?a[0]:a;if(x&&x.type)ok(x);else bad()}).catch(function(){bad()})}
  else{if(v===String(CFG.promo).toLowerCase())ok({type:'free_delivery',value:0});else bad()}};
 document.getElementById('gps').onclick=function(){var m=document.getElementById('gpsm');
  function bad(t){m.style.color='#a92318';m.textContent=t}
  try{
-  if(!navigator.geolocation){bad('تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)');return}
-  m.style.color='#555';m.textContent='جاري التحديد… (اسمح للمتصفح بالوصول للموقع)';
-  navigator.geolocation.getCurrentPosition(function(p){document.getElementById('lk').value='https://www.google.com/maps?q='+p.coords.latitude.toFixed(6)+','+p.coords.longitude.toFixed(6);m.style.color='#0a7a3b';m.textContent='✓ تم تحديد موقعك';refresh()},
-   function(er){bad(er&&er.code===1?'الموقع مش مسموح. فعّله من إعدادات المتصفح، أو ابعت موقعك من واتساب (📎 ← الموقع)':'مقدرناش نحدد الموقع. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)')},{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
- }catch(e){bad('تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)')}};
-document.getElementById('redeemBtn').onclick=function(){var m=document.getElementById('loym');var v=+document.getElementById('redeemIn').value||0;if(!custUser){m.style.color='#a92318';m.textContent='سجّل دخول بجوجل الأول';return}if(!profile){m.style.color='#a92318';m.textContent='لسه بنحمّل نقاطك، حاول تاني';return}if(v<LOYAL.min){m.style.color='#a92318';m.textContent='أقل استبدال '+LOYAL.min+' نقطة';return}if(v>profile.points){m.style.color='#a92318';m.textContent='معاك '+(profile?profile.points:0)+' نقطة بس';return}var d=Math.floor(v/LOYAL.rate);if(d<=0){m.style.color='#a92318';m.textContent='النقاط دي مش كافية لخصم جنيه';return}redeemUsed=v;redeemDisc=d;redeemedForNo=null;m.style.color='#0a7a3b';m.textContent='✓ هيتخصم '+d+' جنيه من الأوردر ده ('+v+' نقطة)، وهيتخصموا من رصيدك لما تبعت الطلب';drawTot();refresh()};
+  if(!navigator.geolocation){bad(T('تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)'));return}
+  m.style.color='#555';m.textContent=T('جاري التحديد… (اسمح للمتصفح بالوصول للموقع)');
+  navigator.geolocation.getCurrentPosition(function(p){document.getElementById('lk').value='https://www.google.com/maps?q='+p.coords.latitude.toFixed(6)+','+p.coords.longitude.toFixed(6);m.style.color='#0a7a3b';m.textContent=T('✓ تم تحديد موقعك');refresh()},
+   function(er){bad(er&&er.code===1?T('الموقع مش مسموح. فعّله من إعدادات المتصفح، أو ابعت موقعك من واتساب (📎 ← الموقع)'):T('مقدرناش نحدد الموقع. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)'))},{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+ }catch(e){bad(T('تحديد الموقع مش متاح هنا. اكتب العنوان بالتفصيل، أو ابعت موقعك من واتساب (📎 ← الموقع)'))}};
+document.getElementById('redeemBtn').onclick=function(){var m=document.getElementById('loym');var v=+document.getElementById('redeemIn').value||0;if(!custUser){m.style.color='#a92318';m.textContent=T('سجّل دخول بجوجل الأول');return}if(!profile){m.style.color='#a92318';m.textContent=T('لسه بنحمّل نقاطك، حاول تاني');return}if(v<LOYAL.min){m.style.color='#a92318';m.textContent=T('أقل استبدال {n} نقطة').replace('{n}',LOYAL.min);return}if(v>profile.points){m.style.color='#a92318';m.textContent=T('معاك {n} نقطة بس').replace('{n}',profile?profile.points:0);return}var d=Math.floor(v/LOYAL.rate);if(d<=0){m.style.color='#a92318';m.textContent=T('النقاط دي مش كافية لخصم جنيه');return}redeemUsed=v;redeemDisc=d;redeemedForNo=null;m.style.color='#0a7a3b';m.textContent=T('✓ هيتخصم {d} جنيه من الأوردر ده ({v} نقطة)، وهيتخصموا من رصيدك لما تبعت الطلب').replace('{d}',d).replace('{v}',v);drawTot();refresh()};
 var curNo=null,lastSig=null;
 function orderNo(){if(!curNo)curNo='GAD'+Date.now().toString(36).toUpperCase().slice(-3)+Math.random().toString(36).toUpperCase().slice(2,5);return curNo}
 function itemsArr(){var a=[],done={};var me=grpMeName();
@@ -470,13 +967,13 @@ function buildMsg(){var t=totals();var lines=[];
  m+='💵 الدفع: '+document.getElementById('pay').value;
  var n=document.getElementById('nt').value.trim();if(n)m+='\n📝 ملاحظات عامة: '+n;return m}
 function valid(){var e=document.getElementById('err');e.textContent='';var t=totals();
- if(t.c===0){e.textContent='السلة فاضية — اختار أصناف الأول';return false}
- if(!document.getElementById('nm').value.trim()){e.textContent='اكتب اسمك';return false}
- var ph=document.getElementById('ph').value.replace(/[\s-]/g,'');if(!/^(\+?20|0)?1[0125][0-9]{8}$/.test(ph)){e.textContent='اكتب رقم موبايل صحيح';return false}
- var bv=document.getElementById('br').value;if(!bv){e.textContent='اختار الفرع';return false}
- var inf=branchInfo(bv);if(inf.closed){e.textContent='الفرع ده '+inf.reason+' — اختار فرع تاني';return false}
- if(fulfill()==='delivery'&&document.getElementById('ad').value.trim().length<8){e.textContent='اكتب العنوان بالتفصيل';return false}
- if(CFG.min>0&&t.s<CFG.min){e.textContent='الحد الأدنى للطلب '+CFG.min+' جنيه';return false}
+ if(t.c===0){e.textContent=T('السلة فاضية — اختار أصناف الأول');return false}
+ if(!document.getElementById('nm').value.trim()){e.textContent=T('اكتب اسمك');return false}
+ var ph=document.getElementById('ph').value.replace(/[\s-]/g,'');if(!/^(\+?20|0)?1[0125][0-9]{8}$/.test(ph)){e.textContent=T('اكتب رقم موبايل صحيح');return false}
+ var bv=document.getElementById('br').value;if(!bv){e.textContent=T('اختار الفرع');return false}
+ var inf=branchInfo(bv);if(inf.closed){e.textContent=T('الفرع ده {r} — اختار فرع تاني').replace('{r}',inf.reason);return false}
+ if(fulfill()==='delivery'&&document.getElementById('ad').value.trim().length<8){e.textContent=T('اكتب العنوان بالتفصيل');return false}
+ if(CFG.min>0&&t.s<CFG.min){e.textContent=T('الحد الأدنى للطلب {n} جنيه').replace('{n}',CFG.min);return false}
  return true}
 var snd=document.getElementById('send');var app=document.getElementById('app');
 function waNum(){return (CFG.wa||'').replace(/[^0-9]/g,'')}
@@ -501,28 +998,28 @@ function checkPromoElig(){if(!promo||!DB_ON)return Promise.resolve(true);return 
   location:ful==='pickup'?null:(document.getElementById('lk').value.trim()||null),branch:brv,fulfillment:ful,items:arr,items_text:lines.join('\n'),notes:document.getElementById('nt').value.trim()||null,
   subtotal:t.s,delivery:t.fee,vat:t.vat,total:t.total,promo:promo?promo.code:null,discount:t.disc,payment:document.getElementById('pay').value,
   user_id:custUser?custUser.id:null,points_redeemed:redeemUsed,points_discount:redeemDisc};
- setRec('جاري تسجيل الطلب عند المطعم…','#555');
+ setRec(T('جاري تسجيل الطلب عند المطعم…'),'#555');
  return checkRate().then(function(allowed){
-  if(!allowed){setRec('⚠️ الحد المسموح 3 أوردرات في الساعة من نفس الرقم — جرّب تاني بعد شوية','#a92318');return 'rate-limit'}
+  if(!allowed){setRec(T('⚠️ الحد المسموح 3 أوردرات في الساعة من نفس الرقم — جرّب تاني بعد شوية'),'#a92318');return 'rate-limit'}
   return checkBlocked().then(function(blk){
-   if(blk){setRec('⚠️ الحساب ده محظور من الطلب — تواصل مع المطعم على 16475','#a92318');return 'blocked'}
+   if(blk){setRec(T('⚠️ الحساب ده محظور من الطلب — تواصل مع المطعم على 16475'),'#a92318');return 'blocked'}
    if(custUser)saveProfile();
-   return checkPromoElig().then(function(el){if(el===false){promo=null;drawTot();setRec('⚠️ البرومو ده مش متاح ليك — اتشال الخصم، ابعت الطلب تاني','#a92318');return 'promo-ineligible'}
+   return checkPromoElig().then(function(el){if(el===false){promo=null;drawTot();setRec(T('⚠️ البرومو ده مش متاح ليك — اتشال الخصم، ابعت الطلب تاني'),'#a92318');return 'promo-ineligible'}
    return redeemNow().then(function(ok){
-  if(redeemUsed&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh();setRec('⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني','#a92318');return 'redeem-fail'}
-  function sendOrder(){return fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:authHdr({'Prefer':'return=minimal'}),body:JSON.stringify(row),keepalive:true}).then(function(r){if(r.ok||r.status===409)return true;if(r.status===401)return 'unauth';return r.text().then(function(t){setRec('⚠️ تعذر تسجيل الطلب عندنا ('+r.status+'): '+t.slice(0,200),'#a92318');return false})}).catch(function(e){setRec('⚠️ تعذر تسجيل الطلب عندنا — خطأ شبكة: '+(e&&e.message?e.message:e),'#a92318');return false})}
-  function doneOk(){setRec('✓ تم تسجيل طلبك عند المطعم (رقم '+row.order_no+')','#0a7a3b');loadCustStats();lastChatNo=row.order_no;lastChatPhone=row.phone;try{localStorage.setItem('gad_last_order_v1',JSON.stringify({no:row.order_no,ph:row.phone}))}catch(e){}document.getElementById('chatbtn').style.display='';if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);
+  if(redeemUsed&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh();setRec(T('⚠️ تعذر استخدام النقاط، اتشال الخصم — ابعت الطلب تاني'),'#a92318');return 'redeem-fail'}
+  function sendOrder(){return fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:authHdr({'Prefer':'return=minimal'}),body:JSON.stringify(row),keepalive:true}).then(function(r){if(r.ok||r.status===409)return true;if(r.status===401)return 'unauth';return r.text().then(function(t){setRec(T('⚠️ تعذر تسجيل الطلب عندنا ({s}): ').replace('{s}',r.status)+t.slice(0,200),'#a92318');return false})}).catch(function(e){setRec(T('⚠️ تعذر تسجيل الطلب عندنا — خطأ شبكة: ')+(e&&e.message?e.message:e),'#a92318');return false})}
+  function doneOk(){setRec(T('✓ تم تسجيل طلبك عند المطعم (رقم {n})').replace('{n}',row.order_no),'#0a7a3b');loadCustStats();lastChatNo=row.order_no;lastChatPhone=row.phone;try{localStorage.setItem('gad_last_order_v1',JSON.stringify({no:row.order_no,ph:row.phone}))}catch(e){}document.getElementById('chatbtn').style.display='';if(custUser&&profile)profile.points=Math.max(0,profile.points-redeemUsed);
   if(grpOn&&grpFriends.length&&custUser&&profile){var merged=(profile.friends||[]).slice();grpFriends.forEach(function(fn){if(merged.indexOf(fn)<0)merged.push(fn)});profile.friends=merged;saveProfile()}
   var finSplit=grpOn?grpSplit():null;if(finSplit&&finSplit.length>1){lastSplit=finSplit;var gs=document.getElementById('grpSplit');if(gs){gs.innerHTML=grpSplitHtml(finSplit,true);gs.style.display=''}}
   return true}
-  return sendOrder().then(function(res){if(res==='unauth')return refreshCustSess().then(function(ok){if(!ok){setRec('⚠️ انتهت جلستك، سجّل دخول تاني أو كمّل كضيف — ابعت الطلب تاني','#a92318');return false}return sendOrder().then(function(r2){return r2===true?doneOk():r2})});return res===true?doneOk():res});
+  return sendOrder().then(function(res){if(res==='unauth')return refreshCustSess().then(function(ok){if(!ok){setRec(T('⚠️ انتهت جلستك، سجّل دخول تاني أو كمّل كضيف — ابعت الطلب تاني'),'#a92318');return false}return sendOrder().then(function(r2){return r2===true?doneOk():r2})});return res===true?doneOk():res});
  })})})})}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
 function showFollow(){var f=document.getElementById('follow');f.style.display='block';var pv=document.getElementById('prev').value;document.getElementById('followWa').href='https://wa.me/'+waNum()+'?text='+encodeURIComponent('عايز أتابع طلبي رقم '+orderNo()+' من جاد'+(pv?'\n\n'+pv:''));startTrack()}
 document.getElementById('followSite').onclick=function(){document.getElementById('follow').style.display='none';openMyOrders()};
-var trackNo=null,trackPhone=null,trackTimer=null;
+var trackNo=null,trackPhone=null,trackTimer=null,lastTrackSt=null,lastTrackFul=null;
 function trackIcon(st){return st==='new'?'📥':st==='preparing'?'👨‍🍳':st==='delivering'?'🛵':st==='done'?'✅':'✖️'}
-function renderTrack(st,ful){var p=document.getElementById('tkPill');if(!p)return;p.className='tk-pill st-'+st;document.getElementById('tkIc').textContent=trackIcon(st);document.getElementById('tkLbl').textContent=stLabel({status:st,fulfillment:ful});var order=['new','preparing','delivering','done'];var idx=order.indexOf(st);var steps=document.getElementById('tkSteps').children;for(var i=0;i<steps.length;i++){steps[i].className='tk-step'+(st==='cancelled'?'':(i<idx?' on':i===idx?' cur':''))}var s3=steps[2];if(ful==='pickup'){s3.querySelector('.tk-dot').textContent='🛍️';s3.querySelector('.tk-t').textContent='جاهز للاستلام'}else{s3.querySelector('.tk-dot').textContent='🛵';s3.querySelector('.tk-t').textContent='خرج للتوصيل'}document.getElementById('tkSub').textContent=st==='done'?'بالهنا والشفا 🎉':st==='cancelled'?'الأوردر ده اتلغى':'بنحدّث الحالة كل 5 ثواني — مش محتاج تعمل ريفرش'}
+function renderTrack(st,ful){lastTrackSt=st;lastTrackFul=ful;var p=document.getElementById('tkPill');if(!p)return;p.className='tk-pill st-'+st;document.getElementById('tkIc').textContent=trackIcon(st);document.getElementById('tkLbl').textContent=stLabel({status:st,fulfillment:ful});var order=['new','preparing','delivering','done'];var idx=order.indexOf(st);var steps=document.getElementById('tkSteps').children;for(var i=0;i<steps.length;i++){steps[i].className='tk-step'+(st==='cancelled'?'':(i<idx?' on':i===idx?' cur':''))}var s3=steps[2];if(ful==='pickup'){s3.querySelector('.tk-dot').textContent='🛍️';s3.querySelector('.tk-t').textContent=T('جاهز للاستلام') }else{s3.querySelector('.tk-dot').textContent='🛵';s3.querySelector('.tk-t').textContent=T('خرج للتوصيل') }document.getElementById('tkSub').textContent=st==='done'?T('بالهنا والشفا 🎉'):st==='cancelled'?T('الأوردر ده اتلغى'):T('بنحدّث الحالة كل 5 ثواني — مش محتاج تعمل ريفرش') }
 function fetchTrack(){if(!trackNo)return;fetch(SUPABASE_URL+'/rest/v1/rpc/get_order_status',{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_order_no:trackNo,p_phone:trackPhone})}).then(function(r){return r.ok?r.json():[]}).then(function(a){var x=Array.isArray(a)?a[0]:a;if(!x||!x.status)return;renderTrack(x.status,x.fulfillment);if(x.status==='done'||x.status==='cancelled'){clearInterval(trackTimer);trackTimer=null;try{localStorage.removeItem('gad_last_order_v1')}catch(e){}}}).catch(function(){})}
 function startTrack(){if(!lastChatNo)return;trackNo=lastChatNo;trackPhone=lastChatPhone;document.getElementById('tkNo').textContent=trackNo;document.getElementById('trackBar').style.display='block';renderTrack('new',null);if(trackTimer)clearInterval(trackTimer);trackTimer=setInterval(fetchTrack,5000);fetchTrack()}
 function stopTrack(){if(trackTimer){clearInterval(trackTimer);trackTimer=null}document.getElementById('trackBar').style.display='none'}
@@ -536,7 +1033,7 @@ var ITEMPH={};
 function applySettings(rows){var cfg=null,pr=null,ly=null,ord=null,bn=null,ma=null,brc=null,ad=null;(rows||[]).forEach(function(r){if(r.key==='config')cfg=r.value;if(r.key==='prices')pr=r.value;if(r.key==='loyalty')ly=r.value;if(r.key==='order')ord=r.value;if(r.key==='item_photos')ITEMPH=r.value||{};if(r.key==='banner')bn=r.value;if(r.key==='menu_add')ma=r.value;if(r.key==='branches')brc=r.value;if(r.key==='addons')ADDONS=r.value||{};if(r.key==='best_sellers')BESTSELL=r.value||{on:false}});
  MENU.length=0;BASE_MENU.forEach(function(g){MENU.push(JSON.parse(JSON.stringify(g)))});
  var ob=document.getElementById('offerBar');if(bn&&bn.on&&(bn.text||bn.img)){ob.style.display='block';ob.innerHTML='';if(bn.img){var bi=document.createElement('img');bi.src=bn.img;bi.alt='عرض';ob.appendChild(bi)}if(bn.text){var bt=document.createElement('div');bt.textContent=bn.text;ob.appendChild(bt)}}else{ob.style.display='none'}
-function copyGfCode(){var c='gadfree';var h=document.getElementById('gfHint');var orig='للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه';function done(){if(h){h.textContent='✅ اتنسخ! اكتبه في خانة البرومو عند الطلب';setTimeout(function(){h.textContent=orig},3000)}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(c).then(done,function(){fb()})}else{fb()}function fb(){var t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(t)}}
+function copyGfCode(){var c='gadfree';var h=document.getElementById('gfHint');var orig=T('للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه');function done(){if(h){h.textContent=T('✅ اتنسخ! اكتبه في خانة البرومو عند الطلب');setTimeout(function(){h.textContent=orig},3000)}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(c).then(done,function(){fb()})}else{fb()}function fb(){var t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(t)}}
  if(ord&&ord.length){var by={};MENU.forEach(function(g){by[g.g]=g});var nm=ord.map(function(n){return by[n]}).filter(Boolean);MENU.forEach(function(g){if(nm.indexOf(g)<0)nm.push(g)});MENU.length=0;nm.forEach(function(g){MENU.push(g)});if(cur>=MENU.length)cur=0;buildTabs()}
  applyMenuAdd(ma);buildFlat();BRANCHCFG=brc||{};buildBranchOptions();buildTabs();loadBestSellers();
  if(ly){if(typeof ly.earn_per_egp==='number')LOYAL.earn=ly.earn_per_egp;if(typeof ly.redeem_points_per_egp==='number')LOYAL.rate=ly.redeem_points_per_egp;if(typeof ly.min_redeem_points==='number')LOYAL.min=ly.min_redeem_points;updateAcct()}
@@ -552,5 +1049,5 @@ var deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e});
 document.getElementById('installBtn').onclick=function(){if(deferredPrompt){var dp=deferredPrompt;deferredPrompt=null;dp.prompt();dp.userChoice.then(function(){document.getElementById('installBtn').style.display='none'})}else{document.getElementById('installHelp').style.display='block'}};
 if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){var ib=document.getElementById('installBtn');if(ib)ib.style.display='none'}
-render();loadSettings();initAuth();restoreTrack();
+render();loadSettings();initAuth();restoreTrack();applyLang();
 </script></body></html>
