@@ -232,7 +232,7 @@ var lastAutoAdv=0;
 function autoAdvance(){var now=Date.now();if(now-lastAutoAdv<60000)return;var need=orders.some(function(o){var t=new Date(o.status_changed_at||o.created_at).getTime();return (o.status==='new'&&now-t>5*60000)||(o.status==='preparing'&&now-t>25*60000)});if(!need)return;lastAutoAdv=now;api('/rest/v1/rpc/auto_advance_orders',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).then(function(r){if(r.ok)poll()}).catch(function(){})}
 function poll(first){return fetchOrders().then(function(rows){
   var added=[];if(known===null){known={};rows.forEach(function(o){known[o.id]=1})}else{rows.forEach(function(o){if(!known[o.id]){known[o.id]=1;added.push(o);fresh[o.id]=1}})}
-  orders=rows;if(added.length){onNew(added)}render();autoAdvance();checkChat();if(chatOpenNo)loadChatMsgs()}).catch(function(e){if(e&&e.message==='auth')return;$('emp').style.display='block';$('emp').textContent='تعذر تحميل الطلبات، بحاول تاني…'})}
+  orders=rows;if(added.length){onNew(added)}render();autoAdvance();checkChat();if(chatOpenNo&&document.activeElement!==$('chatIn'))loadChatMsgs()}).catch(function(e){if(e&&e.message==='auth')return;$('emp').style.display='block';$('emp').textContent='تعذر تحميل الطلبات، بحاول تاني…'})}
 function onNew(a){unseen+=a.length;beep();var b=$('ban');b.style.display='block';b.textContent='🔔 وصل '+unseen+' طلب جديد — اضغط للعرض';document.title='🔔 ('+unseen+') طلب جديد';
  try{if('Notification' in window&&Notification.permission==='granted')new Notification('طلب جديد من جاد',{body:(a[0].name||'')+' — '+n2(a[0].total)+' ج'})}catch(e){}}
 $('ban').onclick=function(){unseen=0;$('ban').style.display='none';document.title='لوحة طلبات جاد';window.scrollTo(0,0);setTimeout(function(){fresh={};render()},4000)};
