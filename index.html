@@ -79,7 +79,7 @@ header p{margin:4px 0 0;font-size:14px}
 .tot div{display:flex;justify-content:space-between;padding:3px 0;font-size:15px}
 .tot .g{font-weight:800;font-size:18px;color:var(--red);border-top:1px dashed #ddd;margin-top:4px;padding-top:7px}
 .tot .free{color:#0a7a3b;font-weight:700}
-.grpbar{display:flex;gap:8px;overflow-x:auto;padding:8px 10px;background:#fff;border-bottom:1px solid #e5e1d8;position:sticky;top:52px;z-index:15;scrollbar-width:none;align-items:center}
+.grpbar{display:flex;gap:8px;overflow-x:auto;padding:8px 10px;background:#fff;border-bottom:1px solid #e5e1d8;position:sticky;top:60px;z-index:15;scrollbar-width:none;align-items:center}.grpnotif{margin:8px 0 0;background:#fff4d6;border:1px solid #ecd28f;color:#7a5b00;border-radius:12px;padding:10px 14px;font-weight:800;font-size:15px;text-align:center;cursor:pointer}
 .grpbar::-webkit-scrollbar{display:none}
 #grpBarSheet{top:0}
 .grp-chip{flex:none;border:2px solid #d8d5cd;background:#fff;border-radius:999px;padding:7px 12px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -249,7 +249,7 @@ textarea{min-height:80px;resize:vertical}
 <div id="trackBar" style="display:none"><div class="tk-head"><b id="tkTitle">🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم الاستلام</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div></div>
 <div class="tabs" id="tabs"></div>
 <input class="srch" id="q" type="search" placeholder="ابحث عن صنف…">
-<div id="grpBar" class="grpbar" style="display:none"></div>
+<div id="grpNotif" class="grpnotif" style="display:none" onclick="window.scrollTo({top:0,behavior:'smooth'})"></div><div id="grpBar" class="grpbar" style="display:none"></div>
 <div class="wrap" id="menu"></div>
 <div class="story"><h3 id="stTitle">حكاية جاد — من 1960</h3><p id="stP1">من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p id="stP2" style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div><div style="text-align:center;padding:10px 0 4px;font-size:14px"><a href="https://www.facebook.com/share/1BnGEWRdBt/" target="_blank" rel="noopener" style="color:#184898;font-weight:800;text-decoration:none">📘 تابعنا على فيسبوك</a> <span style="color:#999">•</span> <a href="tel:16475" style="color:#a92318;font-weight:800;text-decoration:none">📞 16475</a></div>
 <div class="bar"><button id="open" disabled><span id="openLbl">عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button></div>
@@ -303,7 +303,7 @@ var DB_ON=SUPABASE_URL.indexOf('http')===0&&SUPABASE_ANON_KEY.indexOf('PUT_')!==
 var CFG={"wa": "201022336696", "fee": 30, "vat": 0.14, "promo": "gadfree", "min": 0, "brand": "جاد", "phone": "16475"};
 var lang='ar';try{var _lg=localStorage.getItem('gad_lang');if(_lg==='en'||_lg==='ar')lang=_lg}catch(e){}
 var I18N_EN={ui:{
- "اطلب من جاد": "Order from Gad",
+ "اطلب من جاد": "Order from Gad",  "بتطلب لنفسك دلوقتي": "You are ordering for yourself right now",  "بتطلب حاليًا لـ": "You are currently ordering for",
  "أكل لكل الناس": "Food for everyone",
  "توصيل مجاني": "Free delivery",
  "للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه": "For orders of 100 EGP or more — tap the code to copy it",
@@ -986,7 +986,7 @@ function grpSplitCalc(persons,fee,vat,disc,total){var S=0;persons.forEach(functi
  return out}
 function grpSplit(){var ps=grpPersons();if(ps.length<2)return null;var t=totals();return grpSplitCalc(ps.map(function(p){return {name:p.name,items:p.items}}),t.fee,t.vat,t.disc+t.ptsDisc,t.total)}
 function grpSplitHtml(sp,final){var h='<div class="g"><span>💰 '+T(final?'تقسيمة الأوردر — كل واحد عليه كام':'كل واحد عليه كام')+'</span><span></span></div>';sp.forEach(function(p){h+='<div><span>'+escH(p.name)+'</span><span><b>'+fmt(p.total)+'</b></span></div><div style="font-size:12.5px;color:#888"><span>'+T('أصناف')+' '+fmt(p.items)+(p.discount>0?' − '+T('خصم')+' '+fmt(p.discount):'')+' + '+T('توصيل')+' '+fmt(p.delivery)+' + '+T('ضريبة')+' '+fmt(p.vat)+'</span><span></span></div>'});return h}
-function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=T(on?'👥 مع صحابك: مفعّل':'👥 مع صحابك')}var tt=document.getElementById('grpTglTop');if(tt){tt.classList.toggle('on',on);tt.textContent=T(on?'👥 مع صحابك: مفعّل':'👥 مع صحابك')}var pn=document.getElementById('grpPanel');if(pn)pn.style.display=on?'':'none';var hint=document.getElementById('grpHint');if(hint)hint.textContent=T(on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك');
+function renderGrpBar(){var on=grpOn;var tgl=document.getElementById('grpTgl');if(tgl){tgl.classList.toggle('on',on);tgl.textContent=T(on?'👥 مع صحابك: مفعّل':'👥 مع صحابك')}var tt=document.getElementById('grpTglTop');if(tt){tt.classList.toggle('on',on);tt.textContent=T(on?'👥 مع صحابك: مفعّل':'👥 مع صحابك')}var pn=document.getElementById('grpPanel');if(pn)pn.style.display=on?'':'none';var hint=document.getElementById('grpHint');if(hint)hint.textContent=T(on?'دوس على اسم اللي بتطلب له، وبعدين زوّد الأصناف من المنيو':'اطلب ليك ولصحابك من موبايلك');var nf=document.getElementById('grpNotif');if(nf){nf.style.display=on?'':'none';if(on)nf.textContent=(grpPerson===''?'👤 '+T('بتطلب لنفسك دلوقتي'):'👥 '+T('بتطلب حاليًا لـ')+' '+grpPerson)}
  ['grpBar','grpBarSheet','grpBarPanel'].forEach(function(id){var b=document.getElementById(id);if(!b)return;b.style.display=on?'':'none';if(!on){b.innerHTML='';return}
   var h='<button type="button" class="grp-chip'+(grpPerson===''?' on':'')+'" data-person="">'+T('أنا')+'</button>';
   grpFriends.forEach(function(fn){h+='<button type="button" class="grp-chip'+(grpPerson===fn?' on':'')+'" data-person="'+escH(fn)+'">'+escH(fn)+' <span class="x" data-del="'+escH(fn)+'">'+(grpDelArm===fn?T('تأكيد؟'):'✕')+'</span></button>'});
@@ -1056,7 +1056,7 @@ function applyLang(){
  loadBestSellers();
  render();
 }
-function setLang(l){lang=(l==='en')?'en':'ar';try{localStorage.setItem('gad_lang',lang)}catch(e){}applyLang();render()}
+function setLang(l){lang=(l==='en')?'en':'ar';try{localStorage.setItem('gad_lang',lang)}catch(e){}applyLang();render();renderGrpBar()}
 document.getElementById('langBtn').onclick=function(){setLang(lang==='en'?'ar':'en')};
 function stepper(k,after,itemKey,person){var d=document.createElement('div');d.className='step';
  var plus=document.createElement('button');plus.type='button';plus.textContent='+';var q=document.createElement('span');q.className='q';var mi=document.createElement('button');mi.type='button';mi.textContent='−';mi.className='mi';
