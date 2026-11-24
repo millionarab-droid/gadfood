@@ -20,6 +20,19 @@ header p{margin:4px 0 0;font-size:14px}
 .tab{flex:none;border:0;border-radius:22px;padding:12px 18px;font-family:inherit;font-weight:700;font-size:15px;background:rgba(255,255,255,.18);color:#fff;cursor:pointer}
 .tab.on{background:#fff;color:var(--blue)}
 .srch{display:block;width:calc(100% - 20px);margin:10px;padding:11px 14px;border:1px solid #d8d5cd;border-radius:14px;font-family:inherit;font-size:16px;background:#fff}
+.srch-wrap{display:flex;gap:8px;padding:10px;align-items:center}
+.srch-wrap .srch{flex:1;margin:0;width:auto}
+.micwrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex:0 0 auto}
+.miclbl{font-size:11px;font-weight:800;color:#a92318;white-space:nowrap;line-height:1.2}
+.micnew{background:#0a7a3b;color:#fff;border-radius:8px;padding:1px 5px;font-size:10px;font-weight:800}
+.micbtn{flex:0 0 auto;width:48px;height:48px;border:0;border-radius:50%;background:#a92318;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);font-family:inherit}
+.micbtn.listening{background:#0a7a3b;animation:micpulse 1s infinite}
+@keyframes micpulse{0%{box-shadow:0 0 0 0 rgba(10,122,59,.5)}70%{box-shadow:0 0 0 14px rgba(10,122,59,0)}100%{box-shadow:0 0 0 0 rgba(10,122,59,0)}}
+.vline{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #eee}
+.vline:last-child{border-bottom:0}
+.vline .vn{font-weight:800}
+.vline .vp{color:#a92318;font-weight:800;white-space:nowrap}
+.vline button{border:0;background:#f3e9e7;color:#a92318;border-radius:8px;width:28px;height:28px;font-size:15px;cursor:pointer;font-family:inherit}
 .wrap{max-width:720px;margin:0 auto;padding:0 10px}
 .sec h2{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:26px;color:#fff;background:var(--red);border-radius:12px;padding:10px 14px;margin:18px 2px 8px}
 .item{background:#fff;border-radius:16px;padding:11px 12px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -249,11 +262,12 @@ textarea{min-height:80px;resize:vertical}
 <div class="best" id="bestSec" style="display:none"><h2 id="bestTitle">🔥 الأعلى مبيعاً</h2><div class="best-row" id="bestRow"></div></div>
 <div id="trackBar" style="display:none"><div class="tk-head"><b id="tkTitle">🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="rush-note" id="tkRush" style="display:none"></div><div class="tk-scene" id="tkScene"></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم استلام الأوردر في المطعم</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div><button class="tk-ok" id="tkOk" type="button" style="display:none" onclick="confirmReceived(trackNo,null,this)">✅ تم التوصيل</button></div>
 <div class="tabs-wrap"><button class="grp-tgl-tabs" id="grpTglTabs" type="button">👥 مع صحابك</button><div class="tabs" id="tabs"></div></div>
-<input class="srch" id="q" type="search" placeholder="ابحث عن صنف…">
+<div class="srch-wrap"><input class="srch" id="q" type="search" placeholder="ابحث عن صنف…"><div class="micwrap" id="micWrap"><span class="miclbl">اطلب بصوتك <span class="micnew">جديد</span></span><button class="micbtn" id="micBtn" type="button" title="اطلب بصوتك">🎙️</button></div></div>
 <div id="grpSticky" class="grpsticky"><div id="grpNotif" class="grpnotif" style="display:none" onclick="window.scrollTo({top:0,behavior:'smooth'})"></div><div id="grpBar" class="grpbar" style="display:none"></div></div>
 <div class="wrap" id="menu"></div>
 <div class="story"><h3 id="stTitle">حكاية جاد — من 1960</h3><p id="stP1">من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p id="stP2" style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div><div style="text-align:center;padding:10px 0 4px;font-size:14px"><a href="https://www.facebook.com/share/1BnGEWRdBt/" target="_blank" rel="noopener" style="color:#184898;font-weight:800;text-decoration:none">📘 تابعنا على فيسبوك</a> <span style="color:#999">•</span> <a href="tel:16475" style="color:#a92318;font-weight:800;text-decoration:none">📞 16475</a></div>
 <div class="bar"><button id="open" disabled><span id="openLbl">عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button></div>
+<div id="voiceSheet" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px"><div style="background:#fff;border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35)"><h3 style="margin:0 0 4px">🎙️ اطلب بصوتك</h3><p id="voiceState" style="color:#666;margin:0 0 10px;line-height:1.7">دوس على المايك واتكلم… مثال: "عايز اتنين فول بالخلطة وواحد فلافل"</p><div id="voiceHeard" style="background:#f7f4ef;border-radius:10px;padding:10px;min-height:20px;font-weight:700;color:#333"></div><div id="voiceLines" style="margin-top:6px"></div><div id="voiceMsg" style="font-size:13.5px;font-weight:700;min-height:18px;margin-top:6px;color:#a92318"></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="voiceAdd" type="button" style="flex:1">🛒 أضف للسلة</button><button class="btn" id="voiceRetry" type="button" style="background:#0053aa">🔄 جرّب تاني</button><button class="btn" id="voiceClose" type="button" style="background:#6b7280">إلغاء</button></div></div></div>
 <div id="sheet"><div class="in">
 <button class="back" id="back">→ رجوع للمنيو</button>
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="grp-tgl" id="grpTgl" type="button">👥 مع صحابك</button><span id="grpHint" style="font-size:13px;color:#777">اطلب ليك ولصحابك من موبايلك</span></div>
@@ -1034,17 +1048,177 @@ function copyGfCode(){var c='gadfree';var h=document.getElementById('gfHint');va
  if(ord&&ord.length){var by={};MENU.forEach(function(g){by[g.g]=g});var nm=ord.map(function(n){return by[n]}).filter(Boolean);MENU.forEach(function(g){if(nm.indexOf(g)<0)nm.push(g)});MENU.length=0;nm.forEach(function(g){MENU.push(g)});if(cur>=MENU.length)cur=0;buildTabs()}
  applyMenuAdd(ma);buildFlat();BRANCHCFG=brc||{};buildBranchOptions();buildTabs();loadBestSellers();
  if(ly){if(typeof ly.earn_per_egp==='number')LOYAL.earn=ly.earn_per_egp;if(typeof ly.redeem_points_per_egp==='number')LOYAL.rate=ly.redeem_points_per_egp;if(typeof ly.min_redeem_points==='number')LOYAL.min=ly.min_redeem_points;updateAcct()}
- if(cfg){if(typeof cfg.fee==='number')CFG.fee=cfg.fee;if(typeof cfg.vat==='number')CFG.vat=cfg.vat/100;if(typeof cfg.min==='number')CFG.min=cfg.min;if(cfg.wa)CFG.wa=String(cfg.wa)}
+ if(cfg){if(typeof cfg.fee==='number')CFG.fee=cfg.fee;if(typeof cfg.vat==='number')CFG.vat=cfg.vat/100;if(typeof cfg.min==='number')CFG.min=cfg.min;if(cfg.wa)CFG.wa=String(cfg.wa);if(typeof cfg.voice==='boolean')VOICE_ON=cfg.voice;}
  if(pr){var ov=pr.overrides||{},off=pr.off||[];MENU.forEach(function(g,gi){g.s.forEach(function(s,si){s.i.forEach(function(it,ii){it.o.forEach(function(o,oi){var key=it.n+'|'+(o.l||'');var f=flat[gi+'.'+si+'.'+ii+'.'+oi];if(ov[key]!==undefined&&!isNaN(+ov[key])){o.p=+ov[key];f.price=+ov[key]}o.off=off.indexOf(key)>-1;f.off=o.off})})})});
   Object.keys(cart).forEach(function(k){var fb=flat[lineParts(k).base];if(fb&&fb.off)delete cart[k]});
   Object.keys(grpCarts).forEach(function(fn){Object.keys(grpCarts[fn]).forEach(function(k){var fb=flat[lineParts(k).base];if(fb&&fb.off)delete grpCarts[fn][k]})})}
  pruneAddonLines();
- save();render();refresh()}
+ updateMicBtn();save();render();refresh()}
 function loadSettings(){if(!DB_ON)return;function warnSettings(){var w=document.getElementById('warn');if(w){w.textContent='⚠️ تعذر تحميل إعدادات الموقع — الأسعار المعروضة قد تكون قديمة';w.style.display='block'}}try{fetch(SUPABASE_URL+'/rest/v1/settings?select=key,value',{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}}).then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json()}).then(applySettings).catch(function(){warnSettings()})}catch(e){warnSettings()}}
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
 var deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e});
 document.getElementById('installBtn').onclick=function(){if(deferredPrompt){var dp=deferredPrompt;deferredPrompt=null;dp.prompt();dp.userChoice.then(function(){document.getElementById('installBtn').style.display='none'})}else{document.getElementById('installHelp').style.display='block'}};
 if(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches){var ib=document.getElementById('installBtn');if(ib)ib.style.display='none'}
+/* ===== الطلب بالصوت ===== */
+var VOICE_ON=true;
+var SR=(window.SpeechRecognition||window.webkitSpeechRecognition)||null;
+var voiceRec=null,voiceLines=[];
+function updateMicBtn(){var b=document.getElementById('micWrap');if(!b)return;b.style.display=(VOICE_ON&&SR)?'':'none'}
+function normAr(s){return String(s||'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ً-ٰٟـ]/g,'').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/\s+/g,' ').trim()}
+var NUMW={'واحد':1,'واحده':1,'اتنين':2,'اثنين':2,'تلاته':3,'ثلاثه':3,'اربعه':4,'خمسه':5,'سته':6,'سبعه':7,'تمانيه':8,'ثمانيه':8,'تسعه':9,'عشره':10};
+var OPTW={'شامي':'شامي','فرنساوي':'فرنساوي','وسط':'وسط','كبير':'كبير','صغير':'صغير','سوري':'سوري','كيزر':'كيزر جامبو','جامبو':'كيزر جامبو','فطائر':'فطائر','صواريخ':'صواريخ'};
+function voiceQtyWord(w){w=String(w||'');if(/^\d+$/.test(w))return +w;if(NUMW[w])return NUMW[w];var w2=w.replace(/^و/,'');if(NUMW[w2])return NUMW[w2];if(/^\d+$/.test(w2))return +w2;return 0}
+function voiceQtyNear(norm,pos,len){
+  var before=norm.slice(Math.max(0,pos-16),pos).trim().split(/\s+/);
+  var q=voiceQtyWord(before[before.length-1]||'');if(q)return q;
+  var after=(norm.slice(pos+len,pos+len+16).trim().split(/\s+/)[0]||'');
+  q=voiceQtyWord(after);if(q)return q;
+  return 1;
+}
+function voiceOptFor(itemKey,norm,pos,len){
+  var win=norm.slice(Math.max(0,pos-20),pos+len+20);
+  var found=null;
+  Object.keys(OPTW).forEach(function(w){if(win.indexOf(w)>=0)found=OPTW[w]});
+  var opts=[];
+  Object.keys(flat).forEach(function(k){var f=flat[k];if(f.item===itemKey&&!f.off)opts.push({k:k,f:f})});
+  if(!opts.length)return null;
+  if(found){for(var i=0;i<opts.length;i++){if(normAr(opts[i].f.label).indexOf(found)>=0)return opts[i]}}
+  return opts[0];
+}
+function voiceResolve(c,norm){
+  var opt=voiceOptFor(c.f.item,norm,c.pos,c.len);
+  var win=norm.slice(Math.max(0,c.pos-20),c.pos+c.len+20);
+  var ow=null;
+  Object.keys(OPTW).forEach(function(w){if(win.indexOf(w)>=0)ow=OPTW[w]});
+  if(ow){
+    var hasOpt=false;
+    Object.keys(flat).forEach(function(k){var f=flat[k];if(f.item===c.f.item&&!f.off&&normAr(f.label).indexOf(ow)>=0)hasOpt=true});
+    if(!hasOpt){
+      var best=null;var cname=normAr(c.f.name);
+      Object.keys(flat).forEach(function(k){
+        var f=flat[k];if(f.off)return;
+        var nn=normAr(f.name);
+        if(nn.indexOf(cname)>=0&&nn!==cname){
+          var ok=false;
+          Object.keys(flat).forEach(function(k2){var f2=flat[k2];if(f2.item===f.item&&!f2.off&&normAr(f2.label).indexOf(ow)>=0)ok=true});
+          if(ok&&(!best||nn.length<best.nn.length))best={k:k,f:f,nn:nn};
+        }
+      });
+      if(best){
+        var opts=[];
+        Object.keys(flat).forEach(function(k){var f=flat[k];if(f.item===best.f.item&&!f.off)opts.push({k:k,f:f})});
+        for(var i=0;i<opts.length;i++){if(normAr(opts[i].f.label).indexOf(ow)>=0)return opts[i]}
+      }
+    }
+  }
+  return opt;
+}
+function voiceParse(text){
+  var norm=normAr(text);
+  var cands=[];
+  Object.keys(flat).forEach(function(k){
+    var f=flat[k];if(f.off)return;
+    var nn=normAr(f.name);if(!nn)return;
+    var pos=norm.indexOf(nn);
+    while(pos>=0){cands.push({k:k,f:f,pos:pos,len:nn.length});pos=norm.indexOf(nn,pos+1)}
+  });
+  cands.sort(function(a,b){return b.len-a.len||a.pos-b.pos});
+  var used=[],taken=[];
+  cands.forEach(function(c){
+    var s=c.pos,e=c.pos+c.len,ok=true;
+    for(var i=0;i<used.length;i++){if(s<used[i][1]&&e>used[i][0]){ok=false;break}}
+    if(ok){used.push([s,e]);taken.push(c)}
+  });
+  taken.sort(function(a,b){return a.pos-b.pos});
+  var lines=[],byKey={};
+  taken.forEach(function(c){
+    var opt=voiceResolve(c,norm);
+    if(!opt)return;
+    var qty=voiceQtyNear(norm,c.pos,c.len);
+    if(byKey[opt.k]){byKey[opt.k].qty+=qty}
+    else{var ln={key:opt.k,qty:qty,name:opt.f.name,label:opt.f.label,price:opt.f.price};byKey[opt.k]=ln;lines.push(ln)}
+  });
+  if(!lines.length){
+    var tail=norm.replace(/^(عايز|عايزه|عاوز|عاوزين|عايزين|هات|هاتلي|هاتي|جبلي|جيب|ضيف|ضيفي|ممكن|لو|سمحت|فضلك|كمان)\s+/,'').trim();
+    if(tail){
+      var words=tail.split(/\s+/);
+      for(var n=words.length;n>=1;n--){
+        var seg=words.slice(words.length-n).join(' ');
+        var hit=null;
+        Object.keys(flat).forEach(function(k){
+          if(hit)return;var f=flat[k];if(f.off)return;
+          if(normAr(f.name).indexOf(seg)===0)hit={k:k,f:f};
+        });
+        if(hit){
+          var q=1;var qw=words.slice(0,words.length-n);
+          if(qw.length){q=voiceQtyWord(qw[qw.length-1])||1}
+          var o2=voiceOptFor(hit.f.item,norm,0,0);
+          if(o2)lines.push({key:o2.k,qty:q,name:o2.f.name,label:o2.f.label,price:o2.f.price});
+          break;
+        }
+      }
+    }
+  }
+  return lines;
+}
+function voiceShowLines(){
+  var box=document.getElementById('voiceLines');box.innerHTML='';
+  var msg=document.getElementById('voiceMsg');
+  if(!voiceLines.length){msg.textContent='مفهمتش أصناف من اللي قولته — جرّب تقول اسم الصنف كامل، مثال: "اتنين فول بالخلطة"';document.getElementById('voiceAdd').style.display='none';return}
+  msg.textContent='';document.getElementById('voiceAdd').style.display='';
+  voiceLines.forEach(function(ln,ix){
+    var d=document.createElement('div');d.className='vline';
+    var nm=document.createElement('span');nm.className='vn';nm.textContent=ln.qty+' × '+TN(ln.name)+(ln.label?' ('+TN(ln.label)+')':'');
+    var pr=document.createElement('span');pr.className='vp';pr.textContent=fmt(ln.price*ln.qty);
+    var x=document.createElement('button');x.type='button';x.textContent='✕';
+    x.onclick=function(){voiceLines.splice(ix,1);voiceShowLines()};
+    d.appendChild(nm);d.appendChild(pr);d.appendChild(x);box.appendChild(d);
+  });
+}
+function voiceSetState(t){document.getElementById('voiceState').textContent=t}
+function voiceStop(){var b=document.getElementById('micBtn');if(b)b.classList.remove('listening');try{if(voiceRec)voiceRec.stop()}catch(e){}voiceRec=null}
+function voiceStart(){
+  if(!SR){document.getElementById('voiceSheet').style.display='flex';voiceSetState('المتصفح ده مش بيدعم الطلب بالصوت — جرّب من كروم على أندرويد.');document.getElementById('voiceAdd').style.display='none';return}
+  voiceLines=[];document.getElementById('voiceLines').innerHTML='';document.getElementById('voiceHeard').textContent='';document.getElementById('voiceMsg').textContent='';document.getElementById('voiceAdd').style.display='none';
+  document.getElementById('voiceSheet').style.display='flex';
+  voiceSetState('🎙️ بسمعك… اتكلم دلوقتي');
+  var b=document.getElementById('micBtn');if(b)b.classList.add('listening');
+  var rec=new SR();voiceRec=rec;
+  rec.lang='ar-EG';rec.interimResults=true;rec.maxAlternatives=3;rec.continuous=false;
+  var finalTxt='';
+  rec.onresult=function(e){
+    var interim='',fin='';
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      var r=e.results[i];
+      if(r.isFinal)fin+=r[0].transcript;else interim+=r[0].transcript;
+    }
+    if(fin)finalTxt=(finalTxt+' '+fin).trim();
+    document.getElementById('voiceHeard').textContent=finalTxt||interim;
+    if(finalTxt){voiceLines=voiceParse(finalTxt);voiceShowLines();voiceSetState('دي الأصناف اللي فهمتها — عدّلها لو حابب وبعدين دوس "أضف للسلة"')}
+  };
+  rec.onerror=function(e){
+    voiceStop();
+    if(e.error==='not-allowed'||e.error==='service-not-allowed')voiceSetState('المايك مقفول — اسمح للموقع يستخدم المايك من إعدادات المتصفح وجرّب تاني.');
+    else if(e.error==='no-speech')voiceSetState('مسمعتش حاجة — دوس "جرّب تاني" واتكلم.');
+    else voiceSetState('حصلت مشكلة في التعرف على الصوت — جرّب تاني.');
+  };
+  rec.onend=function(){
+    voiceStop();
+    if(!finalTxt&&!document.getElementById('voiceHeard').textContent){voiceSetState('مسمعتش حاجة — دوس "جرّب تاني" واتكلم.')}
+  };
+  try{rec.start()}catch(e){voiceStop();voiceSetState('مش قادر أشغّل المايك — جرّب تاني.')}
+}
+document.getElementById('micBtn').onclick=function(){voiceStart()};
+document.getElementById('voiceClose').onclick=function(){voiceStop();document.getElementById('voiceSheet').style.display='none'};
+document.getElementById('voiceRetry').onclick=function(){voiceStart()};
+document.getElementById('voiceAdd').onclick=function(){
+  if(!voiceLines.length)return;
+  var n=0;voiceLines.forEach(function(ln){cart[ln.key]=(cart[ln.key]||0)+ln.qty;n+=ln.qty});
+  save();render();updBar();
+  document.getElementById('voiceSheet').style.display='none';
+  toastMsg('تمت إضافة '+n+' صنف للسلة ✅');
+};
+updateMicBtn();
 render();loadSettings();initAuth();restoreTrack();applyLang();
 </script></body></html>
