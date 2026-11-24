@@ -1226,6 +1226,7 @@ function voiceShowLines(){
   var msg=document.getElementById('voiceMsg');
   var sg=document.getElementById('voiceSugg');sg.innerHTML='';sg.style.display='none';
   var addBtn=document.getElementById('voiceAdd');
+  addBtn.textContent=(grpOn&&grpPerson)?('🛒 أضف لسلة '+grpPerson):'🛒 أضف للسلة';
   var moreBtn=document.getElementById('voiceMore');
   function showSug(sug,txt){
     msg.textContent=txt;
@@ -1275,7 +1276,7 @@ function voiceStart(keep){
   if(!keep){voiceLines=[];document.getElementById('voiceLines').innerHTML='';document.getElementById('voiceAdd').style.display='none';document.getElementById('voiceMore').style.display='none';}
   document.getElementById('voiceHeard').textContent='';document.getElementById('voiceMsg').textContent='';document.getElementById('voiceSugg').innerHTML='';document.getElementById('voiceSugg').style.display='none';
   document.getElementById('voiceSheet').style.display='flex';
-  voiceSetState('🎙️ بسمعك… اتكلم دلوقتي');
+  voiceSetState('🎙️ بسمعك… اتكلم دلوقتي'+((grpOn&&grpPerson)?' — بتطلب لـ '+grpPerson:''));
   var b=document.getElementById('micBtn');if(b)b.classList.add('listening');
   var rec=new SR();voiceRec=rec;
   rec.lang='ar-EG';rec.interimResults=true;rec.maxAlternatives=3;rec.continuous=false;
@@ -1308,10 +1309,12 @@ document.getElementById('voiceRetry').onclick=function(){voiceStart()};
 document.getElementById('voiceMore').onclick=function(){voiceStart(true)};
 document.getElementById('voiceAdd').onclick=function(){
   if(!voiceLines.length)return;
-  var n=0;voiceLines.forEach(function(ln){cart[ln.key]=(cart[ln.key]||0)+ln.qty;n+=ln.qty});
-  save();render();updBar();
+  var n=0;
+  var tc=(grpOn&&grpPerson)?(grpCarts[grpPerson]||(grpCarts[grpPerson]={})):cart;
+  voiceLines.forEach(function(ln){tc[ln.key]=(tc[ln.key]||0)+ln.qty;n+=ln.qty});
+  save();render();updBar();renderGrpBar();grpRerender();
   document.getElementById('voiceSheet').style.display='none';
-  toastMsg('تمت إضافة '+n+' صنف للسلة ✅');
+  toastMsg('تمت إضافة '+n+' صنف '+((grpOn&&grpPerson)?('لسلة '+grpPerson):'للسلة')+' ✅');
 };
 updateMicBtn();
 render();loadSettings();initAuth();restoreTrack();applyLang();
