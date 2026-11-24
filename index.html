@@ -267,12 +267,12 @@ textarea{min-height:80px;resize:vertical}
 <div class="best" id="bestSec" style="display:none"><h2 id="bestTitle">🔥 الأعلى مبيعاً</h2><div class="best-row" id="bestRow"></div></div>
 <div id="trackBar" style="display:none"><div class="tk-head"><b id="tkTitle">🍽️ حالة طلبك</b><span dir="ltr" id="tkNo"></span><button id="tkX" type="button">✕</button></div><div class="rush-note" id="tkRush" style="display:none"></div><div class="tk-scene" id="tkScene"></div><div class="tk-pill st-new" id="tkPill"><span class="tk-ic" id="tkIc">📥</span><span id="tkLbl">تم استلام الأوردر في المطعم</span></div><div class="tk-steps" id="tkSteps"><div class="tk-step"><span class="tk-dot">📥</span><span class="tk-t">تم استلام الأوردر في المطعم</span></div><div class="tk-step"><span class="tk-dot">👨‍🍳</span><span class="tk-t">بيتحضّر</span></div><div class="tk-step"><span class="tk-dot">🛵</span><span class="tk-t">خرج للتوصيل</span></div><div class="tk-step"><span class="tk-dot">✅</span><span class="tk-t">تم التوصيل</span></div></div><div class="tk-sub" id="tkSub"></div><button class="tk-ok" id="tkOk" type="button" style="display:none" onclick="confirmReceived(trackNo,null,this)">✅ تم التوصيل</button></div>
 <div class="tabs-wrap"><button class="grp-tgl-tabs" id="grpTglTabs" type="button">👥 مع صحابك</button><div class="tabs" id="tabs"></div></div>
-<div class="srch-wrap"><input class="srch" id="q" type="search" placeholder="ابحث عن صنف…"><div class="micwrap" id="micWrap"><span class="miclbl">اطلب بصوتك <span class="micnew">جديد</span></span><button class="micbtn" id="micBtn" type="button" title="اطلب بصوتك">🎙️</button></div></div>
+<div class="srch-wrap"><input class="srch" id="q" type="search" placeholder="ابحث عن صنف…"><div class="micwrap" id="micWrap"><span class="miclbl"><span id="micLblTxt">اطلب بصوتك</span> <span class="micnew" id="micNew">جديد</span></span><button class="micbtn" id="micBtn" type="button" title="اطلب بصوتك">🎙️</button></div></div>
 <div id="grpSticky" class="grpsticky"><div id="grpNotif" class="grpnotif" style="display:none" onclick="window.scrollTo({top:0,behavior:'smooth'})"></div><div id="grpBar" class="grpbar" style="display:none"></div></div>
 <div class="wrap" id="menu"></div>
 <div class="story"><h3 id="stTitle">حكاية جاد — من 1960</h3><p id="stP1">من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p id="stP2" style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div><div style="text-align:center;padding:10px 0 4px;font-size:14px"><a href="https://www.facebook.com/share/1BnGEWRdBt/" target="_blank" rel="noopener" style="color:#184898;font-weight:800;text-decoration:none">📘 تابعنا على فيسبوك</a> <span style="color:#999">•</span> <a href="tel:16475" style="color:#a92318;font-weight:800;text-decoration:none">📞 16475</a></div>
 <div class="bar"><button id="open" disabled><span id="openLbl">عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button></div>
-<div id="voiceSheet" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px"><div style="background:#fff;border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35)"><h3 style="margin:0 0 4px">🎙️ اطلب بصوتك</h3><p id="voiceState" style="color:#666;margin:0 0 10px;line-height:1.7">دوس على المايك واتكلم… مثال: "عايز اتنين فول بالخلطة وواحد فلافل"</p><div id="voiceHeard" style="background:#f7f4ef;border-radius:10px;padding:10px;min-height:20px;font-weight:700;color:#333"></div><div id="voiceLines" style="margin-top:6px"></div><div id="voiceMsg" style="font-size:13.5px;font-weight:700;min-height:18px;margin-top:6px;color:#a92318"></div><div id="voiceSugg" class="vsugg"></div><button class="btn" id="voiceMore" type="button" style="width:100%;margin-top:10px;background:#0053aa;color:#fff;display:none">🎙️ أضف صنف تاني بالصوت</button><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="voiceAdd" type="button" style="flex:1">🛒 أضف للسلة</button><button class="btn" id="voiceRetry" type="button" style="background:#0053aa;color:#fff">🔄 جرّب تاني</button><button class="btn" id="voiceClose" type="button" style="background:#6b7280;color:#fff">إلغاء</button></div></div></div>
+<div id="voiceSheet" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px"><div style="background:#fff;border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35)"><h3 id="voiceTitle" style="margin:0 0 4px">🎙️ اطلب بصوتك</h3><p id="voiceState" style="color:#666;margin:0 0 10px;line-height:1.7">دوس على المايك واتكلم… مثال: "عايز اتنين فول بالخلطة وواحد فلافل"</p><div id="voiceHeard" style="background:#f7f4ef;border-radius:10px;padding:10px;min-height:20px;font-weight:700;color:#333"></div><div id="voiceLines" style="margin-top:6px"></div><div id="voiceMsg" style="font-size:13.5px;font-weight:700;min-height:18px;margin-top:6px;color:#a92318"></div><div id="voiceSugg" class="vsugg"></div><button class="btn" id="voiceMore" type="button" style="width:100%;margin-top:10px;background:#0053aa;color:#fff;display:none">🎙️ أضف صنف تاني بالصوت</button><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="voiceAdd" type="button" style="flex:1">🛒 أضف للسلة</button><button class="btn" id="voiceRetry" type="button" style="background:#0053aa;color:#fff">🔄 جرّب تاني</button><button class="btn" id="voiceClose" type="button" style="background:#6b7280;color:#fff">إلغاء</button></div></div></div>
 <div id="sheet"><div class="in">
 <button class="back" id="back">→ رجوع للمنيو</button>
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="grp-tgl" id="grpTgl" type="button">👥 مع صحابك</button><span id="grpHint" style="font-size:13px;color:#777">اطلب ليك ولصحابك من موبايلك</span></div>
@@ -323,6 +323,26 @@ var DB_ON=SUPABASE_URL.indexOf('http')===0&&SUPABASE_ANON_KEY.indexOf('PUT_')!==
 var CFG={"wa": "201022336696", "fee": 30, "vat": 0.14, "promo": "gadfree", "min": 0, "brand": "جاد", "phone": "16475"};
 var lang='ar';try{var _lg=localStorage.getItem('gad_lang');if(_lg==='en'||_lg==='ar')lang=_lg}catch(e){}
 var I18N_EN={ui:{
+ "🎙️ اطلب بصوتك": "🎙️ Order by voice",
+ "اطلب بصوتك": "Order by voice",
+ "جديد": "New",
+ "دوس على المايك واتكلم… مثال: \"عايز اتنين فول بالخلطة وواحد فلافل\"": "Tap the mic and speak… e.g. \"I want two foul with the house mix and one ta'ameya\"",
+ "🎙️ أضف صنف تاني بالصوت": "🎙️ Add another item by voice",
+ "🛒 أضف للسلة": "🛒 Add to cart",
+ "🔄 جرّب تاني": "🔄 Try again",
+ "إلغاء": "Cancel",
+ "المتصفح ده مش بيدعم الطلب بالصوت — جرّب من كروم على أندرويد.": "This browser doesn't support voice ordering — try Chrome on Android.",
+ "🎙️ بسمعك… اتكلم دلوقتي": "🎙️ Listening… speak now",
+ "دي الأصناف اللي فهمتها — عدّلها لو حابب وبعدين دوس \"أضف للسلة\"": "These are the items I understood — adjust them if you like, then tap \"Add to cart\"",
+ "المايك مقفول — اسمح للموقع يستخدم المايك من إعدادات المتصفح وجرّب تاني.": "The mic is blocked — allow this site to use the microphone in your browser settings and try again.",
+ "مسمعتش حاجة — دوس \"جرّب تاني\" واتكلم.": "I didn't hear anything — tap \"Try again\" and speak.",
+ "حصلت مشكلة في التعرف على الصوت — جرّب تاني.": "Something went wrong with speech recognition — try again.",
+ "مش قادر أشغّل المايك — جرّب تاني.": "Couldn't start the mic — try again.",
+ "مفهمتش بالظبط — دي أقرب أصناف للي قولته، دوس على الصح:": "I didn't quite catch that — these are the closest matches, tap the right one:",
+ "فيه أكتر من نوع بالاسم ده — اختار واحد:": "There's more than one of those — pick one:",
+ "مفهمتش أصناف من اللي قولته — جرّب تقول اسم الصنف كامل، مثال: \"اتنين فول بالخلطة\"": "I couldn't make out any items — try saying the full item name, e.g. \"two foul with the house mix\"",
+ "مفهمتش الصنف الأخير — دي أقرب أصناف، دوس على الصح:": "I didn't catch the last item — these are the closest matches, tap the right one:",
+ "مفهمتش الصنف الأخير — دوس \"أضف صنف تاني\" وجرّب تقوله تاني.": "I didn't catch the last item — tap \"Add another item\" and try saying it again.",
  "اطلب من جاد": "Order from Gad",  "✅ الأوردر وصل": "Order arrived",  "تم التوصيل — بالهنا والشفا 🎉": "Delivered — enjoy your meal 🎉",  "✓✓ تمت القراءة": "✓✓ Read",  "✓ تم الإرسال": "✓ Sent",  "📩 عندك رسالة جديدة من المطعم": "You have a new message from the restaurant",  "📩 رسالة جديدة من المطعم — اضغط على «تواصل مع المطعم» عشان تقراها": "New message from the restaurant — open the chat to read it",  "✅ تم التوصيل": "Delivered ✅",  "✅ تم الاستلام": "Picked up ✅",  "⏳ جاري قص الصورة…": "Cropping the photo…",  "⏳ جاري فتح الصورة…": "Opening the photo…",  "✓ اتحفظت الصورة": "Photo saved",  "تعذّر قراءة الصورة — جرّب صورة تانية": "Could not read the photo — try another one",  "تعذّر فتح الصورة — جرّب صورة تانية": "Could not open the photo — try another one",  "تعذّر حفظ الصورة — جرّب تاني": "Could not save the photo — try again",  "مفيش ملف اتختار — جرّب تاني": "No file was chosen — try again",  "⭐ قيّم الأوردر": "Rate this order",  "لاحقاً": "Later",  "تعذر تأكيد الاستلام — جرّب تاني": "Could not confirm delivery — try again",  "⏳ جاري التأكيد…": "Confirming…",  "لسه مفيش أصدقاء — ضيف أول صديق من تحت": "No friends yet — add your first friend below",  "أوردر": "order",  "أوردرات": "orders",  "إجمالي": "total",  "لسه معملش أوردرات جماعية": "No group orders yet",  "جاري تحميل الحسابات…": "Loading history…",  "اطلب له": "Order for them", "اطلب لـ": "Order for", "طلب زي القديم": "Order like before", "اختار من أوردراته اللي فاتت": "Pick from their past orders", "أصناف جديدة": "New items", "روح للمنيو واختارله أصناف جديدة": "Go to the menu and pick new items for them", "اطلب زيه": "Order this", "تمت إضافة الأوردر القديم": "Added the old order", "في أصناف مش موجودة دلوقتي فمتضافتش": "some items are no longer on the menu and were skipped", "الأصناف دي مش موجودة على المنيو دلوقتي": "These items are no longer on the menu",  "صورة": "Photo",  "حساباته": "History",  "تأكيد الحذف؟": "Confirm delete?",  "حذف": "Delete",  "⏳ جاري التحقق إنك مش روبوت…": "Checking you are not a robot…",  "⚠️ التحقق الأمني فشل — جرّب تاني، أو سجّل دخول بجوجل.": "Security check failed — try again, or sign in with Google.",  "أكمل وجبتك": "Complete your meal",  "دوس + عشان تضيفها لطلبك": "Tap + to add it to your order",  "بتطلب لنفسك دلوقتي": "You are ordering for yourself right now",  "بتطلب حاليًا لـ": "You are currently ordering for",
  "أكل لكل الناس": "Food for everyone",
  "توصيل مجاني": "Free delivery",
@@ -863,7 +883,19 @@ function applyLang(){
  if(document.getElementById('osheet').style.display==='block')loadMyOrders(false);
  loadBestSellers();
  render();
+ applyVoiceLang();
 }
+function applyVoiceLang(){
+  var m=document.getElementById('micLblTxt');if(m)m.textContent=T('اطلب بصوتك');
+  var n=document.getElementById('micNew');if(n)n.textContent=T('جديد');
+  var t=document.getElementById('voiceTitle');if(t)t.textContent=T('🎙️ اطلب بصوتك');
+  var s=document.getElementById('voiceState');if(s)s.textContent=T('دوس على المايك واتكلم… مثال: "عايز اتنين فول بالخلطة وواحد فلافل"');
+  var a=document.getElementById('voiceMore');if(a)a.textContent=T('🎙️ أضف صنف تاني بالصوت');
+  var b=document.getElementById('voiceAdd');if(b)b.textContent=T('🛒 أضف للسلة');
+  var r=document.getElementById('voiceRetry');if(r)r.textContent=T('🔄 جرّب تاني');
+  var c=document.getElementById('voiceClose');if(c)c.textContent=T('إلغاء');
+}
+
 function setLang(l){lang=(l==='en')?'en':'ar';try{localStorage.setItem('gad_lang',lang)}catch(e){}applyLang();render();renderGrpBar()}
 document.getElementById('langBtn').onclick=function(){setLang(lang==='en'?'ar':'en')};
 function stepper(k,after,itemKey,person){var d=document.createElement('div');d.className='step';
@@ -1072,9 +1104,18 @@ var voiceRec=null,voiceLines=[];
 var voiceUsed=false;
 function updateMicBtn(){var b=document.getElementById('micWrap');if(!b)return;b.style.display=(VOICE_ON&&SR)?'':'none'}
 function normAr(s){return String(s||'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ً-ٰٟـ]/g,'').replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/\s+/g,' ').trim()}
+function normEn(s){return String(s||'').toLowerCase().replace(/['’`]/g,'').replace(/[()]/g,' ').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
+function vnorm(s){return lang==='en'?normEn(s):normAr(s)}
+function vname(f){return lang==='en'?(I18N_EN.items[f.name]||f.name):f.name}
+function stemEn(w){if(w.length>4&&w.slice(-3)==='ies')return w.slice(0,-3)+'y';if(w.length>3&&/(ches|shes|sses|xes|zes)$/.test(w))return w.slice(0,-2);if(w.length>3&&w.slice(-1)==='s'&&w.slice(-2)!=='ss')return w.slice(0,-1);return w}
+function vwordEq(a,b){return lang==='en'?(stemEn(a)===stemEn(b)):(a===b)}
+var CMD_AR=/^(عايز|عايزه|عاوز|عاوزين|عايزين|هات|هاتلي|هاتي|جبلي|جيب|ضيف|ضيفي|ممكن|لو|سمحت|فضلك|كمان)\s+/;
+var CMD_EN=/^(i want|i would like|id like|give me|get me|add|please|can i have|could i have|let me have|i need|and)\s+/;
 var NUMW={'واحد':1,'واحده':1,'اتنين':2,'اثنين':2,'تلاته':3,'ثلاثه':3,'اربعه':4,'خمسه':5,'سته':6,'سبعه':7,'تمانيه':8,'ثمانيه':8,'تسعه':9,'عشره':10};
+var NUMW_EN={'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,'ten':10,'a':1,'an':1};
 var OPTW={'شامي':'شامي','فرنساوي':'فرنساوي','وسط':'وسط','كبير':'كبير','صغير':'صغير','سوري':'سوري','كيزر':'كيزر جامبو','جامبو':'كيزر جامبو','فطائر':'فطائر','صواريخ':'صواريخ'};
-function voiceQtyWord(w){w=String(w||'');if(/^\d+$/.test(w))return +w;if(NUMW[w])return NUMW[w];var w2=w.replace(/^و/,'');if(NUMW[w2])return NUMW[w2];if(/^\d+$/.test(w2))return +w2;return 0}
+var OPTW_EN={'pita':'Pita','baguette':'Baguette','french':'Baguette','medium':'Medium','regular':'Medium','large':'Large','syrian':'Syrian Bread','kaiser':'Jumbo Kaiser Roll','jumbo':'Jumbo Kaiser Roll','feteer':'Feteer','sawareekh':'Sawareekh'};
+function voiceQtyWord(w){w=String(w||'');if(/^\d+$/.test(w))return +w;if(NUMW[w])return NUMW[w];if(NUMW_EN[w])return NUMW_EN[w];var w2=w.replace(/^و/,'');if(NUMW[w2])return NUMW[w2];if(/^\d+$/.test(w2))return +w2;return 0}
 function voiceQtyNear(norm,pos,len){
   var before=norm.slice(Math.max(0,pos-16),pos).trim().split(/\s+/);
   var q=voiceQtyWord(before[before.length-1]||'');if(q)return q;
@@ -1083,38 +1124,40 @@ function voiceQtyNear(norm,pos,len){
   return 1;
 }
 function voiceOptFor(itemKey,norm,pos,len){
-  var win=norm.slice(Math.max(0,pos-20),pos+len+20);
+  var win=norm.slice(Math.max(0,pos-20),pos)+' '+norm.slice(pos+len,pos+len+20);
   var found=null;
-  Object.keys(OPTW).forEach(function(w){if(win.indexOf(w)>=0)found=OPTW[w]});
+  var OW=(lang==='en')?OPTW_EN:OPTW;
+  Object.keys(OW).forEach(function(w){if(win.indexOf(w)>=0)found=OW[w]});
   var opts=[];
   Object.keys(flat).forEach(function(k){var f=flat[k];if(f.item===itemKey&&!f.off)opts.push({k:k,f:f})});
   if(!opts.length)return null;
-  if(found){for(var i=0;i<opts.length;i++){if(normAr(opts[i].f.label).indexOf(found)>=0)return opts[i]}}
+  if(found){for(var i=0;i<opts.length;i++){if(vnorm(TN(opts[i].f.label)).indexOf(vnorm(found))>=0)return opts[i]}}
   return opts[0];
 }
 function voiceResolve(c,norm){
   var opt=voiceOptFor(c.f.item,norm,c.pos,c.len);
-  var win=norm.slice(Math.max(0,c.pos-20),c.pos+c.len+20);
+  var win=norm.slice(Math.max(0,c.pos-20),c.pos)+' '+norm.slice(c.pos+c.len,c.pos+c.len+20);
   var ow=null;
-  Object.keys(OPTW).forEach(function(w){if(win.indexOf(w)>=0)ow=OPTW[w]});
+  var OW=(lang==='en')?OPTW_EN:OPTW;
+  Object.keys(OW).forEach(function(w){if(win.indexOf(w)>=0)ow=OW[w]});
   if(ow){
     var hasOpt=false;
-    Object.keys(flat).forEach(function(k){var f=flat[k];if(f.item===c.f.item&&!f.off&&normAr(f.label).indexOf(ow)>=0)hasOpt=true});
+    Object.keys(flat).forEach(function(k){var f=flat[k];if(f.item===c.f.item&&!f.off&&vnorm(TN(f.label)).indexOf(vnorm(ow))>=0)hasOpt=true});
     if(!hasOpt){
-      var best=null;var cname=normAr(c.f.name);
+      var best=null;var cname=vnorm(vname(c.f));
       Object.keys(flat).forEach(function(k){
         var f=flat[k];if(f.off)return;
-        var nn=normAr(f.name);
+        var nn=vnorm(vname(f));
         if(nn.indexOf(cname)>=0&&nn!==cname){
           var ok=false;
-          Object.keys(flat).forEach(function(k2){var f2=flat[k2];if(f2.item===f.item&&!f2.off&&normAr(f2.label).indexOf(ow)>=0)ok=true});
+          Object.keys(flat).forEach(function(k2){var f2=flat[k2];if(f2.item===f.item&&!f2.off&&vnorm(TN(f2.label)).indexOf(vnorm(ow))>=0)ok=true});
           if(ok&&(!best||nn.length<best.nn.length))best={k:k,f:f,nn:nn};
         }
       });
       if(best){
         var opts=[];
         Object.keys(flat).forEach(function(k){var f=flat[k];if(f.item===best.f.item&&!f.off)opts.push({k:k,f:f})});
-        for(var i=0;i<opts.length;i++){if(normAr(opts[i].f.label).indexOf(ow)>=0)return opts[i]}
+        for(var i=0;i<opts.length;i++){if(vnorm(TN(opts[i].f.label)).indexOf(vnorm(ow))>=0)return opts[i]}
       }
     }
   }
@@ -1122,20 +1165,32 @@ function voiceResolve(c,norm){
 }
 var voiceAmbItems=null;
 var VOICE_ALIASES={'طعميه':'فلافل','بطاطا':'بطاطس','مشلتت':'فطيره مشلتت بالسمن البلدي','كاستر':'فطيره كاستر','مياه صغيره':'مياه غازيه صغيره','فول مدمس':'فول بالخلطه','بيض مقلي':'بيض اومليت','سجق بلدي':'سجق','كفته بلدي':'كفته','تشيكن':'فراخ'};
+var VOICE_ALIASES_EN={'falafel':'taameya','small water':'small sparkling water','fried egg':'omelette','mashed fava beans':'foul with the house mix'};
 function voiceApplyAliases(norm){
+  var AM=(lang==='en')?VOICE_ALIASES_EN:VOICE_ALIASES;
   var out=' '+norm+' ';
-  Object.keys(VOICE_ALIASES).sort(function(a,b){return b.length-a.length}).forEach(function(a){
-    var rep=' '+VOICE_ALIASES[a]+' ';
+  Object.keys(AM).sort(function(a,b){return b.length-a.length}).forEach(function(a){
+    var rep=' '+AM[a]+' ';
     out=out.split(' '+a+' ').join(rep);
-    out=out.split(' و'+a+' ').join(' و'+VOICE_ALIASES[a]+' ');
+    if(lang!=='en')out=out.split(' و'+a+' ').join(' و'+AM[a]+' ');
   });
   return out.trim().replace(/\s+/g,' ');
 }
-function voiceParseNorm(norm){
+function voiceWordIn(seg,nn){
+  if(seg.indexOf(' ')>=0)return (' '+nn+' ').indexOf(' '+seg+' ')>=0;
+  if(lang==='en'){
+    var st=stemEn(seg);
+    var ws=nn.split(/\s+/);
+    for(var i=0;i<ws.length;i++){if(stemEn(ws[i])===st)return true}
+    return false;
+  }
+  return nn.split(/\s+/).indexOf(seg)>=0;
+}
+function voiceParseLiteral(norm){
   var cands=[];
   Object.keys(flat).forEach(function(k){
     var f=flat[k];if(f.off)return;
-    var nn=normAr(f.name);if(!nn)return;
+    var nn=vnorm(vname(f));if(!nn)return;
     var pos=norm.indexOf(nn);
     while(pos>=0){cands.push({k:k,f:f,pos:pos,len:nn.length});pos=norm.indexOf(nn,pos+1)}
   });
@@ -1155,29 +1210,32 @@ function voiceParseNorm(norm){
     if(byKey[opt.k]){byKey[opt.k].qty+=qty}
     else{var ln={key:opt.k,qty:qty,name:opt.f.name,label:opt.f.label,price:opt.f.price};byKey[opt.k]=ln;lines.push(ln)}
   });
-  if(!lines.length){
-    var tail=norm.replace(/^(عايز|عايزه|عاوز|عاوزين|عايزين|هات|هاتلي|هاتي|جبلي|جيب|ضيف|ضيفي|ممكن|لو|سمحت|فضلك|كمان)\s+/,'').trim();
-    if(tail){
-      var words=tail.split(/\s+/);
-      for(var n=words.length;n>=1;n--){
-        var seg=words.slice(words.length-n).join(' ');
-        var hits=[],seenIt={};
-        Object.keys(flat).forEach(function(k){
-          var f=flat[k];if(f.off||seenIt[f.item])return;
-          if(normAr(f.name).indexOf(seg)===0){seenIt[f.item]=1;hits.push({item:f.item,name:f.name})}
-        });
-        if(hits.length===1){
-          var q=1;var qw=words.slice(0,words.length-n);
-          if(qw.length){q=voiceQtyWord(qw[qw.length-1])||1}
-          var o2=voiceOptFor(hits[0].item,norm,0,0);
-          if(o2)lines.push({key:o2.k,qty:q,name:o2.f.name,label:o2.f.label,price:o2.f.price});
-          break;
-        }
-        if(hits.length>1){
-          hits.sort(function(a,b){return a.name.length-b.name.length});
-          voiceAmbItems=hits.slice(0,8);
-          break;
-        }
+  return lines;
+}
+function voiceParseFallback(norm){
+  var lines=[];
+  var tail=norm.replace((lang==='en'?CMD_EN:CMD_AR),'').trim();
+  if(tail){
+    var words=tail.split(/\s+/);
+    for(var n=words.length;n>=1;n--){
+      var seg=words.slice(words.length-n).join(' ');
+      var hits=[],seenIt={};
+      Object.keys(flat).forEach(function(k){
+        var f=flat[k];if(f.off||seenIt[f.item])return;
+        var nn2=vnorm(vname(f));
+        if(nn2===seg||nn2.indexOf(seg+' ')===0||voiceWordIn(seg,nn2)){seenIt[f.item]=1;hits.push({item:f.item,name:f.name,sk:f.sk})}
+      });
+      if(hits.length===1){
+        var q=1;var qw=words.slice(0,words.length-n);
+        if(qw.length){q=voiceQtyWord(qw[qw.length-1])||1}
+        var o2=voiceOptFor(hits[0].item,norm,0,0);
+        if(o2)lines.push({key:o2.k,qty:q,name:o2.f.name,label:o2.f.label,price:o2.f.price});
+        break;
+      }
+      if(hits.length>1){
+        hits.sort(function(a,b){return ((a.sk in SANDSEC)?0:1)-((b.sk in SANDSEC)?0:1)||a.name.length-b.name.length});
+        voiceAmbItems=hits.slice(0,8);
+        break;
       }
     }
   }
@@ -1185,14 +1243,17 @@ function voiceParseNorm(norm){
 }
 function voiceParse(text){
   voiceAmbItems=null;
-  var norm=normAr(text);
-  var lines=voiceParseNorm(norm);
+  var norm=vnorm(text);
+  var lines=voiceParseLiteral(norm);
   if(lines.length){voiceLastNorm=norm;return lines}
   var anorm=voiceApplyAliases(norm);
   if(anorm!==norm){
-    lines=voiceParseNorm(anorm);
+    lines=voiceParseLiteral(anorm);
     if(lines.length){voiceLastNorm=anorm;return lines}
   }
+  lines=voiceParseFallback(anorm);
+  if(lines.length){voiceLastNorm=anorm;return lines}
+  if(voiceAmbItems){voiceLastNorm=anorm;return lines}
   voiceLastNorm=anorm;
   return lines;
 }
@@ -1212,7 +1273,9 @@ function voiceSuggQty(norm){
   return 1;
 }
 var CATW={'ساندوتش':'sand','ساندوتشات':'sand','علبه':'box','علبة':'box','بوكس':'box','فطيره':'fat','فطيرة':'fat','بيتزا':'pizza','فته':'fatta','فتة':'fatta','كريب':'crepe','رول':'roll'};
+var CATW_EN={'sandwich':'sand','sandwiches':'sand','box':'box','feteer':'fat','fetteer':'fat','pizza':'pizza','fattah':'fatta','fatta':'fatta','crepe':'crepe','roll':'roll'};
 var CATSEC={box:1,fat:1,pizza:1,fatta:1,crepe:1,roll:1};
+var SANDSEC={ful:1,fal:1,egg:1,misc:1,pot:1,shw:1,beef:1,chick:1,sea:1,roll:1,turbo:1,haw:1};
 function voiceSuggest(norm){
   if(voiceAmbItems&&voiceAmbItems.length){
     var out=[];
@@ -1225,23 +1288,24 @@ function voiceSuggest(norm){
   var ws=(norm||'').split(/\s+/).filter(function(w){return w.length>1});
   if(!ws.length)return[];
   var hint=null;
-  for(var hi=0;hi<ws.length;hi++){if(CATW[ws[hi]]){hint=CATW[ws[hi]];break}}
+  var CW=(lang==='en')?CATW_EN:CATW;
+  for(var hi=0;hi<ws.length;hi++){if(CW[ws[hi]]){hint=CW[ws[hi]];break}}
   var seen={},scored=[];
   Object.keys(flat).forEach(function(k){
     var f=flat[k];if(f.off||seen[f.item])return;seen[f.item]=1;
-    var nw=normAr(f.name).split(/\s+/);
+    var nw=vnorm(vname(f)).split(/\s+/);
     var score=0,hit=0;
     ws.forEach(function(w){
       var best=0;
       nw.forEach(function(x){
-        if(w===x)best=Math.max(best,1);
+        if(vwordEq(w,x))best=Math.max(best,1);
         else if(x.length>=3&&w.length>=3&&(x.indexOf(w)>=0||w.indexOf(x)>=0))best=Math.max(best,0.7);
       });
       score+=best;
     });
     nw.forEach(function(x){
       for(var i=0;i<ws.length;i++){var w=ws[i];
-        if(w===x||(x.length>=3&&w.length>=3&&(x.indexOf(w)>=0||w.indexOf(x)>=0))){hit++;break}
+        if(vwordEq(w,x)||(x.length>=3&&w.length>=3&&(x.indexOf(w)>=0||w.indexOf(x)>=0))){hit++;break}
       }
     });
     if(hint){
@@ -1263,7 +1327,7 @@ function voiceShowLines(){
   var msg=document.getElementById('voiceMsg');
   var sg=document.getElementById('voiceSugg');sg.innerHTML='';sg.style.display='none';
   var addBtn=document.getElementById('voiceAdd');
-  addBtn.textContent=(grpOn&&grpPerson)?('🛒 أضف لسلة '+grpPerson):'🛒 أضف للسلة';
+  addBtn.textContent=(grpOn&&grpPerson)?(lang==='en'?('🛒 Add to '+grpPerson+'’s cart'):('🛒 أضف لسلة '+grpPerson)):T('🛒 أضف للسلة');
   var moreBtn=document.getElementById('voiceMore');
   function showSug(sug,txt){
     msg.textContent=txt;
@@ -1282,8 +1346,8 @@ function voiceShowLines(){
   if(!voiceLines.length){
     addBtn.style.display='none';moreBtn.style.display='none';
     var sug0=voiceSuggest(voiceLastNorm);
-    if(sug0.length)showSug(sug0,(voiceAmbItems&&voiceAmbItems.length)?'فيه أكتر من نوع بالاسم ده — اختار واحد:':'مفهمتش بالظبط — دي أقرب أصناف للي قولته، دوس على الصح:');
-    else msg.textContent='مفهمتش أصناف من اللي قولته — جرّب تقول اسم الصنف كامل، مثال: "اتنين فول بالخلطة"';
+    if(sug0.length)showSug(sug0,(voiceAmbItems&&voiceAmbItems.length)?T('فيه أكتر من نوع بالاسم ده — اختار واحد:'):T('مفهمتش بالظبط — دي أقرب أصناف للي قولته، دوس على الصح:'));
+    else msg.textContent=T('مفهمتش أصناف من اللي قولته — جرّب تقول اسم الصنف كامل، مثال: "اتنين فول بالخلطة"');
     return;
   }
   msg.textContent='';addBtn.style.display='';moreBtn.style.display='';
@@ -1301,22 +1365,23 @@ function voiceShowLines(){
   });
   if(voiceLastEmpty){
     var sug1=voiceSuggest(voiceLastNorm);
-    if(sug1.length)showSug(sug1,'مفهمتش الصنف الأخير — دي أقرب أصناف، دوس على الصح:');
-    else msg.textContent='مفهمتش الصنف الأخير — دوس "أضف صنف تاني" وجرّب تقوله تاني.';
+    if(sug1.length)showSug(sug1,T('مفهمتش الصنف الأخير — دي أقرب أصناف، دوس على الصح:'));
+    else msg.textContent=T('مفهمتش الصنف الأخير — دوس "أضف صنف تاني" وجرّب تقوله تاني.');
   }
 }
 function voiceSetState(t){document.getElementById('voiceState').textContent=t}
 function voiceStop(){var b=document.getElementById('micBtn');if(b)b.classList.remove('listening');try{if(voiceRec)voiceRec.stop()}catch(e){}voiceRec=null}
 function voiceStart(keep){
-  if(!SR){document.getElementById('voiceSheet').style.display='flex';voiceSetState('المتصفح ده مش بيدعم الطلب بالصوت — جرّب من كروم على أندرويد.');document.getElementById('voiceAdd').style.display='none';return}
+  if(!SR){document.getElementById('voiceSheet').style.display='flex';voiceSetState(T('المتصفح ده مش بيدعم الطلب بالصوت — جرّب من كروم على أندرويد.'));document.getElementById('voiceAdd').style.display='none';return}
   voiceLastEmpty=false;
   if(!keep){voiceLines=[];document.getElementById('voiceLines').innerHTML='';document.getElementById('voiceAdd').style.display='none';document.getElementById('voiceMore').style.display='none';}
   document.getElementById('voiceHeard').textContent='';document.getElementById('voiceMsg').textContent='';document.getElementById('voiceSugg').innerHTML='';document.getElementById('voiceSugg').style.display='none';
   document.getElementById('voiceSheet').style.display='flex';
-  voiceSetState('🎙️ بسمعك… اتكلم دلوقتي'+((grpOn&&grpPerson)?' — بتطلب لـ '+grpPerson:''));
+  applyVoiceLang();
+  voiceSetState(T('🎙️ بسمعك… اتكلم دلوقتي')+((grpOn&&grpPerson)?(lang==='en'?(' — ordering for '+grpPerson):(' — بتطلب لـ '+grpPerson)):''));
   var b=document.getElementById('micBtn');if(b)b.classList.add('listening');
   var rec=new SR();voiceRec=rec;
-  rec.lang='ar-EG';rec.interimResults=true;rec.maxAlternatives=3;rec.continuous=false;
+  rec.lang=LOC();rec.interimResults=true;rec.maxAlternatives=3;rec.continuous=false;
   var finalTxt='';
   rec.onresult=function(e){
     var interim='',fin='';
@@ -1326,19 +1391,19 @@ function voiceStart(keep){
     }
     if(fin)finalTxt=(finalTxt+' '+fin).trim();
     document.getElementById('voiceHeard').textContent=finalTxt||interim;
-    if(finalTxt){var nl=voiceParse(finalTxt);voiceLastEmpty=(nl.length===0);voiceMergeLines(nl,keep);voiceShowLines();voiceSetState('دي الأصناف اللي فهمتها — عدّلها لو حابب وبعدين دوس "أضف للسلة"')}
+    if(finalTxt){var nl=voiceParse(finalTxt);voiceLastEmpty=(nl.length===0);voiceMergeLines(nl,keep);voiceShowLines();voiceSetState(T('دي الأصناف اللي فهمتها — عدّلها لو حابب وبعدين دوس "أضف للسلة"'))}
   };
   rec.onerror=function(e){
     voiceStop();
-    if(e.error==='not-allowed'||e.error==='service-not-allowed')voiceSetState('المايك مقفول — اسمح للموقع يستخدم المايك من إعدادات المتصفح وجرّب تاني.');
-    else if(e.error==='no-speech')voiceSetState('مسمعتش حاجة — دوس "جرّب تاني" واتكلم.');
-    else voiceSetState('حصلت مشكلة في التعرف على الصوت — جرّب تاني.');
+    if(e.error==='not-allowed'||e.error==='service-not-allowed')voiceSetState(T('المايك مقفول — اسمح للموقع يستخدم المايك من إعدادات المتصفح وجرّب تاني.'));
+    else if(e.error==='no-speech')voiceSetState(T('مسمعتش حاجة — دوس "جرّب تاني" واتكلم.'));
+    else voiceSetState(T('حصلت مشكلة في التعرف على الصوت — جرّب تاني.'));
   };
   rec.onend=function(){
     voiceStop();
-    if(!finalTxt&&!document.getElementById('voiceHeard').textContent){voiceSetState('مسمعتش حاجة — دوس "جرّب تاني" واتكلم.')}
+    if(!finalTxt&&!document.getElementById('voiceHeard').textContent){voiceSetState(T('مسمعتش حاجة — دوس "جرّب تاني" واتكلم.'))}
   };
-  try{rec.start()}catch(e){voiceStop();voiceSetState('مش قادر أشغّل المايك — جرّب تاني.')}
+  try{rec.start()}catch(e){voiceStop();voiceSetState(T('مش قادر أشغّل المايك — جرّب تاني.'))}
 }
 document.getElementById('micBtn').onclick=function(){voiceStart()};
 document.getElementById('voiceClose').onclick=function(){voiceStop();document.getElementById('voiceSheet').style.display='none'};
@@ -1352,7 +1417,7 @@ document.getElementById('voiceAdd').onclick=function(){
   voiceUsed=true;
   save();render();updBar();renderGrpBar();grpRerender();
   document.getElementById('voiceSheet').style.display='none';
-  toastMsg('تمت إضافة '+n+' صنف '+((grpOn&&grpPerson)?('لسلة '+grpPerson):'للسلة')+' ✅');
+  toastMsg(lang==='en'?('Added '+n+' item'+(n>1?'s':'')+' to '+((grpOn&&grpPerson)?grpPerson+'’s cart':'the cart')+' ✅'):('تمت إضافة '+n+' صنف '+((grpOn&&grpPerson)?('لسلة '+grpPerson):'للسلة')+' ✅'));
 };
 updateMicBtn();
 render();loadSettings();initAuth();restoreTrack();applyLang();
