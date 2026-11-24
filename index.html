@@ -272,7 +272,7 @@ textarea{min-height:80px;resize:vertical}
 <div class="wrap" id="menu"></div>
 <div class="story"><h3 id="stTitle">حكاية جاد — من 1960</h3><p id="stP1">من سنة 1960 وجاد بيقدّم الأكل الشرقي الأصيل — فول وطعمية ومشويات — بنفس الطعم والجودة اللي كبّرت عليها أجيال في مصر. والنهارده تقدر تطلب أونلاين من نفس المطبخ، ويوصلك لحد البيت سخن.</p><p id="stP2" style="font-weight:800;color:var(--red)">الخط الساخن 16475</p></div><div style="text-align:center;padding:10px 0 4px;font-size:14px"><a href="https://www.facebook.com/share/1BnGEWRdBt/" target="_blank" rel="noopener" style="color:#184898;font-weight:800;text-decoration:none">📘 تابعنا على فيسبوك</a> <span style="color:#999">•</span> <a href="tel:16475" style="color:#a92318;font-weight:800;text-decoration:none">📞 16475</a></div>
 <div class="bar"><button id="open" disabled><span id="openLbl">عرض الطلب</span><span><span class="cnt" id="cnt">0</span> &nbsp; <span id="sub">0 جنيه</span></span></button></div>
-<div id="voiceSheet" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px"><div style="background:#fff;border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35)"><h3 style="margin:0 0 4px">🎙️ اطلب بصوتك</h3><p id="voiceState" style="color:#666;margin:0 0 10px;line-height:1.7">دوس على المايك واتكلم… مثال: "عايز اتنين فول بالخلطة وواحد فلافل"</p><div id="voiceHeard" style="background:#f7f4ef;border-radius:10px;padding:10px;min-height:20px;font-weight:700;color:#333"></div><div id="voiceLines" style="margin-top:6px"></div><div id="voiceMsg" style="font-size:13.5px;font-weight:700;min-height:18px;margin-top:6px;color:#a92318"></div><div id="voiceSugg" class="vsugg"></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="voiceAdd" type="button" style="flex:1">🛒 أضف للسلة</button><button class="btn" id="voiceRetry" type="button" style="background:#0053aa;color:#fff">🔄 جرّب تاني</button><button class="btn" id="voiceClose" type="button" style="background:#6b7280;color:#fff">إلغاء</button></div></div></div>
+<div id="voiceSheet" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px"><div style="background:#fff;border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35)"><h3 style="margin:0 0 4px">🎙️ اطلب بصوتك</h3><p id="voiceState" style="color:#666;margin:0 0 10px;line-height:1.7">دوس على المايك واتكلم… مثال: "عايز اتنين فول بالخلطة وواحد فلافل"</p><div id="voiceHeard" style="background:#f7f4ef;border-radius:10px;padding:10px;min-height:20px;font-weight:700;color:#333"></div><div id="voiceLines" style="margin-top:6px"></div><div id="voiceMsg" style="font-size:13.5px;font-weight:700;min-height:18px;margin-top:6px;color:#a92318"></div><div id="voiceSugg" class="vsugg"></div><button class="btn" id="voiceMore" type="button" style="width:100%;margin-top:10px;background:#0053aa;color:#fff;display:none">🎙️ أضف صنف تاني بالصوت</button><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="voiceAdd" type="button" style="flex:1">🛒 أضف للسلة</button><button class="btn" id="voiceRetry" type="button" style="background:#0053aa;color:#fff">🔄 جرّب تاني</button><button class="btn" id="voiceClose" type="button" style="background:#6b7280;color:#fff">إلغاء</button></div></div></div>
 <div id="sheet"><div class="in">
 <button class="back" id="back">→ رجوع للمنيو</button>
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="grp-tgl" id="grpTgl" type="button">👥 مع صحابك</button><span id="grpHint" style="font-size:13px;color:#777">اطلب ليك ولصحابك من موبايلك</span></div>
@@ -1168,6 +1168,15 @@ function voiceParse(text){
   return lines;
 }
 var voiceLastNorm='';
+var voiceLastEmpty=false;
+function voiceMergeLines(nl,keep){
+  if(!keep){voiceLines=nl;return}
+  nl.forEach(function(nln){
+    var ex=null;
+    voiceLines.forEach(function(ln){if(ln.key===nln.key)ex=ln});
+    if(ex)ex.qty+=nln.qty; else voiceLines.push(nln);
+  });
+}
 function voiceSuggQty(norm){
   var ws=(norm||'').split(/\s+/);
   for(var i=0;i<ws.length;i++){var q=voiceQtyWord(ws[i]);if(q)return q}
@@ -1216,27 +1225,30 @@ function voiceShowLines(){
   var box=document.getElementById('voiceLines');box.innerHTML='';
   var msg=document.getElementById('voiceMsg');
   var sg=document.getElementById('voiceSugg');sg.innerHTML='';sg.style.display='none';
+  var addBtn=document.getElementById('voiceAdd');
+  var moreBtn=document.getElementById('voiceMore');
+  function showSug(sug,txt){
+    msg.textContent=txt;
+    sg.style.display='flex';
+    sug.forEach(function(s){
+      var b=document.createElement('button');b.type='button';
+      b.textContent=TN(s.name)+(s.label?' ('+TN(s.label)+')':'')+' — '+fmt(s.price);
+      b.onclick=function(){
+        voiceLastEmpty=false;
+        voiceLines.push({key:s.key,qty:voiceSuggQty(voiceLastNorm),name:s.name,label:s.label,price:s.price});
+        voiceShowLines();
+      };
+      sg.appendChild(b);
+    });
+  }
   if(!voiceLines.length){
-    document.getElementById('voiceAdd').style.display='none';
-    var sug=voiceSuggest(voiceLastNorm);
-    if(sug.length){
-      msg.textContent='مفهمتش بالظبط — دي أقرب أصناف للي قولته، دوس على الصح:';
-      sg.style.display='flex';
-      sug.forEach(function(s){
-        var b=document.createElement('button');b.type='button';
-        b.textContent=TN(s.name)+(s.label?' ('+TN(s.label)+')':'')+' — '+fmt(s.price);
-        b.onclick=function(){
-          voiceLines.push({key:s.key,qty:voiceSuggQty(voiceLastNorm),name:s.name,label:s.label,price:s.price});
-          voiceShowLines();
-        };
-        sg.appendChild(b);
-      });
-    }else{
-      msg.textContent='مفهمتش أصناف من اللي قولته — جرّب تقول اسم الصنف كامل، مثال: "اتنين فول بالخلطة"';
-    }
+    addBtn.style.display='none';moreBtn.style.display='none';
+    var sug0=voiceSuggest(voiceLastNorm);
+    if(sug0.length)showSug(sug0,'مفهمتش بالظبط — دي أقرب أصناف للي قولته، دوس على الصح:');
+    else msg.textContent='مفهمتش أصناف من اللي قولته — جرّب تقول اسم الصنف كامل، مثال: "اتنين فول بالخلطة"';
     return;
   }
-  msg.textContent='';document.getElementById('voiceAdd').style.display='';
+  msg.textContent='';addBtn.style.display='';moreBtn.style.display='';
   voiceLines.forEach(function(ln,ix){
     var d=document.createElement('div');d.className='vline';
     var nm=document.createElement('span');nm.className='vn';nm.textContent=ln.qty+' × '+TN(ln.name)+(ln.label?' ('+TN(ln.label)+')':'');
@@ -1249,12 +1261,19 @@ function voiceShowLines(){
     x.onclick=function(){voiceLines.splice(ix,1);voiceShowLines()};
     d.appendChild(nm);d.appendChild(pr);d.appendChild(minus);d.appendChild(plus);d.appendChild(x);box.appendChild(d);
   });
+  if(voiceLastEmpty){
+    var sug1=voiceSuggest(voiceLastNorm);
+    if(sug1.length)showSug(sug1,'مفهمتش الصنف الأخير — دي أقرب أصناف، دوس على الصح:');
+    else msg.textContent='مفهمتش الصنف الأخير — دوس "أضف صنف تاني" وجرّب تقوله تاني.';
+  }
 }
 function voiceSetState(t){document.getElementById('voiceState').textContent=t}
 function voiceStop(){var b=document.getElementById('micBtn');if(b)b.classList.remove('listening');try{if(voiceRec)voiceRec.stop()}catch(e){}voiceRec=null}
-function voiceStart(){
+function voiceStart(keep){
   if(!SR){document.getElementById('voiceSheet').style.display='flex';voiceSetState('المتصفح ده مش بيدعم الطلب بالصوت — جرّب من كروم على أندرويد.');document.getElementById('voiceAdd').style.display='none';return}
-  voiceLines=[];document.getElementById('voiceLines').innerHTML='';document.getElementById('voiceHeard').textContent='';document.getElementById('voiceMsg').textContent='';document.getElementById('voiceSugg').innerHTML='';document.getElementById('voiceSugg').style.display='none';document.getElementById('voiceAdd').style.display='none';
+  voiceLastEmpty=false;
+  if(!keep){voiceLines=[];document.getElementById('voiceLines').innerHTML='';document.getElementById('voiceAdd').style.display='none';document.getElementById('voiceMore').style.display='none';}
+  document.getElementById('voiceHeard').textContent='';document.getElementById('voiceMsg').textContent='';document.getElementById('voiceSugg').innerHTML='';document.getElementById('voiceSugg').style.display='none';
   document.getElementById('voiceSheet').style.display='flex';
   voiceSetState('🎙️ بسمعك… اتكلم دلوقتي');
   var b=document.getElementById('micBtn');if(b)b.classList.add('listening');
@@ -1269,7 +1288,7 @@ function voiceStart(){
     }
     if(fin)finalTxt=(finalTxt+' '+fin).trim();
     document.getElementById('voiceHeard').textContent=finalTxt||interim;
-    if(finalTxt){voiceLines=voiceParse(finalTxt);voiceShowLines();voiceSetState('دي الأصناف اللي فهمتها — عدّلها لو حابب وبعدين دوس "أضف للسلة"')}
+    if(finalTxt){var nl=voiceParse(finalTxt);voiceLastEmpty=(nl.length===0);voiceMergeLines(nl,keep);voiceShowLines();voiceSetState('دي الأصناف اللي فهمتها — عدّلها لو حابب وبعدين دوس "أضف للسلة"')}
   };
   rec.onerror=function(e){
     voiceStop();
@@ -1286,6 +1305,7 @@ function voiceStart(){
 document.getElementById('micBtn').onclick=function(){voiceStart()};
 document.getElementById('voiceClose').onclick=function(){voiceStop();document.getElementById('voiceSheet').style.display='none'};
 document.getElementById('voiceRetry').onclick=function(){voiceStart()};
+document.getElementById('voiceMore').onclick=function(){voiceStart(true)};
 document.getElementById('voiceAdd').onclick=function(){
   if(!voiceLines.length)return;
   var n=0;voiceLines.forEach(function(ln){cart[ln.key]=(cart[ln.key]||0)+ln.qty;n+=ln.qty});
