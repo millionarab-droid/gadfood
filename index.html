@@ -1120,8 +1120,18 @@ function voiceResolve(c,norm){
   }
   return opt;
 }
-function voiceParse(text){
-  var norm=normAr(text);voiceLastNorm=norm;
+var voiceAmbItems=null;
+var VOICE_ALIASES={'طعميه':'فلافل','بطاطا':'بطاطس','مشلتت':'فطيره مشلتت بالسمن البلدي','كاستر':'فطيره كاستر','مياه صغيره':'مياه غازيه صغيره','فول مدمس':'فول بالخلطه','بيض مقلي':'بيض اومليت','سجق بلدي':'سجق','كفته بلدي':'كفته','تشيكن':'فراخ'};
+function voiceApplyAliases(norm){
+  var out=' '+norm+' ';
+  Object.keys(VOICE_ALIASES).sort(function(a,b){return b.length-a.length}).forEach(function(a){
+    var rep=' '+VOICE_ALIASES[a]+' ';
+    out=out.split(' '+a+' ').join(rep);
+    out=out.split(' و'+a+' ').join(' و'+VOICE_ALIASES[a]+' ');
+  });
+  return out.trim().replace(/\s+/g,' ');
+}
+function voiceParseNorm(norm){
   var cands=[];
   Object.keys(flat).forEach(function(k){
     var f=flat[k];if(f.off)return;
@@ -1151,21 +1161,39 @@ function voiceParse(text){
       var words=tail.split(/\s+/);
       for(var n=words.length;n>=1;n--){
         var seg=words.slice(words.length-n).join(' ');
-        var hit=null;
+        var hits=[],seenIt={};
         Object.keys(flat).forEach(function(k){
-          if(hit)return;var f=flat[k];if(f.off)return;
-          if(normAr(f.name).indexOf(seg)===0)hit={k:k,f:f};
+          var f=flat[k];if(f.off||seenIt[f.item])return;
+          if(normAr(f.name).indexOf(seg)===0){seenIt[f.item]=1;hits.push({item:f.item,name:f.name})}
         });
-        if(hit){
+        if(hits.length===1){
           var q=1;var qw=words.slice(0,words.length-n);
           if(qw.length){q=voiceQtyWord(qw[qw.length-1])||1}
-          var o2=voiceOptFor(hit.f.item,norm,0,0);
+          var o2=voiceOptFor(hits[0].item,norm,0,0);
           if(o2)lines.push({key:o2.k,qty:q,name:o2.f.name,label:o2.f.label,price:o2.f.price});
+          break;
+        }
+        if(hits.length>1){
+          hits.sort(function(a,b){return a.name.length-b.name.length});
+          voiceAmbItems=hits.slice(0,8);
           break;
         }
       }
     }
   }
+  return lines;
+}
+function voiceParse(text){
+  voiceAmbItems=null;
+  var norm=normAr(text);
+  var lines=voiceParseNorm(norm);
+  if(lines.length){voiceLastNorm=norm;return lines}
+  var anorm=voiceApplyAliases(norm);
+  if(anorm!==norm){
+    lines=voiceParseNorm(anorm);
+    if(lines.length){voiceLastNorm=anorm;return lines}
+  }
+  voiceLastNorm=anorm;
   return lines;
 }
 var voiceLastNorm='';
@@ -1186,6 +1214,14 @@ function voiceSuggQty(norm){
 var CATW={'ساندوتش':'sand','ساندوتشات':'sand','علبه':'box','علبة':'box','بوكس':'box','فطيره':'fat','فطيرة':'fat','بيتزا':'pizza','فته':'fatta','فتة':'fatta','كريب':'crepe','رول':'roll'};
 var CATSEC={box:1,fat:1,pizza:1,fatta:1,crepe:1,roll:1};
 function voiceSuggest(norm){
+  if(voiceAmbItems&&voiceAmbItems.length){
+    var out=[];
+    voiceAmbItems.forEach(function(s){
+      var o=voiceOptFor(s.item,'',0,0);
+      if(o)out.push({key:o.k,name:o.f.name,label:o.f.label,price:o.f.price});
+    });
+    return out;
+  }
   var ws=(norm||'').split(/\s+/).filter(function(w){return w.length>1});
   if(!ws.length)return[];
   var hint=null;
@@ -1216,7 +1252,7 @@ function voiceSuggest(norm){
   });
   scored.sort(function(a,b){return b.score-a.score||b.cov-a.cov||a.name.length-b.name.length});
   var out=[];
-  scored.slice(0,4).forEach(function(s){
+  scored.slice(0,6).forEach(function(s){
     var o=voiceOptFor(s.item,'',0,0);
     if(o)out.push({key:o.k,name:o.f.name,label:o.f.label,price:o.f.price});
   });
@@ -1246,7 +1282,7 @@ function voiceShowLines(){
   if(!voiceLines.length){
     addBtn.style.display='none';moreBtn.style.display='none';
     var sug0=voiceSuggest(voiceLastNorm);
-    if(sug0.length)showSug(sug0,'مفهمتش بالظبط — دي أقرب أصناف للي قولته، دوس على الصح:');
+    if(sug0.length)showSug(sug0,(voiceAmbItems&&voiceAmbItems.length)?'فيه أكتر من نوع بالاسم ده — اختار واحد:':'مفهمتش بالظبط — دي أقرب أصناف للي قولته، دوس على الصح:');
     else msg.textContent='مفهمتش أصناف من اللي قولته — جرّب تقول اسم الصنف كامل، مثال: "اتنين فول بالخلطة"';
     return;
   }
