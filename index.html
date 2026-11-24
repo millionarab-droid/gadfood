@@ -1007,12 +1007,12 @@ function checkPromoElig(){if(!promo||!DB_ON)return Promise.resolve(true);return 
   subtotal:t.s,delivery:t.fee,vat:t.vat,total:t.total,promo:promo?promo.code:null,discount:t.disc,payment:document.getElementById('pay').value,
   user_id:custUser?custUser.id:null,points_redeemed:redeemUsed,points_discount:redeemDisc};
  setRec(T('جاري تسجيل الطلب عند المطعم…'),'#555');
- return checkRate().then(function(allowed){
+ if(custUser)saveProfile();
+ return Promise.all([checkRate(),checkBlocked(),checkPromoElig()]).then(function(res){
+  var allowed=res[0],blk=res[1],el=res[2];
   if(!allowed){setRec(T('⚠️ الحد المسموح 3 أوردرات في الساعة من نفس الرقم — جرّب تاني بعد شوية'),'#a92318');return 'rate-limit'}
-  return checkBlocked().then(function(blk){
-   if(blk){setRec(T('⚠️ الحساب ده محظور من الطلب — تواصل مع المطعم على 16475'),'#a92318');return 'blocked'}
-   if(custUser)saveProfile();
-   return checkPromoElig().then(function(el){if(el===false){promo=null;drawTot();setRec(T('⚠️ البرومو ده مش متاح ليك — اتشال الخصم، ابعت الطلب تاني'),'#a92318');return 'promo-ineligible'}
+  if(blk){setRec(T('⚠️ الحساب ده محظور من الطلب — تواصل مع المطعم على 16475'),'#a92318');return 'blocked'}
+  if(el===false){promo=null;drawTot();setRec(T('⚠️ البرومو ده مش متاح ليك — اتشال الخصم، ابعت الطلب تاني'),'#a92318');return 'promo-ineligible'}
      function sendOrder(){return fetch(SUPABASE_URL+'/rest/v1/orders',{method:'POST',headers:authHdr({'Prefer':'return=representation'}),body:JSON.stringify(row),keepalive:true}).then(function(r){if(!r.ok){if(r.status===401)return 'unauth';return r.text().then(function(t){setRec(T('⚠️ تعذر تسجيل الطلب عندنا ({s}): ').replace('{s}',r.status)+t.slice(0,200),'#a92318');return false})}return r.json().then(function(a){var n=a&&a[0]&&a[0].order_no;if(!n){setRec(T('⚠️ تعذر تسجيل الطلب عندنا — رقم الأوردر مش راجع'),'#a92318');return false}row.order_no=n;curNo=n;return true}).catch(function(){setRec(T('⚠️ تعذر تسجيل الطلب عندنا — رقم الأوردر مش راجع'),'#a92318');return false})}).catch(function(e){setRec(T('⚠️ تعذر تسجيل الطلب عندنا — خطأ شبكة: ')+(e&&e.message?e.message:e),'#a92318');return false})}
   function doneOk(redeemFailed){setRec(T('✓ تم تسجيل طلبك عند المطعم (رقم {n})').replace('{n}',row.order_no)+(redeemFailed?' — '+T('⚠️ تعذر خصم النقاط، رصيدك زي ما هو'):''),redeemFailed?'#a92318':'#0a7a3b');loadCustStats();lastChatNo=row.order_no;lastChatPhone=row.phone;try{localStorage.setItem('gad_last_order_v1',JSON.stringify({no:row.order_no,ph:row.phone,br:row.branch||''}))}catch(e){}document.getElementById('chatbtn').style.display='';if(!chatUnreadTimer){chatUnreadTimer=setInterval(checkChatUnread,10000);checkChatUnread()}if(custUser&&profile&&!redeemFailed)profile.points=Math.max(0,profile.points-redeemUsed);
   if(grpOn&&grpFriends.length&&custUser&&profile){syncFriendsToProfile()}
@@ -1020,7 +1020,7 @@ function checkPromoElig(){if(!promo||!DB_ON)return Promise.resolve(true);return 
   return true}
   function redeemThenDone(){return redeemNow().then(function(ok){var had=redeemUsed;if(had&&!ok){redeemUsed=0;redeemDisc=0;redeemedForNo=null;drawTot();refresh()}return doneOk(had&&!ok)})}
   return sendOrder().then(function(res){if(res==='unauth')return refreshCustSess().then(function(ok){if(!ok){setRec(T('⚠️ انتهت جلستك، سجّل دخول تاني أو كمّل كضيف — ابعت الطلب تاني'),'#a92318');return false}return sendOrder().then(function(r2){return r2===true?redeemThenDone():r2})});return res===true?redeemThenDone():res});
- })})})}
+ })}
 function showFb(){var p=document.getElementById('prev');p.style.display='block';p.value=buildMsg();document.getElementById('fb').style.display='block';document.getElementById('wanum').textContent='+'+waNum();setTimeout(function(){try{document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},400)}
 function showFollow(){var pv=document.getElementById('prev').value;var wa='https://wa.me/'+waNum()+'?text='+encodeURIComponent('عايز أتابع طلبي رقم '+orderNo()+' من جاد'+(pv?'\n\n'+pv:''));document.getElementById('followWa').href=wa;var fe=document.getElementById('folEta');if(fe)fe.textContent=fulfill()==='pickup'?'⏱️ طلبك هيكون جاهز للاستلام خلال 30–45 دقيقة':'⏱️ التوصيل المتوقع: 30–45 دقيقة';document.getElementById('obWa').href=wa;document.getElementById('follow').style.display='none';sheet.style.display='none';try{window.scrollTo({top:0,behavior:'smooth'})}catch(e){window.scrollTo(0,0)}startTrack()}
 document.getElementById('followSite').onclick=function(){document.getElementById('follow').style.display='none';openMyOrders()};
