@@ -65,7 +65,7 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <label>الباسورد</label><input id="pw" type="password" autocomplete="current-password">
 <div id="tsBox" style="margin:10px 0"></div><button class="btn" id="go">دخول</button><div class="err" id="le"></div></div>
 <div id="app">
-<div class="tabs" id="tabs"><button data-t="orders" class="on">الطلبات</button><button data-t="prices">الأسعار</button><button data-t="chats">المحادثات 💬 <span id="chatbadge" style="display:none;background:#fff;color:#a92318;border-radius:10px;padding:0 7px;font-size:12px;font-weight:800"></span></button><button data-t="blocklist">الحظر 🚫</button><button data-t="ratings">التقييمات ⭐</button><button data-t="reports">التقارير 📊</button><button data-t="settings">الإعدادات والبرومو</button></div>
+<div class="tabs" id="tabs"><button data-t="orders" class="on">الطلبات</button><button data-t="prices">الأسعار</button><button data-t="chats">المحادثات 💬 <span id="chatbadge" style="display:none;background:#fff;color:#a92318;border-radius:10px;padding:0 7px;font-size:12px;font-weight:800"></span></button><button data-t="blocklist">الحظر 🚫</button><button data-t="ratings">التقييمات ⭐</button><button data-t="log">سجل النشاط 📋</button><button data-t="reports">التقارير 📊</button><button data-t="settings">الإعدادات والبرومو</button></div>
 <div id="t-orders">
 <div class="banner" id="ban"></div>
 <div id="rushBar" style="display:flex;gap:8px;align-items:center;margin:8px 0;flex-wrap:wrap"><button class="btn" id="rushBtn" type="button" style="background:#a92318;color:#fff">⚠️ وقت الذروة</button><span id="rushState" style="font-size:13px;font-weight:700"></span></div>
@@ -113,6 +113,21 @@ input,select{width:100%;font-family:inherit;font-size:16px;padding:11px 12px;bor
 <div class="box"><h3>تقييمات الزباين ⭐</h3><div id="rateSum" style="font-size:14px;line-height:1.9">جاري التحميل…</div></div>
 <div id="rateList"></div>
 </div>
+<div id="t-log" style="display:none">
+<div class="box"><h3>سجل النشاط 📋</h3>
+<p style="font-size:13px;color:#666;line-height:1.7">كل حركة على الموقع بتتسجل تلقائياً من السيرفر: أوردرات جديدة، تغيير حالات، تعديل أوردرات، وأي إجراء من الإدارة (أسعار، برومو، حظر، وقت ذروة). حمّل السجل في أي وقت كملف إكسل أو CSV.</p>
+<div id="logSum" style="font-size:14px;line-height:1.9">جاري التحميل…</div>
+<div class="flt"><input id="lg1" type="date" title="من تاريخ"><input id="lg2" type="date" title="إلى تاريخ">
+<select id="lgAct"><option value="">كل الإجراءات</option><option value="order_placed">أوردر جديد</option><option value="status_changed">تغيير حالة</option><option value="order_edited">تعديل أوردر</option><option value="settings_changed">تعديل إعدادات</option><option value="promo_created">برومو جديد</option><option value="promo_updated">تعديل برومو</option><option value="promo_deleted">حذف برومو</option><option value="customer_blocked">حظر زبون</option><option value="customer_unblocked">فك حظر</option></select>
+<input id="lgQ" type="search" placeholder="ابحث برقم أوردر أو إيميل…">
+<button class="btn" id="lgGo" type="button" style="flex:none">عرض</button></div>
+<div class="msg" id="lgmsg"></div>
+<div id="logList"></div>
+<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+<button class="btn" id="lgMore" type="button" style="flex:1;min-width:140px">عرض المزيد</button>
+<button class="btn" id="lgXlsx" type="button" style="flex:1;min-width:140px">📥 تحميل إكسل</button>
+<button class="btn" id="lgCsv" type="button" style="flex:1;min-width:140px">📥 تحميل CSV</button>
+</div></div></div>
 <div id="t-reports" style="display:none">
 <div class="box"><h3>إحصائيات سريعة 📈</h3><div id="admStats" style="font-size:14px;line-height:1.9">جاري التحميل…</div></div>
 <div class="box"><h3>تقارير المبيعات 📊</h3>
@@ -378,7 +393,7 @@ function applyMenuState(st){
 function isAddedItem(gn,sk,nm){var f=false;(MENUADD||[]).forEach(function(g){if(g.g!==gn)return;(g.s||[]).forEach(function(s){if(s.k!==sk)return;(s.i||[]).forEach(function(it){if(it.n===nm)f=true})})});return f}
 function isAddedGroup(gn){var f=false;(MENUADD||[]).forEach(function(g){if(g.g===gn)f=true});return f}
 function saveMenuAdd(){return api('/rest/v1/rpc/set_menu_add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_value:MENUADD})})}
-var tabsEl=$('tabs');tabsEl.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call(tabsEl.children,function(x){x.classList.toggle('on',x===b)});['orders','prices','chats','blocklist','ratings','reports','settings'].forEach(function(t){$('t-'+t).style.display=(t===b.dataset.t)?'block':'none'});if(b.dataset.t==='prices')openPrices();if(b.dataset.t==='settings')openSettings();if(b.dataset.t==='chats')openChats();if(b.dataset.t==='reports')openReports();if(b.dataset.t==='blocklist')openBlocklist();if(b.dataset.t==='ratings')openRatings()});
+var tabsEl=$('tabs');tabsEl.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call(tabsEl.children,function(x){x.classList.toggle('on',x===b)});['orders','prices','chats','blocklist','ratings','log','reports','settings'].forEach(function(t){$('t-'+t).style.display=(t===b.dataset.t)?'block':'none'});if(b.dataset.t==='prices')openPrices();if(b.dataset.t==='settings')openSettings();if(b.dataset.t==='chats')openChats();if(b.dataset.t==='reports')openReports();if(b.dataset.t==='blocklist')openBlocklist();if(b.dataset.t==='ratings')openRatings();if(b.dataset.t==='log')openLog()});
 function msg(id,t,bad){var e=$(id);e.className='msg'+(bad?' bad':'');e.textContent=t}
 function getSettings(){return api('/rest/v1/settings?select=key,value').then(function(r){if(!r.ok)throw new Error('http');return r.json()}).then(function(rows){var o={};rows.forEach(function(x){o[x.key]=x.value});return o})}
 function putSetting(key,value){return api('/rest/v1/settings?on_conflict=key',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify([{key:key,value:value,updated_at:new Date().toISOString()}])})}
@@ -518,7 +533,7 @@ function repFiltered(){var d1=$('rd1').value,d2=$('rd2').value,b=$('rb').value,s
  return orders.filter(function(o){var t=new Date(o.created_at).getTime();if(s&&o.status!==s)return false;if(b&&o.branch!==b)return false;if(t<t1||t>t2)return false;return true})}
 function repSummary(){var f=repFiltered();var ok=f.filter(function(o){return o.status!=='cancelled'});
  var rev=ok.reduce(function(a,o){return a+Number(o.total||0)},0);
- $('rpsum').textContent='الطلبات: '+f.length+' • المبيعات (بدون الملغي): '+n2(rev)+' ج • التوصيل: '+n2(ok.reduce(function(a,o){return a+Number(o.delivery||0)},0))+' ج • الضريبة: '+n2(ok.reduce(function(a,o){return a+Number(o.vat||0)},0))+' ج • متوسط الطلب: '+(ok.length?n2(rev/ok.length):0)+' ج'}
+ $('rpsum').textContent='الطلبات: '+f.length+' • المبيعات (بدون الملغي): '+n2(rev)+' ج • التوصيل: '+n2(ok.reduce(function(a,o){return a+Number(o.delivery||0)},0))+' ج • الضريبة: '+n2(ok.reduce(function(a,o){return a+Number(o.vat||0)},0))+' ج • متوسط الطلب: '+(ok.length?n2(rev/ok.length):0)+' ج • 🎙️ صوتي: '+f.filter(function(o){return o.via_voice}).length+' • 👥 جماعي: '+f.filter(function(o){return o.via_group}).length}
 function repBranches(){var sel=$('rb');var cur=sel.value;var bs={};orders.forEach(function(o){if(o.branch)bs[o.branch]=1});var want=Object.keys(bs).sort();
  sel.innerHTML='<option value="">كل الفروع</option>'+want.map(function(x){return '<option>'+esc(x)+'</option>'}).join('');sel.value=cur}
 function repLoadAll(){return api('/rest/v1/orders?select=*&order=created_at.desc&limit=1000').then(function(r){return r.ok?r.json():orders}).then(function(rows){if(rows&&rows.length){orders=rows;render()}repBranches();repSummary()}).catch(function(){repBranches();repSummary()})}
@@ -532,6 +547,34 @@ function openRatings(){var L=$('rateList');var S=$('rateSum');L.innerHTML='<div 
  L.innerHTML='';rows.forEach(function(x){var o=orders.filter(function(o2){return o2.order_no===x.order_no})[0];var d=document.createElement('div');d.className='pmr';d.style.display='block';d.style.lineHeight='1.8';
   var stars='';for(var i=1;i<=5;i++){stars+='<span style="color:'+(i<=x.stars?'#f5a623':'#ddd')+'">★</span>'}
   d.innerHTML='<div><b dir="ltr">'+esc(x.order_no)+'</b> <span style="color:#666">'+esc(o?o.name:'')+(o&&o.phone?' • '+esc(o.phone):'')+'</span> <span style="color:#999;font-size:12px">'+tm(x.created_at)+'</span></div><div>'+stars+' <span style="color:#666">'+esc(x.branch||'')+'</span></div>'+(x.comment?'<div style="unicode-bidi:plaintext">'+esc(x.comment)+'</div>':'');L.appendChild(d)})}).catch(function(){S.textContent='تعذّر تحميل التقييمات'})}
+var LOGACT={'order_placed':'أوردر جديد','status_changed':'تغيير حالة','order_edited':'تعديل أوردر','settings_changed':'تعديل إعدادات','promo_created':'برومو جديد','promo_updated':'تعديل برومو','promo_deleted':'حذف برومو','customer_blocked':'حظر زبون','customer_unblocked':'فك حظر'};
+var LOGKEY={'prices':'الأسعار والإتاحة','menu_add':'أصناف مضافة','rush_notice':'وقت الذروة','config':'إعدادات الطلب','loyalty':'نقاط الولاء','branches':'الفروع','banner':'البانر','addons':'الإضافات','best_sellers':'الأكثر مبيعاً','price_schedule':'جدول الأسعار','item_descriptions':'وصف الأصناف','order':'ترتيب الأقسام','item_photos':'صور الأصناف'};
+var LOGST={new:'جديد',preparing:'بيتحضّر',delivering:'خرج للتوصيل',done:'اتسلّم',cancelled:'ملغي'};
+var logRows=[],logOff=0,logDone=false,logLoading=false;
+function logDayISO(ds,end){if(!ds)return null;var d=new Date(ds+'T00:00:00');if(end)d=new Date(d.getTime()+86400000);return d.toISOString()}
+function logDetails(a,d,entity){d=d||{};
+ if(a==='order_placed')return 'زبون: '+(d.customer||'')+' • الإجمالي: '+n2(d.total||0)+' ج'+(d.branch?' • '+d.branch:'')+(d.via_voice?' • 🎙️ صوتي':'')+(d.via_group?' • 👥 جماعي':'');
+ if(a==='status_changed')return 'من "'+(LOGST[d.from]||d.from)+'" إلى "'+(LOGST[d.to]||d.to)+'"';
+ if(a==='order_edited')return 'الإجمالي الجديد: '+n2(d.total||0)+' ج (كان '+n2(d.was_total||0)+' ج)';
+ if(a==='settings_changed'){var t='تعديل: '+(LOGKEY[entity]||entity||'');if(d.overrides!==undefined)t+=' • '+d.overrides+' سعر معدّل';if(d.off!==undefined)t+=' • '+d.off+' صنف مقفول';if(d.groups!==undefined)t+=' • '+d.groups+' مجموعة';if(d.active!==undefined)t+=' • '+(d.active?'مفعّل':'ملغي');return t}
+ if(a==='promo_created'||a==='promo_updated'||a==='promo_deleted')return 'كود: '+(entity||'')+' • النوع: '+(d.type||'')+' • القيمة: '+(d.value==null?'':d.value)+(d.active===false?' • موقوف':'');
+ if(a==='customer_blocked'||a==='customer_unblocked')return (d.phone||entity||'')+(d.email?' • '+d.email:'')+(d.reason?' • '+d.reason:'');
+ return ''}
+function logRowHtml(r){var t=new Date(r.created_at);var ts=t.toLocaleDateString('ar-EG')+' '+t.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});var who=r.actor_email||(r.action==='order_placed'?'زائر':'النظام');var role=r.actor_role==='agent'?'إيجنت':(r.actor_role==='admin'?'أدمن':'');return '<div style="padding:8px 0;border-top:1px dashed #e3dfd5;font-size:13.5px;line-height:1.7"><b>'+esc(ts)+'</b> • '+esc(who)+(role?' ('+role+')':'')+' • <b>'+esc(LOGACT[r.action]||r.action)+'</b>'+(r.entity?' • '+esc(r.entity):'')+'<div style="color:#666">'+esc(logDetails(r.action,r.details,r.entity))+'</div></div>'}
+function logPath(limit,offset){var q='/rest/v1/activity_log?select=*&order=created_at.desc&limit='+limit+'&offset='+offset;var a=$('lgAct').value;if(a)q+='&action=eq.'+encodeURIComponent(a);var d1=logDayISO($('lg1').value,false),d2=logDayISO($('lg2').value,true);if(d1)q+='&created_at=gte.'+encodeURIComponent(d1);if(d2)q+='&created_at=lt.'+encodeURIComponent(d2);return q}
+function logRender(){var q=($('lgQ').value||'').trim();var rows=logRows.filter(function(r){if(!q)return true;var s=(r.entity||'')+' '+(r.actor_email||'')+' '+(LOGACT[r.action]||r.action)+' '+JSON.stringify(r.details||{});return s.indexOf(q)>-1});$('logList').innerHTML=rows.length?rows.map(logRowHtml).join(''):'<div class="empty">مفيش سطور</div>';$('lgMore').style.display=logDone?'none':''}
+function logLoad(more){if(logLoading)return;logLoading=true;if(!more){logOff=0;logRows=[];logDone=false}msg('lgmsg','جاري التحميل…');api(logPath(100,logOff)).then(function(r){return r.ok?r.json():[]}).then(function(rows){logLoading=false;rows=rows||[];if(rows.length<100)logDone=true;logOff+=rows.length;logRows=logRows.concat(rows);logRender();msg('lgmsg',logRows.length?('المعروض: '+logRows.length+' سطر'+(logDone?' (دي كل النتائج)':'')):'مفيش نتائج مطابقة للفلتر ده')}).catch(function(){logLoading=false;msg('lgmsg','تعذّر تحميل السجل — اتأكد إن النت شغال',true)})}
+function logCountTotal(path){return api(path,{headers:{'Prefer':'count=exact'}}).then(function(r){var m=/\/(\d+)$/.exec(r.headers.get('content-range')||'');return m?+m[1]:0}).catch(function(){return 0})}
+function logSummary(){var d0=new Date();d0.setHours(0,0,0,0);var iso=d0.toISOString();Promise.all([logCountTotal('/rest/v1/activity_log?select=id&created_at=gte.'+encodeURIComponent(iso)+'&limit=1'),logCountTotal('/rest/v1/orders?select=id&via_voice=eq.true&limit=1'),logCountTotal('/rest/v1/orders?select=id&via_group=eq.true&limit=1'),logCountTotal('/rest/v1/orders?select=id&limit=1')]).then(function(v){$('logSum').innerHTML='حركات النهاردة: <b>'+v[0]+'</b> • كل الأوردرات: <b>'+v[3]+'</b> • منها بالصوت 🎙️: <b>'+v[1]+'</b> • جماعي 👥: <b>'+v[2]+'</b><div style="color:#666;font-size:13px">الصوتي والجماعي بيتعدّوا من أول تفعيل الميزة — الأوردرات الجماعية القديمة اتعلمت من بياناتها، والصوتي بيبدأ من النهاردة.</div>'})}
+function openLog(){if(!$('lg1').value){var d=new Date();var t=new Date(d.getTime()-6*86400000);function lISO(x){return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}$('lg1').value=lISO(t);$('lg2').value=lISO(d)}logLoad(false);logSummary()}
+function logRowsForExport(){return api(logPath(5000,0)).then(function(r){return r.ok?r.json():[]})}
+function logExportRows(rows){return (rows||[]).map(function(r){var d=r.details||{};return {'التاريخ':new Date(r.created_at).toLocaleString('ar-EG'),'الفاعل':r.actor_email||(r.action==='order_placed'?'زائر':'النظام'),'الدور':r.actor_role||'','الإجراء':LOGACT[r.action]||r.action,'الأوردر / العنصر':r.entity||'','التفاصيل':logDetails(r.action,d,r.entity)}})}
+$('lgGo').onclick=function(){logLoad(false)};
+$('lgMore').onclick=function(){logLoad(true)};
+$('lgQ').addEventListener('input',logRender);
+['lg1','lg2','lgAct'].forEach(function(id){$(id).addEventListener('change',function(){logLoad(false)})});
+$('lgXlsx').onclick=function(){msg('lgmsg','جاري تجهيز الملف…');logRowsForExport().then(function(rows){if(!window.XLSX){msg('lgmsg','مكتبة الإكسل مش محمّلة — اتأكد إن النت شغال وحدّث الصفحة',true);return}var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(logExportRows(rows)),'سجل النشاط');var d=new Date();var nm='gad-activity-log-'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'.xlsx';XLSX.writeFile(wb,nm);msg('lgmsg','✓ تم تنزيل '+nm+' ('+rows.length+' سطر)')})};
+$('lgCsv').onclick=function(){msg('lgmsg','جاري تجهيز الملف…');logRowsForExport().then(function(rows){var ex=logExportRows(rows);var cols=['التاريخ','الفاعل','الدور','الإجراء','الأوردر / العنصر','التفاصيل'];var csv='\ufeff'+cols.join(',')+'\n'+ex.map(function(o){return cols.map(function(c){return '"'+String(o[c]==null?'':o[c]).replace(/"/g,'""')+'"'}).join(',')}).join('\n');var blob=new Blob([csv],{type:'text/csv;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);var d=new Date();a.download='gad-activity-log-'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'.csv';a.click();msg('lgmsg','✓ تم تنزيل ملف CSV ('+rows.length+' سطر)')})};
 function openReports(){repBranches();if(!$('rd1').value){var d=new Date();var t=new Date(d.getTime()-29*86400000);function lISO(x){return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}$('rd1').value=lISO(t);$('rd2').value=lISO(d)}repSummary();repLoadAll().then(function(){loadAdminStats()})}
 function loadAdminStats(){var box=$('admStats');if(!box)return;var now=new Date();var d0=new Date(now.getFullYear(),now.getMonth(),now.getDate());var w0=new Date(d0.getTime()-6*86400000);var m0=new Date(now.getFullYear(),now.getMonth(),1);var iso=function(d){return d.toISOString()};
 Promise.all([
