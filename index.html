@@ -32,26 +32,25 @@ header p{margin:4px 0 0;font-size:14px}
 .vline{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #eee}
 .vsugg{display:none;flex-wrap:wrap;gap:8px;margin-top:8px}
 .vsugg button{border:1.5px solid #a92318;background:#fff;color:#a92318;border-radius:12px;padding:9px 12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer}
-.vstep{width:30px;height:30px;flex:0 0 auto;border-radius:50%;border:1.5px solid #d8d5cd;background:#f7f4ef;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;line-height:1;color:#333}
+.vstep{width:36px;height:36px;flex:0 0 auto;border-radius:50%;border:1.5px solid #d8d5cd;background:#f7f4ef;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;line-height:1;color:#333}
 
 .vline:last-child{border-bottom:0}
 .vline .vn{font-weight:800}
 .vline .vp{color:#a92318;font-weight:800;white-space:nowrap}
-.vline button{border:0;background:#f3e9e7;color:#a92318;border-radius:8px;width:28px;height:28px;font-size:15px;cursor:pointer;font-family:inherit}
+.vline button{border:0;background:#f3e9e7;color:#a92318;border-radius:8px;width:36px;height:36px;font-size:15px;cursor:pointer;font-family:inherit}
 .wrap{max-width:720px;margin:0 auto;padding:0 10px}
 .sec h2{font-family:"Rakkas","Tajawal",serif;font-weight:400;font-size:26px;color:#fff;background:var(--red);border-radius:12px;padding:10px 14px;margin:18px 2px 8px}
 .item{background:#fff;border-radius:16px;padding:11px 12px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 #offerBar{display:none;background:#fff3cd;border:2px dashed #e0a100;border-radius:14px;padding:10px 14px;margin:10px 12px 0;text-align:center;font-weight:800;font-size:16px;color:#7a4b00;line-height:1.7}
 #offerBar img{max-width:100%;border-radius:10px;display:block;margin:0 auto 6px}
-#gfBanner{position:relative;overflow:hidden;background:linear-gradient(120deg,#a92318,#d8232a 35%,#184898 65%,#a92318);background-size:300% 100%;animation:gfGrad 9s ease infinite;color:#fff;border-radius:16px;padding:12px 14px;margin:10px 12px 0;text-align:center;cursor:pointer;box-shadow:0 2px 10px rgba(169,35,24,.35);line-height:1.8}
-#gfBanner::before{content:"";position:absolute;top:0;bottom:0;width:70px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:gfShine 3.2s ease-in-out infinite}
+#gfBanner{position:relative;overflow:hidden;background:linear-gradient(120deg,#a92318,#d8232a 35%,#184898 65%,#a92318);background-size:300% 100%;animation:gfGrad 18s ease infinite;color:#fff;border-radius:16px;padding:12px 14px;margin:10px 12px 0;text-align:center;cursor:pointer;box-shadow:0 2px 10px rgba(169,35,24,.35);line-height:1.8}
 @keyframes gfGrad{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
 @keyframes gfShine{0%{right:110%}60%,100%{right:-20%}}
 @keyframes gfFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes gfPulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}70%{box-shadow:0 0 0 9px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
-#gfBanner .gf-ic{display:inline-block;font-size:26px;animation:gfFloat 2s ease-in-out infinite;vertical-align:middle}
+#gfBanner .gf-ic{display:inline-block;font-size:26px;vertical-align:middle}
 #gfBanner .gf-tx{font-size:18px;font-weight:900;vertical-align:middle}
-#gfBanner .gf-code{display:inline-block;background:#fff;color:#a92318;border-radius:999px;padding:2px 14px;margin:0 6px;font-weight:900;font-size:18px;letter-spacing:1px;direction:ltr;animation:gfPulse 2s infinite;vertical-align:middle}
+#gfBanner .gf-code{display:inline-block;background:#fff;color:#a92318;border-radius:999px;padding:2px 14px;margin:0 6px;font-weight:900;font-size:18px;letter-spacing:1px;direction:ltr;vertical-align:middle}
 #gfBanner .gf-hint{display:block;font-size:12.5px;opacity:.92}
 #follow{display:none;margin-top:12px;border:2px dashed #e0a100;border-radius:14px;padding:12px;background:#fffbe8;line-height:1.9}
 #follow .alt{display:inline-block;margin:4px 4px 0 0}
@@ -79,7 +78,7 @@ header p{margin:4px 0 0;font-size:14px}
 .ad-row .ad-nm{flex:1}
 .ad-row .ad-pr{font-weight:800;color:var(--blue);font-size:14px}
 .ad-step{gap:4px}
-.ad-step button{width:26px;height:26px;font-size:17px}
+.ad-step button{width:36px;height:36px;font-size:18px}
 .ad-step button[disabled]{opacity:.35;cursor:default}
 .ad-step .q{min-width:16px;font-size:14px}
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.15);display:flex;gap:8px}
@@ -108,9 +107,9 @@ header p{margin:4px 0 0;font-size:14px}
 .grp-chip.on{border-color:var(--red);background:#fdeeee;color:var(--red)}
 .grp-chip .x{color:#a92318;font-weight:800;padding:0 2px}
 .grp-chip.add{border-style:dashed;color:var(--blue)}.fr-row{display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:14px;padding:10px;margin:8px 0}.fr-ph{width:52px;height:52px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center;background:#f0ede6;font-size:24px;cursor:pointer;position:relative}.fr-ph img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}.fr-nm{font-weight:800;font-size:16px}.fr-st{font-size:13px;color:#777;margin-top:2px}.fr-btns{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.fr-btns button{border:1px solid #d8d5cd;background:#fff;border-radius:9px;padding:6px 10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}.fr-hist{margin-top:8px;border-top:1px dashed #e5e1d8;padding-top:6px;font-size:13.5px}.fr-hist .ho{padding:5px 0;border-bottom:1px solid #f0ede6}
-.grp-tgl{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(135deg,#a92318,#184898);color:#fff;font-family:inherit;font-weight:800;font-size:14.5px;cursor:pointer;animation:grpPulse 2s infinite}
+.grp-tgl{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(135deg,#a92318,#184898);color:#fff;font-family:inherit;font-weight:800;font-size:14.5px;cursor:pointer}
 .grp-tgl.on{animation:none;box-shadow:inset 0 0 0 2px #fff}
-#acct button.grp-tgl{background:linear-gradient(135deg,#a92318,#184898);animation:grpPulse 2s infinite}
+#acct button.grp-tgl{background:linear-gradient(135deg,#a92318,#184898);cursor:pointer}
 #acct button.grp-tgl.on{animation:none;box-shadow:inset 0 0 0 2px #fff}
 .grp-panel{background:#fff;border-bottom:1px solid #e5e1d8;padding:10px 12px}
 .grp-panel b{color:var(--red);font-size:15px}
@@ -173,7 +172,7 @@ textarea{min-height:80px;resize:vertical}
 .ob-bar{height:6px;background:#eee;border-radius:3px;margin-top:5px;overflow:hidden}
 .ob-fill{height:100%;background:linear-gradient(90deg,#a92318,#184898);border-radius:3px;transition:width .6s ease}
 .ob-wa{flex:none;font-size:20px;text-decoration:none}
-.ob-x{flex:none;border:0;background:#eee;border-radius:50%;width:24px;height:24px;cursor:pointer;font-family:inherit}.ob-ok{flex:none;border:0;border-radius:10px;padding:9px 12px;background:#0a7a3b;color:#fff;font-family:inherit;font-weight:800;font-size:13.5px;cursor:pointer}.ob-ok:disabled{opacity:.6}
+.ob-x{flex:none;border:0;background:#eee;border-radius:50%;width:36px;height:36px;cursor:pointer;font-family:inherit}.ob-ok{flex:none;border:0;border-radius:10px;padding:9px 12px;background:#0a7a3b;color:#fff;font-family:inherit;font-weight:800;font-size:13.5px;cursor:pointer}.ob-ok:disabled{opacity:.6}
 .addr-box{background:#fff8e1;border:1px dashed #e0a100;border-radius:12px;padding:10px 12px;margin:10px 0}
 .addr-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px dashed #e5d9a8;font-size:14px}
 .addr-row:last-child{border-bottom:0}
@@ -227,7 +226,7 @@ textarea{min-height:80px;resize:vertical}
 .tk-head{display:flex;align-items:center;gap:8px}
 .tk-head b{flex:1}
 .tk-head span{font-weight:800;direction:ltr}
-#tkX{border:0;background:#eee;border-radius:50%;width:26px;height:26px;cursor:pointer;font-family:inherit}
+#tkX{border:0;background:#eee;border-radius:50%;width:36px;height:36px;cursor:pointer;font-family:inherit}
 .tk-scene{display:flex;align-items:center;justify-content:center;min-height:66px;background:#fdf8ef;border-radius:12px;margin:10px 0 2px} .tk-scene>*{animation:tkSceneIn .45s ease} @keyframes tkSceneIn{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}} .tk-scene svg{width:110px;height:auto;display:block} .tk-scene .tk-big{font-size:46px;line-height:1} .tk-scene .ride{display:inline-block;animation:obRide 1.1s ease-in-out infinite alternate} .tk-scene .pop{display:inline-block;animation:tkpop .45s ease} .tk-ok{display:block;width:100%;margin-top:10px;padding:11px;border:0;border-radius:12px;background:#0a7a3b;color:#fff;font-weight:800;font-size:16px;cursor:pointer;font-family:inherit} .tk-ok:disabled{opacity:.6} .tk-pill{display:flex;align-items:center;gap:8px;margin:10px 0;padding:9px 12px;border-radius:12px;font-weight:800;font-size:15px}
 .tk-pill.st-new{background:#e8f7ee;color:#0a7a3b}
 .tk-pill.st-preparing{background:#fff4d6;color:#8a6100}
@@ -263,7 +262,9 @@ textarea{min-height:80px;resize:vertical}
 #fb{display:none;margin-top:12px}
 #fb .w{color:#7a4b00;background:#fff3cd;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.7}
 .rush-note{background:#fff3cd;border:1px solid #e0a800;color:#6b4e00;border-radius:10px;padding:8px 10px;margin:8px 0;font-weight:700;font-size:14px;line-height:1.6;text-align:center}
-</style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#a92318"><link rel="apple-touch-icon" href="icon-192.png"><script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=tsOnload" async defer></script></head><body>
+:focus-visible{outline:3px solid #184898;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#a92318"><link rel="apple-touch-icon" href="icon-192.png"><link rel="icon" type="image/png" href="icon-192.png"><script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=tsOnload" async defer></script></head><body>
 <header><img class="logoimg" src="logo-v2.png" alt="جاد GAD"><button id="gearBtn" type="button" class="gear-h" title="الإعدادات" aria-label="الإعدادات">⚙️</button><p class="tagline" id="tagline">أكل لكل الناس</p></header><div class="pat"></div>
 <div id="offerBar"></div>
 <div id="gfBanner" onclick="copyGfCode()" role="button" title="دوس عشان تنسخ الكود"><span class="gf-ic">🛵</span> <span class="gf-tx" id="gfTx">توصيل مجاني</span> <span class="gf-code">gadfree</span><span class="gf-hint" id="gfHint">للأوردرات من 100 جنيه — دوس على الكود عشان تنسخه</span></div>
